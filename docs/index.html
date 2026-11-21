@@ -127,6 +127,17 @@ section.alt{background:var(--surface-2)}
 .figure figcaption{font-size:.85rem;color:var(--muted);padding:10px 6px 2px}
 figure{margin:0}
 
+/* demo videos */
+.vids{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:760px){.vids{grid-template-columns:1fr}}
+video{display:block;width:100%;height:auto;border-radius:8px;background:#000}
+.vids figcaption b{color:var(--text)}
+.dur{font-size:.78rem;font-weight:700;color:var(--muted);background:var(--surface-2);padding:1px 8px;border-radius:999px;margin-left:4px;vertical-align:1px}
+.vid-shop{margin-top:16px;display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:28px;align-items:center;padding:16px}
+.vid-shop video{max-height:540px;width:100%;object-fit:contain}
+.vid-shop h3 .dur{font-weight:700}
+@media (max-width:640px){.vid-shop{grid-template-columns:1fr}.vid-shop video{max-width:300px;margin:0 auto}}
+
 /* status */
 .status{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media (max-width:760px){.status{grid-template-columns:1fr}}
@@ -179,6 +190,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
     <a class="brand" href="#top"><img src="assets/logo.png" alt="">Slotify</a>
     <div class="nav-links">
       <a href="#how">How it works</a>
+      <a href="#demo">Demo</a>
       <a href="#features">Features</a>
       <a href="wiring.html">Wiring</a>
       <a href="#start">Get started</a>
@@ -208,7 +220,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
     </div>
     <figure>
       <div class="shot"><img src="assets/server.png" alt="Slotify server window listing 12 PCs and a tablet, with locked, active and offline stations and their remaining time" width="800" height="550"></div>
-      <figcaption class="shot-cap">The server screen in our shop: every PC and tablet, live.</figcaption>
+      <figcaption class="shot-cap">The server screen in our shop: every PC and tablet, live. <a href="#demo" style="color:var(--gold)">Watch it running ▶</a></figcaption>
     </figure>
   </div>
 </header>
@@ -286,7 +298,45 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
   </div>
 </section>
 
-<section class="alt" id="features">
+<section class="alt" id="demo">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">See it working</div>
+      <h2>Filmed in our shop, not a mock-up.</h2>
+      <p class="muted">Real PCs, real coins, the real coin box. Tap a video to play it with sound.</p>
+    </div>
+    <div class="vids">
+      <figure class="figure">
+        <video controls playsinline preload="metadata" poster="videos/insert-coin.jpg" width="1280" height="720">
+          <source src="videos/insert-coin.mp4" type="video/mp4">
+        </video>
+        <figcaption><b>Insert Coin</b> <span class="dur">0:54</span><br>The customer taps Insert Coin on PC 02. The coin box lights up, the coins go in, and the PC unlocks with the time.</figcaption>
+      </figure>
+      <figure class="figure">
+        <video controls playsinline preload="metadata" poster="videos/add-time.jpg" width="1280" height="720">
+          <source src="videos/add-time.mp4" type="video/mp4">
+        </video>
+        <figcaption><b>Add time &amp; clear time</b> <span class="dur">0:58</span><br>Adding ₱20 (+2 hours) to a running session from the timer, then Clear Time to end it and lock the PC.</figcaption>
+      </figure>
+    </div>
+    <div class="vid-shop figure">
+      <video controls playsinline preload="metadata" poster="videos/shop-floor.jpg" width="464" height="848">
+        <source src="videos/shop-floor.mp4" type="video/mp4">
+      </video>
+      <div>
+        <h3>A normal day at our shop <span class="dur">0:13</span></h3>
+        <p class="muted">The Slotify server at the counter and customers on the rental PCs, all sharing one coinslot.</p>
+        <ul class="checks">
+          <li><div><b>12 PCs on iCafe8 diskless</b><span>One install in the image. Every PC shows up on the server by hostname.</span></div></li>
+          <li><div><b>One coin box for everyone</b><span>No coinslot or timer board on each PC.</span></div></li>
+          <li><div><b>Running every day</b><span>This is our own shop, not a test bench.</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow">Features</div>
@@ -309,7 +359,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
   </div>
 </section>
 
-<section id="anti-daya">
+<section class="alt" id="anti-daya">
   <div class="wrap split">
     <div>
       <div class="eyebrow">Anti-daya</div>
@@ -330,7 +380,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
   </div>
 </section>
 
-<section class="alt" id="hardware">
+<section id="hardware">
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow">The coin box</div>
@@ -360,7 +410,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
   </div>
 </section>
 
-<section id="status">
+<section class="alt" id="status">
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow">Honest status</div>
@@ -393,7 +443,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
   </div>
 </section>
 
-<section class="alt" id="start">
+<section id="start">
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow">Get started</div>
@@ -414,7 +464,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
   </div>
 </section>
 
-<section id="faq">
+<section class="alt" id="faq">
   <div class="wrap">
     <div class="sec-head">
       <div class="eyebrow">FAQ</div>
