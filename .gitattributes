@@ -1,0 +1,20 @@
+# Keep binary files byte-for-byte on every checkout (no line-ending conversion).
+*.pdf  binary
+*.zip  binary
+*.png  binary
+*.jpg  binary
+*.ico  binary
+*.jar  binary
+*.jks  binary
+*.keystore binary
+# Gerber and drill files: keep LF so fab tools see exactly what was generated.
+*.GTL -text
+*.GBL -text
+*.GTS -text
+*.GBS -text
+*.GTO -text
+*.GKO -text
+*.DRL -text
+# Scripts that run on Linux/macOS need LF.
+*.sh    text eol=lf
+gradlew text eol=lf
