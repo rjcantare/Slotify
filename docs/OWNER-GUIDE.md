@@ -9,7 +9,7 @@ and the time goes to their unit.
 > (iCafe8)**, plus Android tablets, with one Allan 1239A Pro Max coinslot.
 > **Not yet tested:** traditional setups (each PC with its own hard drive),
 > other diskless systems (CCBoot, etc.), and other coin acceptor models. If you
-> try one of these, please report it in ⟨support group link⟩.
+> try one of these, please report it in [GitHub Issues](https://github.com/rjcantare/Slotify/issues).
 
 **Time needed:** about 2–3 hours for the coin box (first build, with
 soldering), 15 min for the server, 5 min per PC, 15 min per tablet.
@@ -20,22 +20,22 @@ soldering), 15 min for the server, 5 min per PC, 15 min per tablet.
 
 ### Coin box
 
-| Qty | Part | Notes | Approx. ₱ |
-|---:|------|-------|---------:|
-| 1 | **Allan 1239A Pro Max** coin acceptor (HX-616 class) | Must have the **SET** header on the back (the inhibit input). Other models are untested. | ⟨ ⟩ |
-| 1 | **S-30-12** power supply (12V, 2.5A) | 220V AC in, 12V DC out. Powers everything. | ⟨ ⟩ |
-| 1 | **LM2596 (HW-411)** buck converter | 12V → 5V for the ESP32. **Adjust it before connecting it** (§2.4). | ⟨ ⟩ |
-| 1 | **ESP32-WROOM-32** dev board (38-pin) | USB chip is CH340 or CP2102 | ⟨ ⟩ |
-| 1 | **EL817 / PC817** optocoupler (DIP-4) | Protects the ESP32 from 12V. **Required.** | ⟨ ⟩ |
-| 1 | **2N2222A** NPN transistor (TO-92) | Switches the coinslot LED frame | ⟨ ⟩ |
-| 4 | 10 kΩ ¼W resistor | R1, R4, R7, R8 | |
-| 2 | 1 kΩ ¼W resistor | R2, R6 | |
-| 1 | 5.1 kΩ ¼W resistor | R3 | |
-| 1 | Perfboard about 30×70 mm, 2-pin screw terminal, headers, Dupont F/F jumper | | ⟨ ⟩ |
-| 1 | 12V LED frame for the coinslot (optional) | Lights up when the slot is open. See the noise note in §2.6. | ⟨ ⟩ |
-| — | Multimeter | Required, for the checks in §2.4 and §2.5 | |
+| Qty | Part | Notes |
+|---:|------|-------|
+| 1 | **Allan 1239A Pro Max** coin acceptor (HX-616 class) | Must have the **SET** header on the back (the inhibit input). Other models are untested. |
+| 1 | **S-30-12** power supply (12V, 2.5A) | 220V AC in, 12V DC out. Powers everything. |
+| 1 | **LM2596 (HW-411)** buck converter | 12V → 5V for the ESP32. **Adjust it before connecting it** (§2.4). |
+| 1 | **ESP32-WROOM-32** dev board (38-pin) | USB chip is CH340 or CP2102 |
+| 1 | **EL817 / PC817** optocoupler (DIP-4) | Protects the ESP32 from 12V. **Required.** |
+| 1 | **2N2222A** NPN transistor (TO-92) | Switches the coinslot LED frame |
+| 4 | 10 kΩ ¼W resistor | R1, R4, R7, R8 |
+| 2 | 1 kΩ ¼W resistor | R2, R6 |
+| 1 | 5.1 kΩ ¼W resistor | R3 |
+| 1 | Perfboard about 30×70 mm, 2-pin screw terminal, headers, Dupont F/F jumper | Or use the [custom coin box board](../hardware/coin-box-board/) instead |
+| 1 | 12V LED frame for the coinslot (optional) | Lights up when the slot is open. See the noise note in §2.6. |
+| — | Multimeter | Required, for the checks in §2.4 and §2.5 |
 
-**Total, about ₱⟨ ⟩.**
+All parts are sold on Shopee, Lazada and in local electronics shops. Prices change often, so check current listings.
 
 ### PCs, tablets, network
 
@@ -289,12 +289,27 @@ needed, because it's already in the image.
    - **Xiaomi/Redmi/POCO** (*INSTALL_FAILED_USER_RESTRICTED*): copy the APK
      with `.\adb push RentalSystem-Tablet.apk /sdcard/Download/`, install it
      from the tablet's File Manager, then run the `dpm` command.
-4. With the server running, open Slotify on the tablet. ⟨How does the tablet
-   find the server in the current version: automatically, or is there an IP
-   field? Describe it here.⟩
+4. With the server running, open Slotify on the tablet. It **finds the server
+   automatically** over Wi-Fi (no IP to type). That can take up to about 20
+   seconds. If it never connects, check that AP/client isolation is off (§4)
+   and that the server PC is on.
 5. On the server: **Import from tablet** → pick the tablet → import its games.
 
-⟨How to exit kiosk mode / maintenance mode for updates: describe it.⟩
+### 7.3 Maintenance mode (to update apps or change settings)
+
+Kiosk mode stops customers leaving the app. To get out of it yourself:
+
+- **On the tablet:** tap **Admin** and enter the admin password (§8). If you
+  don't see the Admin button, long-press the **Slotify logo** at the top to show
+  the admin panel.
+- **From the server:** select the tablet in the station list and use
+  **Open as Admin** (the **…** button in the Selected Station panel).
+
+The tablet shows its normal Android screen. Install updates or change settings,
+then open Slotify and tap **Return to Kiosk**.
+
+Device Owner stays active the whole time, so you never need the `adb` command again
+unless you factory reset the tablet.
 
 ---
 
@@ -333,14 +348,19 @@ needed, because it's already in the image.
 
 Check a file in PowerShell with `Get-FileHash .\<file>`.
 
+Values for **v1.3.0**. Every release also includes a `SHA256SUMS.txt` file with them.
+
 | File | SHA-256 |
 |------|---------|
-| ⟨fill in from the final release build⟩ | |
+| `RentalSystem-Server-Setup.exe` | `465543c673435b9761b7b300896311e8b290399217e1a060ed5ab70551284efd` |
+| `RentalSystem-Client-Setup.exe` | `46b02f33a299f8cdfdbc5a9577f24bfd26ade386d5330a4e33d1e6f76a3cea74` |
+| `RentalSystem-Tablet.apk` | `b088a286d6e209de7486e02ada9ef18c200b67b3dfa2baf24ef3a6b892b60431` |
+| `coin-box-merged.bin` | `4759a3cd7ef2d53ddee2dadca54a9df8392047d675e44e8ebfa0bab2446e0d8b` |
 
 ---
 
 ## 11. License and disclaimer
 
-⟨License, e.g. GPL-3.0.⟩ Slotify is provided **as-is, with no warranty**.
+Slotify is free and open source under the [GPL-3.0 license](../LICENSE). Slotify is provided **as-is, with no warranty**.
 It handles your shop's money, so test it fully (§2.7, §8) before using it
 with real customers.
