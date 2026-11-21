@@ -1,0 +1,16 @@
+Ref,Value,Part,Note
+J6,4-pin,"Screw terminal 5.08 mm, 4-pin",J6 LM2596
+J1,2-pin,"Screw terminal 5.08 mm, 2-pin",J1 12V IN
+J2,4-pin,"Screw terminal 5.08 mm, 4-pin",J2 ACCEPTOR
+J4,2-pin,"Screw terminal 5.08 mm, 2-pin",J4 LED
+J5,1x6 male,"Pin header 2.54 mm, 1x6",J5 to ESP32
+J3,1x2 male,"Pin header 2.54 mm, 1x2",J3 to acceptor SET
+R1,10K,Resistor 1/4 W axial,
+R2,1K,Resistor 1/4 W axial,
+R3,5.1K,Resistor 1/4 W axial,
+R4,10K,Resistor 1/4 W axial,
+R6,1K,Resistor 1/4 W axial,
+R7,10K,Resistor 1/4 W axial,
+R8,10K,Resistor 1/4 W axial,
+U1,EL817 / PC817,Optocoupler DIP-4,dot = pin 1 (square pad)
+Q1,2N2222A,NPN transistor TO-92,flat side towards J4; legs E B C

@@ -1,0 +1,14 @@
+M48
+; Slotify coin box board V1
+; NON-PLATED through holes
+METRIC,TZ
+T1C3.200
+%
+G90
+G05
+T1
+X3.500Y3.500
+X76.500Y3.500
+X3.500Y60.500
+X76.500Y60.500
+M30

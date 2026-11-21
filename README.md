@@ -40,6 +40,7 @@ If you run it on one of the untested setups, please send a
 | `android/` | Tablet/phone app (Device Owner kiosk) | Kotlin, Gradle |
 | `firmware/` | ESP32 coin box firmware | PlatformIO / Arduino |
 | `docs/` | Owner guide, wiring, coin acceptor spec | |
+| `hardware/coin-box-board/` | Custom PCB for the coin box (Gerbers + printable PDF) | Python script |
 
 ### How it fits together
 

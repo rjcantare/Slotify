@@ -1,0 +1,18 @@
+Slotify coin box board V1: 80.0 x 64.0 mm, 43 pads, 26 traces
+top-layer links: 1
+
+smallest copper gap between different nets: 0.49 mm (rule 0.3 mm)
+net +12V      connected: J6.4, J1.2, J2.2, J4.1, R1.1, R2.1
+net +3V3      connected: J5.3, R3.1
+net +5V       connected: J6.1, J5.1
+net COIN      connected: J2.3, R1.2, U1.2
+net D18       connected: J5.4, R4.1
+net D19       connected: J5.5, R6.1
+net D23_SET   connected: J5.6, J3.1, R8.1
+net FRAME-    connected: J4.2, Q1.C
+net GND       connected: J6.2, J6.3, J1.1, J2.1, J5.2, J3.2, R7.2, R8.2, U1.3, Q1.E, LINK., LINK.
+net OPTO_A    connected: R2.2, U1.1
+net OPTO_OUT  connected: R3.2, R4.2, U1.4
+net Q1_BASE   connected: R6.2, R7.1, Q1.B
+
+All checks passed.

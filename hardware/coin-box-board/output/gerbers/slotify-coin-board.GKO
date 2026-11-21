@@ -1,0 +1,15 @@
+%TF.GenerationSoftware,Slotify,generate.py,V1*%
+%TF.FileFunction,Profile,NP*%
+%TF.FilePolarity,Positive*%
+%FSLAX46Y46*%
+%MOMM*%
+%LPD*%
+%ADD10C,0.1000*%
+G01*
+D10*
+X0Y0D02*
+X80000000Y0D01*
+X80000000Y64000000D01*
+X0Y64000000D01*
+X0Y0D01*
+M02*
