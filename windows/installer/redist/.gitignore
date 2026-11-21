@@ -1,0 +1,4 @@
+# Third-party redistributables fetched by installer\fetch-redist.ps1.
+# Not committed (large binaries); run fetch-redist.ps1 to populate before
+# building the server installer.
+*.exe

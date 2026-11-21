@@ -1,0 +1,126 @@
+<Window x:Class="RentalClient.Windows.ProvisioningWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Station Setup"
+        Width="420" Height="480"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Topmost="True"
+        Background="#FF1A1A2E"
+        Foreground="White"
+        WindowStyle="None"
+        AllowsTransparency="True">
+    <Border Background="#FF1A1A2E"
+            CornerRadius="10"
+            Padding="28"
+            BorderBrush="#FF333355"
+            BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="Station Setup"
+                           FontSize="22" FontWeight="Bold"
+                           Foreground="#FFEC4899"
+                           Margin="0,0,0,4" />
+                <TextBlock Text="Configure this station before starting."
+                           FontSize="13"
+                           Foreground="#8899AA"
+                           Margin="0,0,0,20" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1">
+                <!-- Station ID -->
+                <TextBlock Text="Station ID" FontSize="13" Foreground="#AAAACC" Margin="0,0,0,4" />
+                <TextBox x:Name="StationIdBox"
+                         AutomationProperties.AutomationId="ProvStationId"
+                         Padding="8,6" FontSize="14"
+                         Background="#FF2A2A4E" Foreground="White"
+                         BorderBrush="#444466" BorderThickness="1"
+                         CaretBrush="White"
+                         Text="pc-01"
+                         Margin="0,0,0,14" />
+
+                <!-- Device Type -->
+                <TextBlock Text="Device Type" FontSize="13" Foreground="#AAAACC" Margin="0,0,0,4" />
+                <ComboBox x:Name="DeviceTypeBox"
+                          AutomationProperties.AutomationId="ProvDeviceType"
+                          Padding="6,4" FontSize="14"
+                          Background="#FF2A2A4E" Foreground="White"
+                          BorderBrush="#444466" BorderThickness="1"
+                          SelectedIndex="0"
+                          Margin="0,0,0,14">
+                    <ComboBoxItem Content="PC" Tag="pc" />
+                    <ComboBoxItem Content="Phone" Tag="phn" />
+                    <ComboBoxItem Content="Tablet" Tag="tab" />
+                </ComboBox>
+
+                <!-- Broker Host -->
+                <TextBlock Text="Broker Host" FontSize="13" Foreground="#AAAACC" Margin="0,0,0,4" />
+                <TextBox x:Name="BrokerHostBox"
+                         AutomationProperties.AutomationId="ProvBrokerHost"
+                         Padding="8,6" FontSize="14"
+                         Background="#FF2A2A4E" Foreground="White"
+                         BorderBrush="#444466" BorderThickness="1"
+                         CaretBrush="White"
+                         Text="192.168.0.5"
+                         Margin="0,0,0,14" />
+
+                <!-- Broker Port -->
+                <TextBlock Text="Broker Port" FontSize="13" Foreground="#AAAACC" Margin="0,0,0,4" />
+                <TextBox x:Name="BrokerPortBox"
+                         AutomationProperties.AutomationId="ProvBrokerPort"
+                         Padding="8,6" FontSize="14"
+                         Background="#FF2A2A4E" Foreground="White"
+                         BorderBrush="#444466" BorderThickness="1"
+                         CaretBrush="White"
+                         Text="1883"
+                         Margin="0,0,0,14" />
+
+                <!-- Test Connection -->
+                <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                    <Button x:Name="TestButton"
+                            AutomationProperties.AutomationId="ProvTestButton"
+                            Content="Test Connection"
+                            FontSize="13" FontWeight="SemiBold"
+                            Padding="16,8"
+                            Background="#FF1565C0"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            Click="OnTestClicked" />
+                    <TextBlock x:Name="TestStatusText"
+                               FontSize="13"
+                               Margin="16,0,0,0"
+                               VerticalAlignment="Center"
+                               Foreground="#8899AA"
+                               Text="" />
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Margin="0,16,0,0">
+                <Button x:Name="SaveButton"
+                        AutomationProperties.AutomationId="ProvSaveButton"
+                        Content="Save &amp; Start"
+                        FontSize="15" FontWeight="Bold"
+                        Padding="16,10"
+                        Background="#FF2E7D32"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        IsEnabled="False"
+                        Click="OnSaveClicked" />
+                <TextBlock x:Name="ErrorText"
+                           FontSize="12" FontWeight="SemiBold"
+                           Foreground="#FFEF5350"
+                           Margin="0,8,0,0"
+                           TextWrapping="Wrap"
+                           Visibility="Collapsed" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,139 @@
+<Window x:Class="RentalServer.HealthWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Health Dashboard"
+        Width="720" Height="580"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="CanResize"
+        ShowInTaskbar="False">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="System Health"
+                   FontSize="22"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,16" />
+
+        <!-- Status cards row -->
+        <WrapPanel Grid.Row="1"
+                   Margin="0,0,0,14">
+            <!-- Broker card -->
+            <Border Width="200" Height="80"
+                    Margin="0,0,10,10"
+                    Padding="12"
+                    Background="#FFF8FAFC"
+                    BorderBrush="#FFE2E8F0" BorderThickness="1"
+                    CornerRadius="6">
+                <StackPanel>
+                    <TextBlock Text="MQTT Broker"
+                               FontWeight="SemiBold" FontSize="14" />
+                    <Ellipse x:Name="BrokerDot" Width="10" Height="10" Margin="0,6,0,0"
+                             Fill="#C62828" />
+                    <TextBlock x:Name="BrokerStatusText" Text="Checking..."
+                               FontSize="13" Margin="14,-14,0,0"
+                               Foreground="#FF475569" />
+                </StackPanel>
+            </Border>
+
+            <!-- Acceptor card -->
+            <Border Width="200" Height="80"
+                    Margin="0,0,10,10"
+                    Padding="12"
+                    Background="#FFF8FAFC"
+                    BorderBrush="#FFE2E8F0" BorderThickness="1"
+                    CornerRadius="6">
+                <StackPanel>
+                    <TextBlock Text="Coin Acceptor"
+                               FontWeight="SemiBold" FontSize="14" />
+                    <TextBlock x:Name="AcceptorHealthText" Text="Checking..."
+                               FontSize="13" Margin="0,4,0,0"
+                               Foreground="#FF475569" />
+                </StackPanel>
+            </Border>
+
+            <!-- Database card -->
+            <Border Width="200" Height="80"
+                    Margin="0,0,10,10"
+                    Padding="12"
+                    Background="#FFF8FAFC"
+                    BorderBrush="#FFE2E8F0" BorderThickness="1"
+                    CornerRadius="6">
+                <StackPanel>
+                    <TextBlock Text="Database"
+                               FontWeight="SemiBold" FontSize="14" />
+                    <TextBlock x:Name="DatabaseHealthText" Text="Checking..."
+                               FontSize="13" Margin="0,4,0,0"
+                               Foreground="#FF475569" />
+                </StackPanel>
+            </Border>
+
+            <!-- Pending Credits card -->
+            <Border Width="200" Height="80"
+                    Margin="0,0,10,10"
+                    Padding="12"
+                    Background="#FFF8FAFC"
+                    BorderBrush="#FFE2E8F0" BorderThickness="1"
+                    CornerRadius="6">
+                <StackPanel>
+                    <TextBlock Text="Pending Credits"
+                               FontWeight="SemiBold" FontSize="14" />
+                    <TextBlock x:Name="PendingCreditsText" Text="Checking..."
+                               FontSize="13" Margin="0,4,0,0"
+                               Foreground="#FF475569" />
+                </StackPanel>
+            </Border>
+        </WrapPanel>
+
+        <!-- Station list -->
+        <TextBlock Grid.Row="2"
+                   Text="Stations"
+                   FontWeight="SemiBold" FontSize="16"
+                   Margin="0,0,0,8" />
+
+        <DataGrid x:Name="StationHealthGrid"
+                  Grid.Row="3"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  HeadersVisibility="Column"
+                  GridLinesVisibility="Horizontal"
+                  FontSize="13">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Station" Binding="{Binding StationId}" Width="80" />
+                <DataGridTextColumn Header="Type" Binding="{Binding DeviceType}" Width="50" />
+                <DataGridTextColumn Header="Online" Binding="{Binding OnlineText}" Width="60" />
+                <DataGridTextColumn Header="Version" Binding="{Binding AppVersion}" Width="80" />
+                <DataGridTextColumn Header="State" Binding="{Binding SessionState}" Width="130" />
+                <DataGridTextColumn Header="Time Left" Binding="{Binding TimeLeft}" Width="100" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DockPanel Grid.Row="4"
+                   Margin="0,14,0,0"
+                   LastChildFill="False">
+            <Button x:Name="RefreshButton"
+                    DockPanel.Dock="Left"
+                    Width="90"
+                    Click="OnRefreshClicked"
+                    Content="Refresh" />
+            <Button x:Name="ExportDiagnosticsButton"
+                    DockPanel.Dock="Left"
+                    Width="140"
+                    Margin="8,0,0,0"
+                    Click="OnExportDiagnosticsClicked"
+                    Content="Export Diagnostics" />
+            <Button x:Name="CloseButton"
+                    DockPanel.Dock="Right"
+                    Width="80"
+                    Click="OnCloseClicked"
+                    Content="Close" />
+        </DockPanel>
+    </Grid>
+</Window>

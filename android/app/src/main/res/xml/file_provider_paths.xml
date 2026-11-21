@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  S50b OTA: expose the downloaded APK to the system package installer via a
+  content:// URI. We use the app's own external-files-dir
+  (getExternalFilesDir(null)) which is writable without any storage
+  permission on Android 10+ (Scoped Storage). The public Downloads/ dir
+  requires MANAGE_EXTERNAL_STORAGE which Google heavily restricts.
+-->
+<paths>
+    <external-files-path
+        name="ota"
+        path="ota/" />
+</paths>

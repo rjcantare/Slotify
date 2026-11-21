@@ -1,0 +1,494 @@
+<Window x:Class="RentalServer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Slotify Server" Icon="Slotify.ico" Height="768" Width="1320"
+        WindowState="Maximized"
+        Loaded="OnLoaded"
+        Closing="OnClosing">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0"
+                   Margin="0,0,0,14"
+                   LastChildFill="False">
+            <TextBlock DockPanel.Dock="Left"
+                       Text="Rental Server"
+                       FontSize="24"
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center" />
+            <TextBlock x:Name="VersionText"
+                       DockPanel.Dock="Left"
+                       Text="v—"
+                       FontSize="12"
+                       Foreground="#FF94A3B8"
+                       VerticalAlignment="Bottom"
+                       Margin="8,0,0,5"
+                       ToolTip="Running Slotify server version" />
+            <Button x:Name="HeaderTransferTimeButton"
+                    AutomationProperties.AutomationId="HeaderTransferTimeButton"
+                    DockPanel.Dock="Left"
+                    Width="120"
+                    Height="30"
+                    Margin="14,0,0,0"
+                    IsEnabled="False"
+                    Click="OnTransferTimeClicked"
+                    Content="Transfer Time"
+                    ToolTip="Select exactly two online PCs: one with time and one locked/no-time PC. Then click to transfer." />
+
+            <StackPanel DockPanel.Dock="Right"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+                <Ellipse x:Name="StatusIndicator"
+                         Width="14"
+                         Height="14"
+                         Fill="#C62828"
+                         Stroke="#66000000"
+                         StrokeThickness="1" />
+                <TextBlock x:Name="StatusText"
+                           Margin="8,0,10,0"
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Text="Server offline" />
+                <Border Width="22"
+                        Height="22"
+                        CornerRadius="11"
+                        BorderBrush="#FF94A3B8"
+                        BorderThickness="1"
+                        Background="#FFF8FAFC"
+                        ToolTipService.ShowDuration="60000">
+                    <TextBlock x:Name="VerboseStatusIcon"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="13"
+                               FontWeight="Bold"
+                               Foreground="#FF475569"
+                               Text="i"
+                               ToolTip="Broker: 127.0.0.1:1883" />
+                </Border>
+            </StackPanel>
+        </DockPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="360" />
+            </Grid.ColumnDefinitions>
+
+            <DataGrid x:Name="StationGrid"
+                      AutomationProperties.AutomationId="StationGrid"
+                      Grid.Column="0"
+                      Margin="0,0,14,0"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="Horizontal"
+                      RowHeaderWidth="0"
+                      FontSize="16"
+                      RowHeight="36"
+                      SelectionMode="Extended"
+                      SelectionUnit="FullRow"
+                      AllowDrop="True"
+                      SelectionChanged="OnStationSelectionChanged">
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="{Binding BackgroundColor, Mode=OneWay}" />
+                        <Setter Property="AllowDrop" Value="True" />
+                        <EventSetter Event="PreviewMouseLeftButtonDown" Handler="OnStationGridPreviewMouseLeftButtonDown" />
+                        <EventSetter Event="PreviewMouseMove" Handler="OnStationGridMouseMove" />
+                        <EventSetter Event="DragOver" Handler="OnStationGridDragOver" />
+                        <EventSetter Event="Drop" Handler="OnStationGridDrop" />
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Station"
+                                        Binding="{Binding StationName, Mode=OneWay}"
+                                        Width="2*"
+                                        FontWeight="SemiBold" />
+                    <DataGridTextColumn Header="Status"
+                                        Binding="{Binding OperatorStatusText, Mode=OneWay}"
+                                        Width="200"
+                                        FontSize="15" />
+                    <DataGridTextColumn Header="Time Remaining"
+                                        Binding="{Binding TimeRemainingText, Mode=OneWay}"
+                                        Width="170"
+                                        FontSize="15"
+                                        FontWeight="SemiBold" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Border Grid.Column="1"
+                    Padding="16"
+                    Background="#FFF8FAFC"
+                    BorderBrush="#FFE2E8F0"
+                    BorderThickness="1">
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Text="Selected Station"
+                                   FontSize="18"
+                                   FontWeight="SemiBold" />
+                        <Button x:Name="OpenStationButton"
+                                Grid.Column="1"
+                                Width="30"
+                                Height="26"
+                                FontSize="11"
+                                IsEnabled="False"
+                                Click="OnOpenStationClicked"
+                                Content="..." />
+                    </Grid>
+                    <TextBlock x:Name="SelectedStationTitleText"
+                               Margin="0,4,0,10"
+                               FontSize="15"
+                               Foreground="#FF475569"
+                               Text="Select a station" />
+
+                    <TextBlock Text="Add Time"
+                               FontWeight="SemiBold"
+                               Margin="0,4,0,6" />
+                    <UniformGrid Columns="3">
+                        <Button x:Name="AddTime30Button"
+                                AutomationProperties.AutomationId="AddTime30Button"
+                                Margin="0,0,6,0"
+                                Height="36"
+                                FontSize="15"
+                                FontWeight="SemiBold"
+                                IsEnabled="False"
+                                Click="OnAddTime30Clicked"
+                                Content="+30 min" />
+                        <Button x:Name="AddTime60Button"
+                                AutomationProperties.AutomationId="AddTime60Button"
+                                Margin="0,0,6,0"
+                                Height="36"
+                                FontSize="15"
+                                FontWeight="SemiBold"
+                                IsEnabled="False"
+                                Click="OnAddTime60Clicked"
+                                Content="+1 hr" />
+                        <Button x:Name="AddTime120Button"
+                                AutomationProperties.AutomationId="AddTime120Button"
+                                Height="36"
+                                FontSize="15"
+                                FontWeight="SemiBold"
+                                IsEnabled="False"
+                                Click="OnAddTime120Clicked"
+                                Content="+2 hr" />
+                    </UniformGrid>
+
+                    <TextBlock Text="Remove Time"
+                               FontWeight="SemiBold"
+                               Margin="0,16,0,6" />
+                    <UniformGrid Columns="3">
+                        <Button x:Name="RemoveTime30Button"
+                                AutomationProperties.AutomationId="RemoveTime30Button"
+                                Margin="0,0,6,0"
+                                Height="36"
+                                FontSize="15"
+                                FontWeight="SemiBold"
+                                IsEnabled="False"
+                                Foreground="#E65100"
+                                Click="OnRemoveTime30Clicked"
+                                Content="-30 min" />
+                        <Button x:Name="RemoveTime60Button"
+                                AutomationProperties.AutomationId="RemoveTime60Button"
+                                Margin="0,0,6,0"
+                                Height="36"
+                                FontSize="15"
+                                FontWeight="SemiBold"
+                                IsEnabled="False"
+                                Foreground="#E65100"
+                                Click="OnRemoveTime60Clicked"
+                                Content="-1 hr" />
+                        <Button x:Name="RemoveTime120Button"
+                                AutomationProperties.AutomationId="RemoveTime120Button"
+                                Height="36"
+                                FontSize="15"
+                                FontWeight="SemiBold"
+                                IsEnabled="False"
+                                Foreground="#E65100"
+                                Click="OnRemoveTime120Clicked"
+                                Content="-2 hr" />
+                    </UniformGrid>
+
+                    <Grid Margin="0,16,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="CustomTimeAmountBox"
+                                 AutomationProperties.AutomationId="CustomTimeAmountBox"
+                                 Grid.Column="0"
+                                 Height="30"
+                                 FontSize="14"
+                                 VerticalContentAlignment="Center"
+                                 Text="30" />
+                        <ComboBox x:Name="CustomTimeUnitCombo"
+                                  AutomationProperties.AutomationId="CustomTimeUnitCombo"
+                                  Grid.Column="1"
+                                  Width="70"
+                                  Height="30"
+                                  Margin="6,0,0,0"
+                                  FontSize="14"
+                                  SelectedIndex="1">
+                            <ComboBoxItem Tag="sec">sec</ComboBoxItem>
+                            <ComboBoxItem Tag="min">min</ComboBoxItem>
+                            <ComboBoxItem Tag="hr">hr</ComboBoxItem>
+                        </ComboBox>
+                        <Button x:Name="AddTimeButton"
+                                AutomationProperties.AutomationId="AddTimeButton"
+                                Grid.Column="2"
+                                Width="56"
+                                Height="30"
+                                Margin="8,0,6,0"
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                IsEnabled="False"
+                                Click="OnAddTimeClicked"
+                                Content="Add" />
+                        <Button x:Name="RemoveTimeButton"
+                                AutomationProperties.AutomationId="RemoveTimeButton"
+                                Grid.Column="3"
+                                Width="72"
+                                Height="30"
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                IsEnabled="False"
+                                Foreground="#E65100"
+                                Click="OnRemoveTimeClicked"
+                                Content="Remove" />
+                    </Grid>
+
+                    <Button x:Name="ClearTimeButton"
+                            AutomationProperties.AutomationId="ClearTimeButton"
+                            Margin="0,16,0,0"
+                            Height="34"
+                            IsEnabled="False"
+                            Foreground="#C62828"
+                            FontWeight="SemiBold"
+                            Click="OnClearTimeClicked"
+                            Content="Clear Time" />
+
+                    <Button x:Name="TransferTimeButton"
+                            AutomationProperties.AutomationId="TransferTimeButton"
+                            Margin="0,8,0,0"
+                            Height="34"
+                            IsEnabled="False"
+                            FontWeight="SemiBold"
+                            Click="OnTransferTimeClicked"
+                            Content="Transfer Time"
+                            ToolTip="Select exactly two online PCs: one with time and one locked/no-time PC. Then click to transfer." />
+
+                    <Button x:Name="ReleaseAcceptorButton"
+                            AutomationProperties.AutomationId="ReleaseAcceptorButton"
+                            Margin="0,8,0,0"
+                            Height="30"
+                            IsEnabled="False"
+                            Click="OnReleaseAcceptorClicked"
+                            Content="Turn Acceptor LED Off"
+                            ToolTip="Rare safety action: sends an LED-off command to the coin acceptor. It does not change customer time." />
+
+                    <TextBlock Text="Remote Control"
+                               FontWeight="SemiBold"
+                               Margin="0,16,0,6" />
+                    <Button x:Name="RestartClientButton"
+                            AutomationProperties.AutomationId="RestartClientButton"
+                            Height="30"
+                            Margin="0,0,0,6"
+                            IsEnabled="False"
+                            Click="OnRestartClientClicked"
+                            Content="Restart Client"
+                            ToolTip="Sends a restart command to the selected station's client app. The client will reconnect to MQTT after restart." />
+                    <Button x:Name="RebootPcButton"
+                            AutomationProperties.AutomationId="RebootPcButton"
+                            Height="30"
+                            Margin="0,0,0,6"
+                            IsEnabled="False"
+                            Foreground="#C62828"
+                            FontWeight="SemiBold"
+                            Click="OnRebootPcClicked"
+                            Content="Reboot PC"
+                            ToolTip="Reboots the selected station's Windows PC after a 5 second grace period. Active paid sessions will be interrupted." />
+                    <Button x:Name="ShutdownPcButton"
+                            AutomationProperties.AutomationId="ShutdownPcButton"
+                            Height="30"
+                            IsEnabled="False"
+                            Foreground="#C62828"
+                            FontWeight="SemiBold"
+                            Click="OnShutdownPcClicked"
+                            Content="Shut Down PC"
+                            ToolTip="Shuts down the selected station's Windows PC after a 5 second grace period. Active paid sessions will be interrupted." />
+                    <Button x:Name="ShutdownIdlePcsButton"
+                            AutomationProperties.AutomationId="ShutdownIdlePcsButton"
+                            Height="30"
+                            Margin="0,6,0,0"
+                            IsEnabled="False"
+                            Foreground="#C62828"
+                            FontWeight="SemiBold"
+                            Click="OnShutdownIdlePcsClicked"
+                            Content="Shut Down Idle PCs"
+                            ToolTip="Shuts down every online Windows PC that is currently locked/no-time. Active paid PCs, tablets, and phones are skipped." />
+                    <Button x:Name="RemoveStationButton"
+                            AutomationProperties.AutomationId="RemoveStationButton"
+                            Height="30"
+                            Margin="0,6,0,0"
+                            IsEnabled="False"
+                            Foreground="#C62828"
+                            FontWeight="SemiBold"
+                            Click="OnRemoveStationClicked"
+                            Content="Remove Offline Stations"
+                            ToolTip="Removes selected offline station rows from the grid. Session and coin history are kept." />
+
+                    <TextBlock x:Name="AddTimeStatusText"
+                               AutomationProperties.AutomationId="AddTimeStatusText"
+                               Margin="0,12,0,0"
+                               TextWrapping="Wrap"
+                               Foreground="#666666"
+                               Text="Select one or more stations to add, remove, or clear time." />
+
+                    <Expander Header="Details"
+                              Margin="0,16,0,0">
+                        <StackPanel Margin="0,8,0,0">
+                            <TextBlock x:Name="SelectedStationDetailText"
+                                       TextWrapping="Wrap"
+                                       Foreground="#FF475569"
+                                       Text="No station selected." />
+                            <TextBlock x:Name="DatabasePathText"
+                                       Margin="0,8,0,0"
+                                       TextWrapping="Wrap"
+                                       Foreground="#FF64748B" />
+                            <TextBlock x:Name="AcceptorStatusText"
+                                       Margin="0,4,0,0"
+                                       TextWrapping="Wrap"
+                                       Foreground="#FF64748B"
+                                       Text="Acceptor: (none registered)" />
+                            <TextBlock x:Name="SessionInfoText"
+                                       Margin="0,4,0,0"
+                                       TextWrapping="Wrap"
+                                       Foreground="#FF64748B"
+                                       Text="Sessions: (none yet)" />
+                            <TextBlock x:Name="DetailText"
+                                       Visibility="Collapsed" />
+                        </StackPanel>
+                    </Expander>
+                </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="2"
+              Margin="0,14,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <WrapPanel Grid.Row="0"
+                       Grid.ColumnSpan="2"
+                       VerticalAlignment="Center">
+                <TextBlock VerticalAlignment="Center"
+                           FontWeight="SemiBold"
+                           Text="Daily Tasks" />
+                <Button x:Name="CoinHistoryButton"
+                        AutomationProperties.AutomationId="CoinHistoryButton"
+                        Width="116"
+                        Margin="10,0,8,0"
+                        Click="OnCoinHistoryClicked"
+                        Content="Coin History" />
+                <Button x:Name="HealthButton"
+                        AutomationProperties.AutomationId="HealthButton"
+                        Width="86"
+                        Margin="0,0,8,0"
+                        Click="OnHealthClicked"
+                        Content="Health" />
+                <Button Width="86"
+                        Margin="0,0,24,0"
+                        Click="OnRetryClicked"
+                        Content="Retry" />
+
+                <TextBlock VerticalAlignment="Center"
+                           FontWeight="SemiBold"
+                           Text="Setup" />
+                <Button x:Name="EditRatesButton"
+                        AutomationProperties.AutomationId="EditRatesButton"
+                        Width="104"
+                        Margin="10,0,8,0"
+                        Click="OnEditRatesClicked"
+                        Content="Edit Rates" />
+                <Button x:Name="TabletAppsButton"
+                        AutomationProperties.AutomationId="TabletAppsButton"
+                        Width="112"
+                        Margin="0,0,8,0"
+                        Click="OnTabletAppsClicked"
+                        Content="Tablet Apps" />
+                <Button x:Name="TabletAdminButton"
+                        AutomationProperties.AutomationId="TabletAdminButton"
+                        Width="118"
+                        Margin="0,0,8,0"
+                        Click="OnTabletAdminClicked"
+                        Content="Tablet Admin" />
+                <Button x:Name="TransactionsButton"
+                        AutomationProperties.AutomationId="TransactionsButton"
+                        Width="116"
+                        Margin="0,0,8,0"
+                        Click="OnTransactionsClicked"
+                        Content="Transactions" />
+                <Button x:Name="PcPolicyButton"
+                        AutomationProperties.AutomationId="PcPolicyButton"
+                        Width="150"
+                        Click="OnPcPolicyClicked"
+                        Content="PC &amp; Coin Slot Policy" />
+                <Button x:Name="UpdatesButton"
+                        AutomationProperties.AutomationId="UpdatesButton"
+                        Width="90"
+                        Margin="8,0,0,0"
+                        Click="OnCheckUpdatesClicked"
+                        Content="Updates" />
+            </WrapPanel>
+
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="0,8,0,0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+                <TextBlock x:Name="BackupStatusText"
+                           Width="330"
+                           Margin="0,0,10,0"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"
+                           Foreground="#FF64748B"
+                           Text="Backup: not run yet" />
+                <Button x:Name="BackupNowButton"
+                        AutomationProperties.AutomationId="BackupNowButton"
+                        Width="104"
+                        Margin="0,0,8,0"
+                        Click="OnBackupNowClicked"
+                        Content="Backup Now" />
+                <Button x:Name="OpenBackupsButton"
+                        AutomationProperties.AutomationId="OpenBackupsButton"
+                        Width="112"
+                        Click="OnOpenBackupsClicked"
+                        Content="Open Backups" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

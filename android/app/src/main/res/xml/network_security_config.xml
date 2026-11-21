@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    MQTT to the local Mosquitto broker runs over plain TCP on port 1883
+    (allow_anonymous, no TLS). Broker discovery returns the shop server's
+    current LAN IP, so this cannot be pinned to one dev address.
+
+    Production deployment is on the same LAN behind the iCafe8 server's
+    own firewall, so plain MQTT is acceptable. Switch to mqtts:// + a CA
+    when the broker moves off-LAN.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

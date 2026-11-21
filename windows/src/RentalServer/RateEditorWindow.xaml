@@ -1,0 +1,137 @@
+<Window x:Class="RentalServer.RateEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Edit Rates"
+        Width="720" Height="620"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="24" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="Add Time (active session) - time format HH:MM:SS"
+                   FontSize="16"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,8" />
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="&#x20B1;1 (HH:MM:SS)" HorizontalAlignment="Center" FontWeight="SemiBold" />
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="&#x20B1;5 (HH:MM:SS)" HorizontalAlignment="Center" FontWeight="SemiBold" />
+            <TextBlock Grid.Row="0" Grid.Column="3" Text="&#x20B1;10 (HH:MM:SS)" HorizontalAlignment="Center" FontWeight="SemiBold" />
+            <TextBlock Grid.Row="0" Grid.Column="4" Text="&#x20B1;20 (HH:MM:SS)" HorizontalAlignment="Center" FontWeight="SemiBold" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="PC" VerticalAlignment="Center" />
+            <TextBox Grid.Row="1" Grid.Column="1" x:Name="RatePcD1" AutomationProperties.AutomationId="RatePcD1" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="1" Grid.Column="2" x:Name="RatePcD5" AutomationProperties.AutomationId="RatePcD5" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="1" Grid.Column="3" x:Name="RatePcD10" AutomationProperties.AutomationId="RatePcD10" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="1" Grid.Column="4" x:Name="RatePcD20" AutomationProperties.AutomationId="RatePcD20" Margin="4" TextAlignment="Right" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Phone" VerticalAlignment="Center" />
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="RatePhnD1" AutomationProperties.AutomationId="RatePhnD1" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="2" Grid.Column="2" x:Name="RatePhnD5" AutomationProperties.AutomationId="RatePhnD5" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="2" Grid.Column="3" x:Name="RatePhnD10" AutomationProperties.AutomationId="RatePhnD10" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="2" Grid.Column="4" x:Name="RatePhnD20" AutomationProperties.AutomationId="RatePhnD20" Margin="4" TextAlignment="Right" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Tablet" VerticalAlignment="Center" />
+            <TextBox Grid.Row="3" Grid.Column="1" x:Name="RateTabD1" AutomationProperties.AutomationId="RateTabD1" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="3" Grid.Column="2" x:Name="RateTabD5" AutomationProperties.AutomationId="RateTabD5" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="3" Grid.Column="3" x:Name="RateTabD10" AutomationProperties.AutomationId="RateTabD10" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="3" Grid.Column="4" x:Name="RateTabD20" AutomationProperties.AutomationId="RateTabD20" Margin="4" TextAlignment="Right" />
+        </Grid>
+
+        <TextBlock Grid.Row="3"
+                   Text="Locked Insert Coin - time format HH:MM:SS"
+                   FontSize="16"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,8" />
+
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="Starter Unlock PHP" HorizontalAlignment="Center" FontWeight="SemiBold" />
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Starter Time (HH:MM:SS)" HorizontalAlignment="Center" FontWeight="SemiBold" />
+            <TextBlock Grid.Row="0" Grid.Column="3" Text="Normalize From PHP" HorizontalAlignment="Center" FontWeight="SemiBold" />
+            <TextBlock Grid.Row="0" Grid.Column="4" Text="Per PHP Time (HH:MM:SS)" HorizontalAlignment="Center" FontWeight="SemiBold" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="PC" VerticalAlignment="Center" />
+            <TextBox Grid.Row="1" Grid.Column="1" x:Name="RulePcStarterMax" AutomationProperties.AutomationId="RulePcStarterMax" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="1" Grid.Column="2" x:Name="RulePcStarterSeconds" AutomationProperties.AutomationId="RulePcStarterSeconds" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="1" Grid.Column="3" x:Name="RulePcNormalizedFrom" AutomationProperties.AutomationId="RulePcNormalizedFrom" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="1" Grid.Column="4" x:Name="RulePcPerPesoSeconds" AutomationProperties.AutomationId="RulePcPerPesoSeconds" Margin="4" TextAlignment="Right" />
+
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Phone" VerticalAlignment="Center" />
+            <TextBox Grid.Row="2" Grid.Column="1" x:Name="RulePhnStarterMax" AutomationProperties.AutomationId="RulePhnStarterMax" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="2" Grid.Column="2" x:Name="RulePhnStarterSeconds" AutomationProperties.AutomationId="RulePhnStarterSeconds" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="2" Grid.Column="3" x:Name="RulePhnNormalizedFrom" AutomationProperties.AutomationId="RulePhnNormalizedFrom" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="2" Grid.Column="4" x:Name="RulePhnPerPesoSeconds" AutomationProperties.AutomationId="RulePhnPerPesoSeconds" Margin="4" TextAlignment="Right" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Tablet" VerticalAlignment="Center" />
+            <TextBox Grid.Row="3" Grid.Column="1" x:Name="RuleTabStarterMax" AutomationProperties.AutomationId="RuleTabStarterMax" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="3" Grid.Column="2" x:Name="RuleTabStarterSeconds" AutomationProperties.AutomationId="RuleTabStarterSeconds" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="3" Grid.Column="3" x:Name="RuleTabNormalizedFrom" AutomationProperties.AutomationId="RuleTabNormalizedFrom" Margin="4" TextAlignment="Right" />
+            <TextBox Grid.Row="3" Grid.Column="4" x:Name="RuleTabPerPesoSeconds" AutomationProperties.AutomationId="RuleTabPerPesoSeconds" Margin="4" TextAlignment="Right" />
+        </Grid>
+
+        <TextBlock Grid.Row="6"
+                   x:Name="StatusText"
+                   AutomationProperties.AutomationId="RateEditorStatusText"
+                   Margin="0,16,0,8"
+                   TextWrapping="Wrap"
+                   Foreground="#C62828" />
+
+        <StackPanel Grid.Row="7"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button x:Name="SaveButton"
+                    AutomationProperties.AutomationId="RateEditorSaveButton"
+                    Width="100"
+                    Margin="0,0,8,0"
+                    Click="OnSaveClicked"
+                    Content="Save" />
+            <Button x:Name="CancelButton"
+                    AutomationProperties.AutomationId="RateEditorCancelButton"
+                    Width="100"
+                    Click="OnCancelClicked"
+                    Content="Cancel" />
+        </StackPanel>
+    </Grid>
+</Window>

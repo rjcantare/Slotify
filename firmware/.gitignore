@@ -1,0 +1,17 @@
+# PlatformIO build output
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# IDE state
+.vscode/
+
+# Local secrets — copy config.example.h to config.h and fill in your values
+include/config.h
+
+# OS junk
+Thumbs.db
+.DS_Store
+
+# Editor swap
+*.swp

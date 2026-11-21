@@ -1,0 +1,99 @@
+<Window x:Class="RentalServer.TabletAppAddWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Tablet App"
+        Width="520" Height="340"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+    <Grid Margin="22">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="130" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="Name" />
+        <TextBox x:Name="DisplayNameTextBox"
+                 AutomationProperties.AutomationId="TabletAppNameTextBox"
+                 Grid.Row="0"
+                 Grid.Column="1"
+                 Margin="0,0,0,10" />
+
+        <TextBlock Grid.Row="1"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="Package" />
+        <TextBox x:Name="PackageNameTextBox"
+                 AutomationProperties.AutomationId="TabletAppPackageTextBox"
+                 Grid.Row="1"
+                 Grid.Column="1"
+                 Margin="0,0,0,10" />
+
+        <CheckBox x:Name="EnabledCheckBox"
+                  AutomationProperties.AutomationId="TabletAppEnabledCheckBox"
+                  Grid.Row="2"
+                  Grid.Column="1"
+                  Margin="0,0,0,8"
+                  IsChecked="True"
+                  Content="Show on tablet" />
+
+        <CheckBox x:Name="DeepFreezeCheckBox"
+                  AutomationProperties.AutomationId="TabletAppDeepFreezeCheckBox"
+                  Grid.Row="3"
+                  Grid.Column="1"
+                  Margin="0,0,0,8"
+                  IsChecked="True"
+                  Content="Deep freeze when time ends" />
+
+        <TextBlock Grid.Row="4"
+                   Grid.Column="0"
+                   VerticalAlignment="Center"
+                   Text="Category" />
+        <ComboBox x:Name="CategoryComboBox"
+                  AutomationProperties.AutomationId="TabletAppCategoryComboBox"
+                  Grid.Row="4"
+                  Grid.Column="1"
+                  Margin="0,0,0,10"
+                  DisplayMemberPath="DisplayName"
+                  SelectedValuePath="Value" />
+
+        <TextBlock x:Name="StatusText"
+                   AutomationProperties.AutomationId="TabletAppAddStatusText"
+                   Grid.Row="5"
+                   Grid.ColumnSpan="2"
+                   TextWrapping="Wrap"
+                   Foreground="#C62828" />
+
+        <StackPanel Grid.Row="6"
+                    Grid.ColumnSpan="2"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button x:Name="SaveButton"
+                    AutomationProperties.AutomationId="TabletAppAddSaveButton"
+                    Width="100"
+                    Margin="0,0,8,0"
+                    Click="OnSaveClicked"
+                    Content="Save" />
+            <Button x:Name="CancelButton"
+                    AutomationProperties.AutomationId="TabletAppAddCancelButton"
+                    Width="100"
+                    Click="OnCancelClicked"
+                    Content="Cancel" />
+        </StackPanel>
+    </Grid>
+</Window>

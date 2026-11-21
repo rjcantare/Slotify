@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Rental Android</string>
+    <string name="device_admin_description">Allows Rental Android to run as the shop-controlled kiosk app.</string>
+</resources>

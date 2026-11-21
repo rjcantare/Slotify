@@ -1,0 +1,53 @@
+# .NET build output
+bin/
+obj/
+artifacts/
+installer/output/
+*.user
+*.suo
+.vs/
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# Local tool settings
+.claude/
+
+# SQLite runtime database
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+
+# Runtime transaction exports
+src/RentalServer/transactions/*.csv
+
+# OS junk
+Thumbs.db
+.DS_Store
+
+# Secrets / local config
+appsettings.Local.json
+*.local.json
+
+# Installer binaries dropped into the repo (Claude Setup.exe, CH341SER.exe, etc.)
+*.exe
+
+# Transient bench/test logs (mosquitto_sub captures, mosquitto_pub error streams, etc.)
+bench-*.log
+bench-*.err.log
+
+# Reference-library archives that have been extracted alongside (keep the folder, drop the zip)
+ProjectContext/*.zip
+
+# Runtime artifact directories: OTA build outputs staged for the HTTP server,
+# and WAL-safe SQLite backups. Both are generated, large, and machine-specific.
+data/updates/
+data/backups/
+
+# Production handoff package (dist\): keep the .md guides tracked, exclude the
+# binaries. Installer .exe files are already covered by the *.exe rule above.
+dist/*.apk
+# ESP32 firmware bakes WiFi credentials — never commit the .bin.
+dist/firmware/*.bin

@@ -1,0 +1,13 @@
+# Never commit these (see SECURITY notes in README)
+*.keystore
+*.jks
+*.apk
+*.bin
+*.db
+*.db-*
+appsettings.Local.json
+*.local.json
+local.properties
+firmware/include/config.h
+.claude/
+diagnostics/

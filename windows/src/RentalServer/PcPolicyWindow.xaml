@@ -1,0 +1,110 @@
+<Window x:Class="RentalServer.PcPolicyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PC &amp; Coin Slot Policy"
+        Height="460"
+        Width="480"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock Text="PC &amp; Coin Slot Policy"
+                       FontSize="22"
+                       FontWeight="SemiBold" />
+            <TextBlock Margin="0,4,0,18"
+                       Foreground="#FF64748B"
+                       TextWrapping="Wrap"
+                       Text="Windows PC lock behavior and coin slot abuse prevention." />
+
+            <GroupBox Header="PC Lock Behavior"
+                      Padding="12"
+                      Margin="0,0,0,14">
+                <StackPanel>
+                    <CheckBox x:Name="AutoCloseEnabledCheck"
+                              Margin="0,0,0,14"
+                              FontWeight="SemiBold"
+                              Content="Auto-close apps and games when paid time ends" />
+
+                    <CheckBox x:Name="IdleShutdownEnabledCheck"
+                              Margin="0,0,0,8"
+                              FontWeight="SemiBold"
+                              Content="Auto shut down locked/no-time PCs" />
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="24,0,0,0">
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="Idle minutes:" />
+                        <TextBox x:Name="IdleMinutesBox"
+                                 Width="64"
+                                 Height="28"
+                                 Margin="8,0,8,0"
+                                 VerticalContentAlignment="Center"
+                                 Text="5" />
+                        <TextBlock VerticalAlignment="Center"
+                                   Foreground="#FF64748B"
+                                   Text="default is 5 when enabled" />
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Coin Slot Abuse"
+                      Padding="12">
+                <StackPanel>
+                    <CheckBox x:Name="AbuseEnabledCheck"
+                              Margin="0,0,0,10"
+                              FontWeight="SemiBold"
+                              Content="Block repeated empty coin windows" />
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="24,0,0,8">
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="Max empty claims:" />
+                        <TextBox x:Name="AbuseMaxBox"
+                                 Width="64"
+                                 Height="28"
+                                 Margin="8,0,8,0"
+                                 VerticalContentAlignment="Center"
+                                 Text="3" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                Margin="24,0,0,0">
+                        <TextBlock VerticalAlignment="Center"
+                                   Text="Ban minutes:" />
+                        <TextBox x:Name="AbuseBanBox"
+                                 Width="64"
+                                 Height="28"
+                                 Margin="8,0,8,0"
+                                 VerticalContentAlignment="Center"
+                                 Text="2" />
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <TextBlock x:Name="ValidationText"
+                       Margin="0,16,0,0"
+                       Foreground="#FFC62828"
+                       TextWrapping="Wrap" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button Width="86"
+                    Height="32"
+                    Margin="0,0,8,0"
+                    Click="OnCancelClicked"
+                    Content="Cancel" />
+            <Button Width="96"
+                    Height="32"
+                    FontWeight="SemiBold"
+                    Click="OnSaveClicked"
+                    Content="Save" />
+        </StackPanel>
+    </Grid>
+</Window>

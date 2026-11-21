@@ -1,0 +1,60 @@
+<Window x:Class="RentalClient.Windows.AdminModeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Admin Mode"
+        Width="360" Height="220"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Topmost="True"
+        ShowInTaskbar="False"
+        Background="#FF1A1A2E"
+        Foreground="White">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="#FFEC4899"
+                   Text="Admin Mode" />
+
+        <StackPanel Grid.Row="1"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+            <Border x:Name="UpdateBadge"
+                    Padding="14,10"
+                    CornerRadius="6"
+                    Background="#1976D2"
+                    Cursor="Hand"
+                    Visibility="Collapsed"
+                    ToolTip=""
+                    MouseLeftButtonUp="OnUpdateBadgeClicked"
+                    AutomationProperties.AutomationId="AdminUpdateBadge">
+                <TextBlock x:Name="UpdateBadgeText"
+                           Foreground="White"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Text="" />
+            </Border>
+            <TextBlock x:Name="NoUpdateText"
+                       FontSize="14"
+                       Foreground="#8899AA"
+                       Text="Client is up to date." />
+        </StackPanel>
+
+        <Button Grid.Row="2"
+                Content="Return to Lock"
+                FontSize="14"
+                FontWeight="SemiBold"
+                Padding="16,10"
+                Background="#FFBE185D"
+                Foreground="White"
+                BorderThickness="0"
+                Cursor="Hand"
+                Click="OnReturnToLockClicked" />
+    </Grid>
+</Window>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- android:testOnly="true" was added in S24 so that future debug-build
+         Device Owner installs could be removed without a factory reset.
+         Temporarily disabled here for the S25a first-install pass: Xiaomi
+         HyperOS rejects testOnly APKs through the File Manager sideload path
+         ("package appears to be invalid"), and the "Install via USB" toggle
+         that would allow `adb install -t` requires a Xiaomi account, which
+         conflicts with Device Owner provisioning. Re-enable once a
+         non-Xiaomi update path is available, or rely on factory-reset
+         between sub-slices.
+    -->
+    <!-- <application android:testOnly="true" /> -->
+
+</manifest>

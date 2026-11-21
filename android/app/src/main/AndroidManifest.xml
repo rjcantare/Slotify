@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- MQTT to local Mosquitto. ACCESS_NETWORK_STATE lets the client surface
+         "no LAN" diagnostics later (S25b reconnect) without re-prompting. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!-- S28: persistent ongoing notification with countdown + Add Time / Clear Time
+         actions for the customer to see and interact with their session while
+         using the tablet outside the rental app. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SYSTEM_EXEMPTED" />
+
+    <!-- OTA install. Primary path is a silent Device Owner PackageInstaller
+         session (see ota/OtaInstaller.kt) which needs no user confirmation and
+         bypasses the HyperOS File Manager sideload that rejects APKs with
+         "package appears to be invalid". This permission backs the non-Device-
+         Owner fallback, where the system package installer shows a confirm
+         dialog (and HyperOS may also require "Install unknown apps" in Settings). -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+    <!-- Customer-user mode: self-launch MainActivity when a fresh customer user
+         boots (after the owner switches into it), so the rental app can claim
+         Home and avoid the Android Home-app resolver. See UserBootReceiver. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <!-- S37: Android 11+ package visibility hides other apps from package
+         lookups unless declared here. The tablet launcher needs to discover
+         installed launchable apps so server-whitelisted packages can render
+         tiles and open correctly. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+
+    <application
+        android:name=".RentalAndroidApplication"
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/AppTheme"
+        android:label="@string/app_name"
+        android:allowBackup="false"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:resizeableActivity="false"
+        android:supportsRtl="true">
+
+        <receiver
+            android:name=".RentalDeviceAdminReceiver"
+            android:description="@string/device_admin_description"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin_receiver" />
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".KioskDevReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.rentalsystem.android.action.EXIT_KIOSK" />
+                <action android:name="com.rentalsystem.android.action.ENTER_KIOSK" />
+                <action android:name="com.rentalsystem.android.action.FRESH_USER_EXPERIMENT_STATUS" />
+                <action android:name="com.rentalsystem.android.action.FRESH_USER_EXPERIMENT_CREATE" />
+                <action android:name="com.rentalsystem.android.action.FRESH_USER_EXPERIMENT_REMOVE" />
+                <action android:name="com.rentalsystem.android.action.FRESH_USER_EXPERIMENT_SWITCH" />
+                <action android:name="com.rentalsystem.android.action.FRESH_USER_EXPERIMENT_INSTALL_EXISTING" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Self-launches MainActivity on a customer user's BOOT_COMPLETED so the
+             rental app claims Home and the Home resolver never shows. No-op in
+             the owner user and when customer-user mode is off. -->
+        <receiver
+            android:name=".UserBootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- S28: handles taps on the persistent session notification's
+             action buttons. exported=false because we send the PendingIntents
+             ourselves with our own package — no cross-app routing needed. -->
+        <receiver
+            android:name=".notifications.SessionNotificationActionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.rentalsystem.android.action.NOTIFICATION_ADD_TIME" />
+                <action android:name="com.rentalsystem.android.action.NOTIFICATION_CLEAR_TIME" />
+            </intent-filter>
+        </receiver>
+
+        <!-- S31 bench fix: keep the active-session notification owned by a
+             foreground service so Recents removal does not freeze the visible
+             countdown. systemExempted is allowed because this app is the
+             Device Owner DPC for the rental tablet. -->
+        <service
+            android:name=".notifications.SessionNotificationService"
+            android:exported="false"
+            android:foregroundServiceType="systemExempted" />
+
+        <!-- S50b OTA: expose the downloaded APK to the system package
+             installer via content:// URI. ACTION_VIEW with a file:// URI is
+             blocked on Android 7+, so we hand the installer a content URI it
+             can read via this FileProvider declaration. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
+
+        <activity
+            android:name=".MainActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:resizeableActivity="false"
+            android:supportsPictureInPicture="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- S27: HOME intent-filter lives on an alias so KioskController can
+             toggle it at runtime via PackageManager.setComponentEnabledSetting.
+             When the customer's session is active, we DISABLE the alias so
+             pressing Home routes to the system launcher instead of returning
+             to the rental app. When the session is locked, we re-ENABLE it
+             alongside setPersistentPreferredActivity so Home pins to the
+             rental app and the kiosk wins. -->
+        <activity-alias
+            android:name=".HomeAlias"
+            android:targetActivity=".MainActivity"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity-alias>
+
+    </application>
+
+</manifest>
