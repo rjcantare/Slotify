@@ -113,6 +113,16 @@ section.alt{background:var(--surface-2)}
 .card p{color:var(--muted);margin:0;font-size:.95rem}
 @media (max-width:860px){.grid{grid-template-columns:1fr 1fr}}
 @media (max-width:520px){.grid{grid-template-columns:1fr}}
+.tools-head{margin:40px 0 14px}
+.tools-head h3{margin:0 0 4px}
+.tools-head p{margin:0}
+.tools-head a{color:var(--text)}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tools>div{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:12px;padding:14px 16px}
+.tools b{display:block;margin-bottom:2px}
+.tools span{color:var(--muted);font-size:.9rem}
+@media (max-width:860px){.tools{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.tools{grid-template-columns:1fr}}
 
 /* anti-daya */
 .split{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
@@ -361,6 +371,20 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
       </figure>
     </div>
     <div class="vid-shop figure">
+      <video controls playsinline preload="metadata" poster="videos/reel-short.jpg" width="720" height="1280">
+        <source src="videos/reel-short.mp4" type="video/mp4">
+      </video>
+      <div>
+        <h3>The short version <span class="dur">1:17</span></h3>
+        <p class="muted">The highlights in a vertical video for phones and Facebook Reels. Feel free to share it in your pisonet groups.</p>
+        <ul class="checks">
+          <li><div><b>Insert Coin on a PC</b><span>Tap, drop the coin, play. Then Add Time while playing, and Clear Time to lock.</span></div></li>
+          <li><div><b>Insert Coin on a tablet</b><span>The same coin box, with the ₱7 / ₱10 / ₱20 prices.</span></div></li>
+          <li><div><b>Control from the counter</b><span>Transfer time, clear a session and shut PCs down from the server.</span></div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="vid-shop figure">
       <video controls playsinline preload="metadata" poster="videos/shop-floor.jpg" width="464" height="848">
         <source src="videos/shop-floor.mp4" type="video/mp4">
       </video>
@@ -385,7 +409,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
     </div>
     <div class="grid">
       <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M9.5 10.5h4a1.5 1.5 0 010 3h-3"/></svg></div>
-        <h3>One coinslot, every unit</h3><p>A single central coin box serves all PCs and tablets. Fewer coin acceptors to buy, wire and fix.</p></div>
+        <h3>One coinslot, every unit</h3><p>A single central coin box serves all PCs, tablets and phones. Fewer coin acceptors to buy, wire and fix.</p></div>
       <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
         <h3>One server screen</h3><p>See every station, its status and remaining time. Add, remove or transfer time from the counter.</p></div>
       <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
@@ -396,6 +420,24 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
         <h3>Sales log you can trust</h3><p>Every coin, admin credit and price change is recorded in a tamper-evident log, with CSV export.</p></div>
       <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0114 0M8 15.5a6 6 0 018 0"/><circle cx="12" cy="19" r="1"/></svg></div>
         <h3>No internet needed</h3><p>Runs on your shop network only. PCs and the coin box find the server by themselves.</p></div>
+    </div>
+    <div class="tools-head">
+      <h3>Every tool on the server screen</h3>
+      <p class="muted">All of these are in the <a href="#demo">server video</a>, button by button.</p>
+    </div>
+    <div class="tools">
+      <div><b>Coin History</b><span>Every coin by day and station, with the day's total.</span></div>
+      <div><b>Transactions</b><span>The full log, filtered by date, type and station. Export to CSV.</span></div>
+      <div><b>Edit Rates</b><span>Starting and add-time prices, set separately for PCs, phones and tablets.</span></div>
+      <div><b>Add, Remove &amp; Clear Time</b><span>+30 min, +1 hr, +2 hr or any amount, per station. Removing or clearing asks first.</span></div>
+      <div><b>Transfer Time</b><span>Move a customer's remaining time to another PC or tablet.</span></div>
+      <div><b>Remote control</b><span>Restart the client, reboot or shut down a PC, or shut down every idle PC at once.</span></div>
+      <div><b>PC &amp; Coin Slot Policy</b><span>Auto-close apps and games when paid time ends, auto shut down idle locked PCs, and block anyone who keeps opening the slot without paying.</span></div>
+      <div><b>System Health</b><span>Live status of the coin acceptor, database and every station, with a diagnostics export.</span></div>
+      <div><b>Tablet Apps</b><span>Pick the apps customers can open. Apps marked Deep Freeze are wiped clean when the session ends.</span></div>
+      <div><b>Tablet Admin</b><span>Set the tablets' admin password from the counter.</span></div>
+      <div><b>Coinslot light</b><span>Turn the coin box's LED frame off or on from the server.</span></div>
+      <div><b>Backups &amp; Updates</b><span>Back up the database in one click, open the backups folder, and check for updates.</span></div>
     </div>
   </div>
 </section>
