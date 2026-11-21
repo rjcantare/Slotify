@@ -79,7 +79,11 @@ jobs:
         run: |
           if (-not $env:KEYSTORE_BASE64) { throw "Secret SLOTIFY_KEYSTORE_BASE64 is missing. See the top of .github/workflows/release.yml." }
           $path = Join-Path $env:RUNNER_TEMP "slotify-release.jks"
-          [IO.File]::WriteAllBytes($path, [Convert]::FromBase64String($env:KEYSTORE_BASE64.Trim()))
+          $b64 = $env:KEYSTORE_BASE64 -replace '\s', ''   # tolerate line breaks/spaces from pasting
+          try { $bytes = [Convert]::FromBase64String($b64) }
+          catch { throw "SLOTIFY_KEYSTORE_BASE64 is not valid base64 (pasted length: $($b64.Length) characters). Copy the keystore again with the command in the setup instructions and re-save the secret." }
+          [IO.File]::WriteAllBytes($path, $bytes)
+          "Signing key restored ($($bytes.Length) bytes)."
           "SLOTIFY_KEYSTORE=$path" >> $env:GITHUB_ENV
 
       - name: Build all release files
