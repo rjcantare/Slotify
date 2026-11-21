@@ -1,25 +1,29 @@
 # Builds every public release file for one Slotify version into release\v<Version>\:
 #   RentalSystem-Server-Setup.exe, RentalSystem-Client-Setup.exe,
 #   RentalSystem-Tablet.apk, coin-box-merged.bin, SHA256SUMS.txt
+# plus the in-place update files the shop server's Update button uses:
+#   RentalServer.exe, RentalClient.Windows.exe (single-file), update.json
 #
 # Needs: .NET 8 SDK, Inno Setup 6, PlatformIO, Android SDK + JDK 17/21.
 #
 #   powershell -ExecutionPolicy Bypass -File scripts\build-release.ps1 -Version 1.3.0
 #
-# The tablet APK must be signed with YOUR private keystore (never commit it):
-#   keytool -genkeypair -v -keystore C:\keys\slotify-release.jks -alias slotify -keyalg RSA -keysize 2048 -validity 10000
-#   $env:SLOTIFY_KEYSTORE          = "C:\keys\slotify-release.jks"
-#   $env:SLOTIFY_KEY_ALIAS         = "slotify"
+# The tablet APK must be signed with the project's private keystore (never commit it):
+#   $env:SLOTIFY_KEYSTORE          = "<path to the .jks>"
+#   $env:SLOTIFY_KEY_ALIAS         = "<alias>"
 #   $env:SLOTIFY_KEYSTORE_PASSWORD = "<store password>"
 #   $env:SLOTIFY_KEY_PASSWORD      = "<key password>"
-# Every future APK update has to be signed with the same key, or tablets refuse it.
+# Every APK update has to be signed with the same key as the installed app, or
+# Android refuses it. Forks must use their own key.
 
 param(
     [Parameter(Mandatory = $true)][string]$Version,
     [switch]$SkipFirmware,
     [switch]$SkipWindows,
     [switch]$SkipAndroid,
-    [switch]$SkipTests
+    [switch]$SkipTests,
+    # GitHub repo whose release hosts the files; update.json links point there.
+    [string]$Repo = "rjcantare/Slotify"
 )
 
 $ErrorActionPreference = "Stop"
@@ -127,6 +131,18 @@ if (-not $SkipWindows) {
     foreach ($n in "RentalSystem-Server-Setup.exe", "RentalSystem-Client-Setup.exe") {
         Copy-Item (Join-Path $win "installer\output\$n") (Join-Path $out $n) -Force
     }
+
+    # In-place update EXEs: one self-contained file each (native DLLs bundled),
+    # the same shape the Update button has always downloaded.
+    foreach ($app in @(@{ Proj = "src\RentalServer\RentalServer.csproj"; Exe = "RentalServer.exe"; Dir = "server" },
+                       @{ Proj = "src\RentalClient.Windows\RentalClient.Windows.csproj"; Exe = "RentalClient.Windows.exe"; Dir = "client" })) {
+        $otaDir = Join-Path $win "artifacts\ota\$($app.Dir)"
+        if (Test-Path $otaDir) { Remove-Item $otaDir -Recurse -Force }
+        Invoke-Checked "dotnet" @("publish", (Join-Path $win $app.Proj), "-c", "Release", "-r", "win-x64", "--self-contained", "true",
+            "-p:PublishSingleFile=true", "-p:EnableCompressionInSingleFile=true", "-p:IncludeNativeLibrariesForSelfExtract=true",
+            "-p:Version=$Version", "-o", $otaDir) $win
+        Copy-Item (Join-Path $otaDir $app.Exe) (Join-Path $out $app.Exe) -Force
+    }
 }
 
 # ----------------------------------------------------------------- android --
@@ -141,6 +157,28 @@ if (-not $SkipAndroid) {
     }
     Invoke-Checked "$and\gradlew.bat" @("--no-daemon", ":app:assembleDebug", "-PversionName=$Version", "-PversionCode=$versionCode") $and
     Copy-Item "$and\app\build\outputs\apk\debug\app-debug.apk" (Join-Path $out "RentalSystem-Tablet.apk") -Force
+}
+
+# ------------------------------------------------------------- update.json --
+# Manifest for the shop server's Update button. Only written when all three
+# apps were built, so it can never point at a file this release doesn't have.
+if (-not $SkipWindows -and -not $SkipAndroid) {
+    $commit = (& git -C $root rev-parse --short=12 HEAD).Trim()
+    $base = "https://github.com/$Repo/releases/download/v$Version"
+    function New-Section([string]$File) {
+        $p = Join-Path $out $File
+        return [ordered]@{ version = $Version; url = "$base/$File"; sha256 = (Get-FileHash $p -Algorithm SHA256).Hash.ToLowerInvariant();
+                           sizeBytes = (Get-Item $p).Length; sourceCommit = $commit }
+    }
+    $manifest = [ordered]@{
+        version     = $Version
+        publishedAt = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+        server      = (New-Section "RentalServer.exe")
+        client      = (New-Section "RentalClient.Windows.exe")
+        android     = (New-Section "RentalSystem-Tablet.apk")
+    }
+    # UTF-8 without BOM: a BOM breaks the JSON readers on the server and tablets.
+    [System.IO.File]::WriteAllText((Join-Path $out "update.json"), ($manifest | ConvertTo-Json -Depth 5) + "`n", (New-Object System.Text.UTF8Encoding($false)))
 }
 
 # ------------------------------------------------------------------ hashes --

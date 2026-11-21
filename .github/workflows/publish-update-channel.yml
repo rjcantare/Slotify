@@ -1,0 +1,86 @@
+# When a Slotify release is PUBLISHED, copy its update.json into
+# rjcantare/slotify-releases. That file is what every shop server's
+# "Check for Updates" reads (see windows/src/RentalServer/OnlineUpdatePoller.cs),
+# so publishing a release here is what offers it to existing shops.
+#
+# Needs one repository secret:
+#   SLOTIFY_RELEASES_TOKEN  a fine-grained personal access token with
+#                           Contents: Read and write on rjcantare/slotify-releases only.
+#
+# Can also be re-run by hand: Actions -> Publish update channel -> Run workflow -> tag (e.g. v1.3.1).
+
+name: Publish update channel
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to publish to the update channel (e.g. v1.3.1)"
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-channel
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Work out the tag
+        id: tag
+        run: |
+          tag="${{ github.event.release.tag_name || inputs.tag }}"
+          [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "::error::Bad tag '$tag'"; exit 1; }
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Download update.json and the files it points to
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir dl && cd dl
+          gh release download "${{ steps.tag.outputs.tag }}" -R "${{ github.repository }}" -p update.json
+          v=$(jq -r .version update.json)
+          [ "$v" = "${{ steps.tag.outputs.version }}" ] || { echo "::error::update.json says $v, release is ${{ steps.tag.outputs.tag }}"; exit 1; }
+          # Every link must be public and match its checksum before shops are pointed at it.
+          for part in server client android; do
+            url=$(jq -r ".$part.url" update.json); want=$(jq -r ".$part.sha256" update.json)
+            curl -fsSL "$url" -o "$part.bin"
+            got=$(sha256sum "$part.bin" | cut -d' ' -f1)
+            [ "$got" = "$want" ] || { echo "::error::$part checksum mismatch ($url)"; exit 1; }
+            echo "$part OK  $url"
+          done
+
+      - name: Check the token is set
+        env:
+          T: ${{ secrets.SLOTIFY_RELEASES_TOKEN }}
+        run: '[ -n "$T" ] || { echo "::error::Secret SLOTIFY_RELEASES_TOKEN is missing. See the top of this workflow file."; exit 1; }'
+
+      - name: Check out slotify-releases
+        uses: actions/checkout@v4
+        with:
+          repository: rjcantare/slotify-releases
+          token: ${{ secrets.SLOTIFY_RELEASES_TOKEN }}
+          path: channel
+
+      - name: Refuse to go backwards, then publish
+        run: |
+          new="${{ steps.tag.outputs.version }}"
+          cur=$(jq -r '.version // "0.0.0"' channel/update.json 2>/dev/null || echo 0.0.0)
+          if [ "$(printf '%s\n%s\n' "$cur" "$new" | sort -V | tail -1)" != "$new" ] || [ "$cur" = "$new" ]; then
+            echo "::error::Update channel is already at $cur; refusing to publish $new."; exit 1
+          fi
+          cp dl/update.json channel/update.json
+          cd channel
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add update.json
+          git commit -m "Publish v$new from ${{ github.repository }}"
+          git push
+          echo "Update channel now at v$new"

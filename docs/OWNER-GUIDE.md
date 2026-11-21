@@ -346,16 +346,20 @@ unless you factory reset the tablet.
 
 ## 10. File checksums (SHA-256)
 
-Check a file in PowerShell with `Get-FileHash .\<file>`.
+Every release includes a `SHA256SUMS.txt` file listing the checksum of each file.
+To check a download, run this in PowerShell, in the folder you saved it to:
 
-Values for **v1.3.0**. Every release also includes a `SHA256SUMS.txt` file with them.
+```
+Get-FileHash .\RentalSystem-Server-Setup.exe
+```
 
-| File | SHA-256 |
-|------|---------|
-| `RentalSystem-Server-Setup.exe` | `465543c673435b9761b7b300896311e8b290399217e1a060ed5ab70551284efd` |
-| `RentalSystem-Client-Setup.exe` | `46b02f33a299f8cdfdbc5a9577f24bfd26ade386d5330a4e33d1e6f76a3cea74` |
-| `RentalSystem-Tablet.apk` | `b088a286d6e209de7486e02ada9ef18c200b67b3dfa2baf24ef3a6b892b60431` |
-| `coin-box-merged.bin` | `4759a3cd7ef2d53ddee2dadca54a9df8392047d675e44e8ebfa0bab2446e0d8b` |
+The `Hash` it prints must match that file's line in `SHA256SUMS.txt` (the case of the letters doesn't matter).
+
+## 10.1 Updating
+
+When a new version is published, the server's **Updates** button shows it,
+and the PCs and tablets show an update badge. Updates install in place, so you
+don't need to reinstall anything. The coin box firmware is updated by USB (§3).
 
 ---
 
