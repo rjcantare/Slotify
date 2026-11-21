@@ -1,5 +1,7 @@
 #define AppName "RentalSystem Server"
-#define AppVersion "1.2.2"
+#ifndef AppVersion
+  #define AppVersion "1.2.2"
+#endif
 #define Publisher "RentalSystem"
 #define ExeName "RentalServer.exe"
 

@@ -1,5 +1,7 @@
 param(
-    [string]$Configuration = "Release"
+    [string]$Configuration = "Release",
+    # Optional release version. Stamps the EXE (-p:Version) and the installer (/DAppVersion).
+    [string]$Version = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -27,7 +29,7 @@ function Invoke-NativeChecked {
 # on a clean machine with DllNotFoundException.
 if (Test-Path $publishDir) { Remove-Item $publishDir -Recurse -Force }
 
-Invoke-NativeChecked "dotnet" @(
+$publishArgs = @(
     "publish",
     $project,
     "-c",
@@ -41,6 +43,8 @@ Invoke-NativeChecked "dotnet" @(
     "-o",
     $publishDir
 )
+if ($Version) { $publishArgs += "-p:Version=$Version" }
+Invoke-NativeChecked "dotnet" $publishArgs
 
 $iscc = Get-Command iscc.exe -ErrorAction SilentlyContinue
 $isccPath = $null
@@ -67,4 +71,6 @@ if ([string]::IsNullOrWhiteSpace($isccPath)) {
     throw "Inno Setup compiler not found. Install Inno Setup 6, then rerun installer\build-client.ps1."
 }
 
-Invoke-NativeChecked $isccPath @($iss)
+$isccArgs = @()
+if ($Version) { $isccArgs += "/DAppVersion=$Version" }
+Invoke-NativeChecked $isccPath ($isccArgs + @($iss))

@@ -1,5 +1,7 @@
 #define AppName "RentalSystem Client"
-#define AppVersion "1.2.0"
+#ifndef AppVersion
+  #define AppVersion "1.2.0"
+#endif
 #define Publisher "RentalSystem"
 #define ExeName "RentalClient.Windows.exe"
 

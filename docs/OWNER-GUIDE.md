@@ -187,7 +187,7 @@ The firmware timing is tuned for SLOW. FAST or MEDIUM will miscount coins.
 ### Connect it to the shop Wi-Fi
 
 1. The box creates its own hotspot, **`Slotify-CoinBox-XXXX`**.
-2. Connect a phone to it. The setup page opens (if not, go to `192.168.4.1`).
+2. Connect a phone to it. The hotspot password is **`slotify-setup`**. The setup page opens (if not, go to `192.168.4.1`).
 3. Choose the shop Wi-Fi, enter the password, and save.
 4. The box finds the server by itself and shows as **`coin-01` online** on
    the server.

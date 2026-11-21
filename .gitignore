@@ -11,3 +11,5 @@ local.properties
 firmware/include/config.h
 .claude/
 diagnostics/
+release/
+*.release-backup
