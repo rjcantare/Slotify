@@ -81,18 +81,27 @@ if (-not $SkipFirmware) {
 
         $build = Join-Path $fw ".pio\build\esp32dev"
         $bootApp0 = Join-Path $pioHome "packages\framework-arduinoespressif32\tools\partitions\boot_app0.bin"
-        # PlatformIO's own Python has esptool's dependencies; a system Python may not.
-        $python = if (Test-Path "$pioHome\penv\Scripts\python.exe") { "$pioHome\penv\Scripts\python.exe" } else { Find-Tool "python" @() }
-        $esptool = Join-Path $pioHome "packages\tool-esptoolpy\esptool.py"
-        foreach ($f in @("$build\bootloader.bin", "$build\partitions.bin", "$build\firmware.bin", $bootApp0, $esptool)) {
+        foreach ($f in @("$build\bootloader.bin", "$build\partitions.bin", "$build\firmware.bin", $bootApp0)) {
             if (-not (Test-Path $f)) { throw "Missing $f after the PlatformIO build." }
         }
+        # esptool: a pip-installed one (CI: pip install "esptool<5") or PlatformIO's bundled copy
+        # run with PlatformIO's own Python, which has esptool's dependencies.
+        $python = Find-Tool "python" @()
+        $esptoolCmd = $null
+        if ($python) {
+            # try/catch: Windows PowerShell turns native stderr into a terminating error under "Stop".
+            try { & $python -c "import esptool" 2>$null; if ($LASTEXITCODE -eq 0) { $esptoolCmd = @($python, "-m", "esptool") } } catch { }
+        }
+        if (-not $esptoolCmd -and (Test-Path "$pioHome\penv\Scripts\python.exe") -and (Test-Path "$pioHome\packages\tool-esptoolpy\esptool.py")) {
+            $esptoolCmd = @("$pioHome\penv\Scripts\python.exe", "$pioHome\packages\tool-esptoolpy\esptool.py")
+        }
+        if (-not $esptoolCmd) { throw "esptool not found. Run: pip install `"esptool<5`"" }
         $merged = Join-Path $out "coin-box-merged.bin"
         # One image flashable at 0x0 from the browser flasher.
-        Invoke-Checked $python @($esptool, "--chip", "esp32", "merge_bin", "-o", $merged,
+        Invoke-Checked $esptoolCmd[0] (@($esptoolCmd | Select-Object -Skip 1) + @("--chip", "esp32", "merge_bin", "-o", $merged,
             "--flash_mode", "dio", "--flash_size", "4MB",
             "0x1000", "$build\bootloader.bin", "0x8000", "$build\partitions.bin",
-            "0xe000", $bootApp0, "0x10000", "$build\firmware.bin") $fw
+            "0xe000", $bootApp0, "0x10000", "$build\firmware.bin")) $fw
 
         # Refuse to ship if a private password slipped into the image.
         $bytes = [System.IO.File]::ReadAllBytes($merged)

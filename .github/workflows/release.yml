@@ -1,0 +1,117 @@
+# Builds every Slotify release file on GitHub's Windows servers and attaches
+# them to a DRAFT GitHub Release. Review the draft, then click "Publish".
+#
+# Start it either way:
+#   - Actions tab -> "Release" -> Run workflow -> enter a version (e.g. 1.3.0)
+#   - or push a tag:  git tag v1.3.0 && git push origin v1.3.0
+#
+# Repository secrets it needs (Settings -> Secrets and variables -> Actions):
+#   SLOTIFY_KEYSTORE_BASE64    the .jks file, base64-encoded
+#   SLOTIFY_KEYSTORE_PASSWORD  the keystore password
+#   SLOTIFY_KEY_PASSWORD       the key password (same as above unless you set a different one)
+#   SLOTIFY_KEY_ALIAS          optional, defaults to "slotify"
+
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to build, without the v (e.g. 1.3.0)"
+        required: true
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Work out the version
+        id: ver
+        run: |
+          $v = if ("${{ github.event_name }}" -eq "workflow_dispatch") { "${{ inputs.version }}" } else { "${{ github.ref_name }}".TrimStart("v") }
+          $v = $v.Trim().TrimStart("v")
+          if ($v -notmatch '^\d+\.\d+\.\d+$') { throw "Bad version '$v'. Use the form 1.3.0." }
+          "version=$v" >> $env:GITHUB_OUTPUT
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PlatformIO, esptool and Inno Setup
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install platformio "esptool<5"
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) { choco install innosetup -y --no-progress }
+
+      - name: Cache PlatformIO packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.platformio
+          key: pio-${{ runner.os }}-${{ hashFiles('firmware/platformio.ini') }}
+
+      - name: Restore the APK signing key
+        env:
+          KEYSTORE_BASE64: ${{ secrets.SLOTIFY_KEYSTORE_BASE64 }}
+        run: |
+          if (-not $env:KEYSTORE_BASE64) { throw "Secret SLOTIFY_KEYSTORE_BASE64 is missing. See the top of .github/workflows/release.yml." }
+          $path = Join-Path $env:RUNNER_TEMP "slotify-release.jks"
+          [IO.File]::WriteAllBytes($path, [Convert]::FromBase64String($env:KEYSTORE_BASE64.Trim()))
+          "SLOTIFY_KEYSTORE=$path" >> $env:GITHUB_ENV
+
+      - name: Build all release files
+        env:
+          SLOTIFY_KEYSTORE_PASSWORD: ${{ secrets.SLOTIFY_KEYSTORE_PASSWORD }}
+          SLOTIFY_KEY_PASSWORD: ${{ secrets.SLOTIFY_KEY_PASSWORD }}
+          SLOTIFY_KEY_ALIAS: ${{ secrets.SLOTIFY_KEY_ALIAS || 'slotify' }}
+        run: ./scripts/build-release.ps1 -Version "${{ steps.ver.outputs.version }}"
+
+      - name: Delete the signing key from the runner
+        if: always()
+        run: Remove-Item (Join-Path $env:RUNNER_TEMP "slotify-release.jks") -Force -ErrorAction SilentlyContinue
+
+      - name: Upload files as a workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: slotify-v${{ steps.ver.outputs.version }}
+          path: release/v${{ steps.ver.outputs.version }}/*
+
+      - name: Create or update the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $v = "${{ steps.ver.outputs.version }}"
+          $tag = "v$v"
+          $files = Get-ChildItem "release/$tag" -File | ForEach-Object FullName
+          $notes = "release-notes/$tag.md"
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag @files --clobber
+          } else {
+            $noteArgs = if (Test-Path $notes) { @("--notes-file", $notes) } else { @("--generate-notes") }
+            gh release create $tag @files --draft --title "Slotify $tag" --target "${{ github.sha }}" @noteArgs
+          }
+          if ($LASTEXITCODE -ne 0) { throw "gh release failed." }
