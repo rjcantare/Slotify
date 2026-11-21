@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Slotify: Free Centralized Coinslot</title>
-<meta name="description" content="Free, open-source centralized coinslot system for Windows pisonet and rental shops. One coin box for the whole shop. PCs and Android tablets. Tested on iCafe8 diskless.">
-<meta property="og:title" content="Slotify: Free, open-source centralized coinslot">
-<meta property="og:description" content="One coin box for the whole shop. Windows PCs and Android tablets. No license, no monthly fee.">
+<meta name="description" content="Free, open-source all-in-one timer and centralized coinslot for Windows pisonet and rental shops. One coin box for Windows PCs, Android tablets and phones. No license, no monthly fee, no catch. Tested on iCafe8 diskless.">
+<meta property="og:title" content="Slotify: Free, open-source all-in-one timer + coinslot">
+<meta property="og:description" content="One coin box for the whole shop: Windows PCs, Android tablets and phones. No license, no monthly fee, no catch.">
 <meta property="og:image" content="assets/server.png">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -131,7 +131,8 @@ figure{margin:0}
 .vids{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media (max-width:760px){.vids{grid-template-columns:1fr}}
 video{display:block;width:100%;height:auto;border-radius:8px;background:#000}
-.vids figcaption b{color:var(--text)}
+.vids figcaption b,.vid-tour figcaption b{color:var(--text)}
+.vid-tour{margin-bottom:16px}
 .dur{font-size:.78rem;font-weight:700;color:var(--muted);background:var(--surface-2);padding:1px 8px;border-radius:999px;margin-left:4px;vertical-align:1px}
 .vid-shop{margin-top:16px;display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:28px;align-items:center;padding:16px}
 .vid-shop video{max-height:540px;width:100%;object-fit:contain}
@@ -156,6 +157,14 @@ video{display:block;width:100%;height:auto;border-radius:8px;background:#000}
 .parts th,.parts td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 .parts th{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
 .parts td:first-child{font-weight:600;white-space:nowrap}
+.pcb{margin-top:24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:28px;align-items:center;padding:16px}
+.pcb img{width:100%;height:auto;border-radius:8px}
+.pcb h3{margin:0 0 8px}
+.pcb .checks{margin:16px 0}
+.pcb-dl{display:flex;flex-wrap:wrap;gap:10px;margin:0}
+.pcb-note{font-size:.85rem;margin:12px 0 0}
+.pcb-note a,details p a{color:var(--text)}
+@media (max-width:760px){.pcb{grid-template-columns:1fr}}
 .table-wrap{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow-x:auto;box-shadow:var(--shadow)}
 
 /* get started */
@@ -205,14 +214,16 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
     <div>
       <div class="eyebrow" style="color:var(--gold)">Free · Open source · GPL-3.0</div>
       <h1>One coinslot for the <em>whole shop.</em></h1>
-      <p class="lead">Slotify is a free, open-source centralized coinslot system for Windows pisonet and rental shops. Customers tap <b>Insert Coin</b> on their PC or tablet, drop the coin at the counter, and the time goes to their unit.</p>
-      <p class="tag"><b>Libre.</b> Walang license, walang monthly, walang activation.</p>
+      <p class="lead">Slotify is a free, open-source <b>all-in-one timer and coinslot</b> for Windows pisonet and rental shops. One coin box at the counter runs your Windows PCs, Android tablets and phones: customers tap <b>Insert Coin</b>, drop the coin, and the time goes straight to their PC, tablet or phone.</p>
+      <p class="tag"><b>Libre.</b> Walang license, walang monthly, walang activation. Walang catch.</p>
       <div class="cta">
         <a class="btn btn-gold" href="https://github.com/rjcantare/Slotify/releases/latest">Download</a>
         <a class="btn btn-ghost" href="https://github.com/rjcantare/Slotify/blob/main/docs/OWNER-GUIDE.md">Setup &amp; wiring guide</a>
+        <a class="btn btn-ghost" href="https://github.com/rjcantare/Slotify">★ Star on GitHub</a>
       </div>
       <div class="chips">
         <span class="chip"><b>Tested:</b> 12-PC iCafe8 diskless shop</span>
+        <span class="chip">PCs, tablets &amp; phones</span>
         <span class="chip">Windows 10/11</span>
         <span class="chip">Android 8.0+</span>
         <span class="chip">No internet needed</span>
@@ -303,20 +314,50 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
     <div class="sec-head">
       <div class="eyebrow">See it working</div>
       <h2>Filmed in our shop, not a mock-up.</h2>
-      <p class="muted">Real PCs, real coins, the real coin box. Tap a video to play it with sound.</p>
+      <p class="muted">Real PCs, real coins, the real coin box. Every angle of a scene plays side by side with the server screen, narrated in Taglish with on-screen captions. Tap a video to play it with sound.</p>
     </div>
+    <figure class="figure vid-tour">
+      <video controls playsinline preload="metadata" poster="videos/full-tour.jpg" width="1280" height="720">
+        <source src="videos/full-tour.mp4" type="video/mp4">
+      </video>
+      <figcaption><b>The full tour</b> <span class="dur">3:50</span><br>Every scene below in one video: coins on a PC and a tablet, the server's controls, tablet admin access, the inside of the coin box and our shop.</figcaption>
+    </figure>
     <div class="vids">
       <figure class="figure">
-        <video controls playsinline preload="metadata" poster="videos/insert-coin.jpg" width="1280" height="720">
-          <source src="videos/insert-coin.mp4" type="video/mp4">
+        <video controls playsinline preload="metadata" poster="videos/insert-coin-pc.jpg" width="1280" height="720">
+          <source src="videos/insert-coin-pc.mp4" type="video/mp4">
         </video>
-        <figcaption><b>Insert Coin</b> <span class="dur">0:54</span><br>The customer taps Insert Coin on PC 02. The coin box lights up, the coins go in, and the PC unlocks with the time.</figcaption>
+        <figcaption><b>Insert Coin on a PC</b> <span class="dur">1:03</span><br>The customer taps Insert Coin, the coinslot lights up and the time shows on the PC and the server as the coins go in. Then Add Time from the timer while playing, and Clear Time to lock the PC.</figcaption>
       </figure>
       <figure class="figure">
-        <video controls playsinline preload="metadata" poster="videos/add-time.jpg" width="1280" height="720">
-          <source src="videos/add-time.mp4" type="video/mp4">
+        <video controls playsinline preload="metadata" poster="videos/insert-coin-tablet.jpg" width="1280" height="720">
+          <source src="videos/insert-coin-tablet.mp4" type="video/mp4">
         </video>
-        <figcaption><b>Add time &amp; clear time</b> <span class="dur">0:58</span><br>Adding ₱20 (+2 hours) to a running session from the timer, then Clear Time to end it and lock the PC.</figcaption>
+        <figcaption><b>Insert Coin on a tablet</b> <span class="dur">0:27</span><br>The same coin box from an Android tablet, shown from the coinslot, the tablet and the server at once. ₱7 = 30 min, ₱10 = 1 hr, ₱20 = 2 hrs.</figcaption>
+      </figure>
+      <figure class="figure">
+        <video controls playsinline preload="metadata" poster="videos/transfer-add-clear.jpg" width="1280" height="720">
+          <source src="videos/transfer-add-clear.mp4" type="video/mp4">
+        </video>
+        <figcaption><b>Transfer, add &amp; clear time</b> <span class="dur">0:48</span><br>From the server: move a customer's remaining time to another PC, add time without coins, clear a session, and shut the PCs down.</figcaption>
+      </figure>
+      <figure class="figure">
+        <video controls playsinline preload="metadata" poster="videos/server-tour.jpg" width="1280" height="720">
+          <source src="videos/server-tour.mp4" type="video/mp4">
+        </video>
+        <figcaption><b>The server, button by button</b> <span class="dur">1:26</span><br>Coin History, System Health, Edit Rates, Tablet Apps, Tablet Admin, Transactions, PC &amp; Coin Slot Policy, Updates, Backup, and Add / Remove / Clear Time per station.</figcaption>
+      </figure>
+      <figure class="figure">
+        <video controls playsinline preload="metadata" poster="videos/tablet-admin.jpg" width="1280" height="720">
+          <source src="videos/tablet-admin.mp4" type="video/mp4">
+        </video>
+        <figcaption><b>Tablet admin access</b> <span class="dur">0:23</span><br>Tablets stay in kiosk lock. Admin access needs the password; a wrong one is refused and shows up in the diagnostics.</figcaption>
+      </figure>
+      <figure class="figure">
+        <video controls playsinline preload="metadata" poster="videos/coin-box.jpg" width="1280" height="720">
+          <source src="videos/coin-box.mp4" type="video/mp4">
+        </video>
+        <figcaption><b>Inside the coin box</b> <span class="dur">0:25</span><br>An ESP32, the coin acceptor and a 12 V supply. The <a href="wiring.html">wiring guide</a> shows every connection.</figcaption>
       </figure>
     </div>
     <div class="vid-shop figure">
@@ -325,7 +366,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
       </video>
       <div>
         <h3>A normal day at our shop <span class="dur">0:13</span></h3>
-        <p class="muted">The Slotify server at the counter and customers on the rental PCs, all sharing one coinslot.</p>
+        <p class="muted">The Slotify server at the counter and customers on the rental PCs, all sharing one coinslot. Customers' heads are blurred.</p>
         <ul class="checks">
           <li><div><b>12 PCs on iCafe8 diskless</b><span>One install in the image. Every PC shows up on the server by hostname.</span></div></li>
           <li><div><b>One coin box for everyone</b><span>No coinslot or timer board on each PC.</span></div></li>
@@ -406,7 +447,21 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
         <figcaption>The prototype on a breadboard, before moving to perfboard.</figcaption>
       </figure>
     </div>
-    <p style="margin-top:20px;display:flex;flex-wrap:wrap;gap:12px"><a class="btn btn-gold" href="wiring.html">Step-by-step wiring diagram</a><a class="btn btn-line" href="https://github.com/rjcantare/Slotify/tree/main/hardware/coin-box-board">Custom PCB (order or etch)</a></p>
+    <p style="margin-top:20px;display:flex;flex-wrap:wrap;gap:12px"><a class="btn btn-gold" href="wiring.html">Step-by-step wiring diagram</a><a class="btn btn-line" href="#pcb">Printable PCB ↓</a></p>
+    <div class="pcb figure" id="pcb">
+      <img src="pcb/preview.svg" alt="Top view of the Slotify coin box board: screw terminals for 12 V in, the LM2596, the coin acceptor and the LED frame, pin headers for the ESP32 and SET, the EL817 optocoupler, a 2N2222A and resistors" width="808" height="648" loading="lazy">
+      <div>
+        <span class="pill warn">Prototype · not yet manufactured</span>
+        <h3>Printable PCB for the coin box</h3>
+        <p class="muted">An 80 × 64 mm board that replaces the breadboard or perfboard. Everything plugs into screw terminals and pin headers: 12 V in, the LM2596, the coin acceptor, the LED frame, SET and the ESP32. The circuit matches the bench-tested wiring guide.</p>
+        <ul class="checks">
+          <li><div><b>Order it</b><span>Upload the Gerber zip to JLCPCB, PCBWay or a similar maker. The defaults work: 2 layers, 1.6 mm, HASL. The minimum order is usually 5 boards.</span></div></li>
+          <li><div><b>Or etch it yourself</b><span>Print the PDF at 100 % / Actual size (the bar must measure 50 mm), toner-transfer it onto single-sided copper board, etch and drill.</span></div></li>
+        </ul>
+        <p class="pcb-dl"><a class="btn btn-gold" href="pcb/slotify-coin-board-print.pdf">Printable PCB (PDF)</a><a class="btn btn-line" href="pcb/slotify-coin-board-gerbers.zip" download>Gerber files (.zip)</a><a class="btn btn-line" href="https://github.com/rjcantare/Slotify/tree/main/hardware/coin-box-board">Build notes &amp; parts list</a></p>
+        <p class="muted pcb-note">Build one and test it fully before making more, and please send a <a href="https://github.com/rjcantare/Slotify/blob/main/CONTRIBUTING.md">tester report</a>.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -461,6 +516,10 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
       <a class="btn btn-gold" href="https://github.com/rjcantare/Slotify/releases/latest">Download the latest release</a>
       <a class="btn btn-line" href="https://github.com/rjcantare/Slotify/blob/main/docs/OWNER-GUIDE.md">Read the full guide</a>
     </div>
+    <div class="callout">
+      <p><b>Walang catch. Isang favor lang.</b> Slotify stays free, with no license. If it helps your shop, please star the GitHub repo. Stars help other shop owners find it and help us grow a support group for Slotify users.</p>
+      <a class="btn btn-gold" href="https://github.com/rjcantare/Slotify">★ Star on GitHub</a>
+    </div>
   </div>
 </section>
 
@@ -472,7 +531,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
     </div>
     <div class="faq">
       <details><summary>Is it really free? What's the catch?</summary>
-        <p>It's free and open source under GPL-3.0. There's no license key, activation or monthly fee in the code, and the source is public so anyone can check it.</p></details>
+        <p>There's no catch. It's free and open source under GPL-3.0. There's no license key, activation or monthly fee in the code, and the source is public so anyone can check it. We only ask one favor: if it helps your shop, star the <a href="https://github.com/rjcantare/Slotify">GitHub repo</a>. It helps other shop owners find Slotify and helps us start a support group.</p></details>
       <details><summary>Windows says "Windows protected your PC". Is it a virus?</summary>
         <p>That warning appears for any installer without a paid code-signing certificate. Click <b>More info → Run anyway</b>. You can verify each file with the SHA-256 hashes on the Releases page, and read the source code yourself.</p></details>
       <details><summary>Does it work without internet?</summary>
@@ -500,6 +559,7 @@ code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;b
       <div>Free and open source under GPL-3.0. Provided as-is, without warranty. Test it in your shop before relying on it.</div>
     </div>
     <div style="display:flex;gap:20px;flex-wrap:wrap">
+      <a href="https://github.com/rjcantare/Slotify">★ Star on GitHub</a>
       <a href="https://github.com/rjcantare/Slotify">Source code</a>
       <a href="https://github.com/rjcantare/Slotify/releases">Releases</a>
       <a href="https://github.com/rjcantare/Slotify/issues">Report a problem</a>
