@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coin Box Wiring</title>
+<meta name="description" content="Step-by-step wiring for the Slotify coin box: power, coin signal, coin lock (SET) and slot light, with a checklist of every connection.">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<style>
+:root{
+  --navy:#0E1626; --gold:#F4C04C; --gold-deep:#B9861A; --badge:#0E1626;
+  --bg:#FAFAF7; --surface:#FFFFFF; --surface-2:#F2F1EC; --text:#141A26; --muted:#5A6272; --line:#E3E1D9;
+  --warn:#9A6400; --warn-bg:#FDF3DC; --hero-bg:#0E1626; --hero-text:#F4F1E8; --hero-muted:#AEB6C6;
+  --w12:#D93025; --wgnd:#1F2430; --w5:#E8710A; --w33:#1A73E8; --wcoin:#0F9D8A; --wset:#188038; --wled:#A142F4;
+  --part:#FFFFFF; --part-line:#2A3142; --res:#F6E3B4;
+  --radius:14px; --shadow:0 1px 2px rgba(14,22,38,.06),0 8px 24px rgba(14,22,38,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0B111D; --surface:#121A2A; --surface-2:#18213A; --text:#E9ECF2; --muted:#A3ACBD; --line:#26304A;
+    --warn:#F2C46A; --warn-bg:#2A2212; --hero-bg:#070C16; --badge:#26335A; --shadow:none;
+    --w12:#FF6B5E; --wgnd:#C3CAD8; --w5:#FFA04D; --w33:#6AA8FF; --wcoin:#3FD1BC; --wset:#5CCB7C; --wled:#C58AFF;
+    --part:#18213A; --part-line:#A3ACBD; --res:#5A4A22;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0B111D; --surface:#121A2A; --surface-2:#18213A; --text:#E9ECF2; --muted:#A3ACBD; --line:#26304A;
+  --warn:#F2C46A; --warn-bg:#2A2212; --hero-bg:#070C16; --badge:#26335A; --shadow:none;
+  --w12:#FF6B5E; --wgnd:#C3CAD8; --w5:#FFA04D; --w33:#6AA8FF; --wcoin:#3FD1BC; --wset:#5CCB7C; --wled:#C58AFF;
+  --part:#18213A; --part-line:#A3ACBD; --res:#5A4A22;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px}
+h1,h2,h3{line-height:1.2;margin:0 0 .5em}
+p{margin:0 0 1em}
+.muted{color:var(--muted)}
+.nav{background:var(--hero-bg)}
+.nav .wrap{display:flex;align-items:center;gap:12px;height:56px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--hero-text);font-weight:800}
+.brand img{width:30px;height:30px;background:#F7F8FB;border-radius:8px;padding:3px}
+.nav .back{margin-left:auto;color:var(--hero-muted);text-decoration:none;font-size:.92rem}
+.nav .back:hover{color:var(--hero-text)}
+header.top{background:var(--hero-bg);color:var(--hero-text);padding:28px 0 36px}
+header.top h1{font-size:clamp(1.8rem,5vw,2.6rem)}
+header.top p{color:var(--hero-muted);max-width:40em}
+.eyebrow{font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:18px;font-size:.9rem;color:var(--hero-text)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{display:inline-block;width:26px;height:5px;border-radius:3px}
+
+.warnbox{background:var(--warn-bg);color:var(--text);border-radius:12px;padding:14px 16px;margin:24px 0 0;display:grid;grid-template-columns:24px 1fr;gap:10px}
+.warnbox::before{content:"!";display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--warn);color:var(--bg);font-weight:900}
+.warnbox p{margin:0}
+
+section.step{padding:28px 0;border-bottom:1px solid var(--line)}
+.step-head{display:flex;gap:14px;align-items:center;margin-bottom:12px}
+.num{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:var(--badge);color:var(--gold);font-weight:900;font-size:1.1rem}
+.step-head h2{margin:0;font-size:1.35rem}
+.step-head p{margin:0;color:var(--muted);font-size:.95rem}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px;box-shadow:var(--shadow);margin:14px 0}
+.fig svg{display:block;width:100%;height:auto;max-width:640px;margin:0 auto}
+.fig svg text{font-family:inherit;fill:var(--text)}
+.fig svg .m{fill:var(--muted)}
+.fig svg .part{fill:var(--part);stroke:var(--part-line);stroke-width:1.5}
+.fig svg .res{fill:var(--res);stroke:var(--part-line);stroke-width:1.5}
+.fig svg .pin{fill:var(--part);stroke:var(--part-line);stroke-width:1.5}
+.fig svg .w{fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.fig svg .rail{fill:none;stroke-width:7;stroke-linecap:round}
+.c12{stroke:var(--w12)} .cg{stroke:var(--wgnd)} .c5{stroke:var(--w5)} .c33{stroke:var(--w33)} .cc{stroke:var(--wcoin)} .cs{stroke:var(--wset)} .cl{stroke:var(--wled)}
+.d12{fill:var(--w12)} .dg{fill:var(--wgnd)} .dc{fill:var(--wcoin)} .ds{fill:var(--wset)} .dl{fill:var(--wled)} .d33{fill:var(--w33)}
+
+ol.do{margin:0;padding-left:1.3em}
+ol.do li{margin:.35em 0}
+.tip{font-size:.92rem;color:var(--muted);margin-top:8px}
+.tip b{color:var(--text)}
+
+table.check{width:100%;border-collapse:collapse;font-size:.95rem}
+.check th,.check td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.check th{font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.check td:first-child{width:34px}
+.check input{width:20px;height:20px;accent-color:var(--gold-deep)}
+.check tr.grp td{background:var(--surface-2);font-weight:700;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.tablewrap{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow-x:auto;box-shadow:var(--shadow)}
+.sw{display:inline-block;width:14px;height:4px;border-radius:2px;vertical-align:middle;margin-right:6px}
+
+ul.pre{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+ul.pre li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+footer{padding:36px 0;color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="brand" href="./"><img src="assets/logo.png" alt="">Slotify</a>
+  <a class="back" href="./">← Back to site</a>
+</div></nav>
+
+<header class="top"><div class="wrap">
+  <div class="eyebrow">Coin box wiring</div>
+  <h1>Wire it in 4 small steps</h1>
+  <p>Each step is one small circuit. Finish a step, tick its connections in the checklist at the bottom, then move on. Every diagram uses the same two rails: <b>+12&nbsp;V</b> on top and <b>GND</b> at the bottom.</p>
+  <div class="legend" aria-label="Wire colours">
+    <span><i style="background:var(--w12)"></i>+12 V</span>
+    <span><i style="background:var(--wgnd);outline:1px solid #ffffff33"></i>GND</span>
+    <span><i style="background:var(--w5)"></i>5 V</span>
+    <span><i style="background:var(--w33)"></i>3.3 V</span>
+    <span><i style="background:var(--wcoin)"></i>Coin signal</span>
+    <span><i style="background:var(--wset)"></i>Coin lock (SET)</span>
+    <span><i style="background:var(--wled)"></i>Slot light</span>
+  </div>
+</div></header>
+
+<main class="wrap">
+
+  <div class="warnbox"><p><b>Never let a +12&nbsp;V wire touch an ESP32 pin.</b> The ESP32 only takes 3.3&nbsp;V on its pins (5&nbsp;V on VIN). Keep the 12&nbsp;V supply unplugged while you wire.</p></div>
+
+  <!-- STEP 1 -->
+  <section class="step" id="step1">
+    <div class="step-head"><div class="num">1</div><div><h2>Power</h2><p>12 V for the coin acceptor, 5 V for the ESP32.</p></div></div>
+    <div class="fig">
+      <svg viewBox="0 0 440 300" role="img" aria-label="Power wiring: the 12 volt supply feeds the +12 V and GND rails; the coin acceptor and the LM2596 input connect to both rails; LM2596 OUT+ goes to ESP32 VIN; ESP32 GND goes to the GND rail.">
+        <text x="16" y="24" font-size="13" font-weight="700">+12 V</text>
+        <path class="rail c12" d="M16 36 H424"/>
+        <path class="rail cg" d="M16 276 H424"/>
+        <text x="16" y="296" font-size="13" font-weight="700">GND</text>
+
+        <!-- wires -->
+        <path class="w c12" d="M46 36 V80"/>
+        <path class="w cg" d="M86 200 V276"/>
+        <path class="w c12" d="M166 36 V80"/>
+        <path class="w cg" d="M206 200 V276"/>
+        <path class="w c12" d="M276 36 V80"/>
+        <path class="w cg" d="M276 200 V276"/>
+        <path class="w cg" d="M316 200 V276"/>
+        <path class="w c5" d="M336 110 H356"/>
+        <path class="w cg" d="M392 200 V276"/>
+        <g class="d12"><circle cx="46" cy="36" r="5"/><circle cx="166" cy="36" r="5"/><circle cx="276" cy="36" r="5"/></g>
+        <g class="dg"><circle cx="86" cy="276" r="5"/><circle cx="206" cy="276" r="5"/><circle cx="276" cy="276" r="5"/><circle cx="316" cy="276" r="5"/><circle cx="392" cy="276" r="5"/></g>
+
+        <!-- parts -->
+        <rect class="part" x="16" y="80" width="100" height="120" rx="10"/>
+        <text x="66" y="130" font-size="13" font-weight="700" text-anchor="middle">12 V power</text>
+        <text x="66" y="147" font-size="13" font-weight="700" text-anchor="middle">supply</text>
+        <text x="46" y="98" font-size="11" text-anchor="middle" class="m">+V</text>
+        <text x="86" y="192" font-size="11" text-anchor="middle" class="m">−V</text>
+
+        <rect class="part" x="136" y="80" width="100" height="120" rx="10"/>
+        <text x="186" y="130" font-size="13" font-weight="700" text-anchor="middle">Coin</text>
+        <text x="186" y="147" font-size="13" font-weight="700" text-anchor="middle">acceptor</text>
+        <text x="166" y="98" font-size="11" text-anchor="middle" class="m">RED</text>
+        <text x="206" y="192" font-size="11" text-anchor="middle" class="m">BLACK</text>
+
+        <rect class="part" x="256" y="80" width="80" height="120" rx="10"/>
+        <text x="296" y="140" font-size="13" font-weight="700" text-anchor="middle">LM2596</text>
+        <text x="296" y="157" font-size="11" text-anchor="middle" class="m">12→5 V</text>
+        <text x="276" y="98" font-size="11" text-anchor="middle" class="m">IN+</text>
+        <text x="326" y="114" font-size="11" text-anchor="end" class="m">OUT+</text>
+        <text x="276" y="192" font-size="11" text-anchor="middle" class="m">IN−</text>
+        <text x="318" y="182" font-size="11" text-anchor="middle" class="m">OUT−</text>
+
+        <rect class="part" x="356" y="80" width="72" height="120" rx="10"/>
+        <text x="392" y="150" font-size="13" font-weight="700" text-anchor="middle">ESP32</text>
+        <text x="364" y="114" font-size="11" class="m">VIN</text>
+        <text x="392" y="192" font-size="11" text-anchor="middle" class="m">GND</text>
+        <text x="346" y="100" font-size="10" text-anchor="middle" fill="var(--w5)" font-weight="700">5V</text>
+
+        <g><circle class="pin" cx="46" cy="80" r="4"/><circle class="pin" cx="86" cy="200" r="4"/><circle class="pin" cx="166" cy="80" r="4"/><circle class="pin" cx="206" cy="200" r="4"/><circle class="pin" cx="276" cy="80" r="4"/><circle class="pin" cx="276" cy="200" r="4"/><circle class="pin" cx="316" cy="200" r="4"/><circle class="pin" cx="336" cy="110" r="4"/><circle class="pin" cx="356" cy="110" r="4"/><circle class="pin" cx="392" cy="200" r="4"/></g>
+      </svg>
+    </div>
+    <ol class="do">
+      <li><b>Set the LM2596 first.</b> Connect only its IN+ and IN− to 12 V, put a multimeter on OUT+/OUT−, and turn the small screw on the blue pot until it reads <b>5.0 V</b>. Unplug 12 V.</li>
+      <li>Supply <b>+V</b> → +12 V rail. Supply <b>−V</b> → GND rail.</li>
+      <li>Coin acceptor <b>RED</b> → +12 V. <b>BLACK</b> → GND.</li>
+      <li>LM2596 <b>IN+</b> → +12 V, <b>IN−</b> and <b>OUT−</b> → GND.</li>
+      <li>LM2596 <b>OUT+</b> → ESP32 <b>VIN</b> (may be labelled 5V). ESP32 <b>GND</b> → GND.</li>
+    </ol>
+    <p class="tip"><b>Why:</b> a new LM2596 can output almost 12 V, which kills an ESP32 instantly.</p>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" id="step2">
+    <div class="step-head"><div class="num">2</div><div><h2>Coin signal</h2><p>Coin pulses reach the ESP32 through the optocoupler, never directly.</p></div></div>
+    <div class="fig">
+      <svg viewBox="0 0 440 350" role="img" aria-label="Coin signal wiring: R1 10k from +12 V to the coin node; the acceptor white wire joins the coin node; the coin node goes to EL817 pin 2; R2 1k from +12 V to EL817 pin 1; EL817 pin 3 to GND; EL817 pin 4 goes through R3 5.1k to ESP32 3V3 and through R4 10k to ESP32 D18.">
+        <text x="16" y="24" font-size="13" font-weight="700">+12 V</text>
+        <path class="rail c12" d="M16 36 H424"/>
+        <path class="rail cg" d="M16 326 H424"/>
+        <text x="16" y="346" font-size="13" font-weight="700">GND</text>
+
+        <!-- R1 -->
+        <path class="w c12" d="M90 36 V62"/>
+        <rect class="res" x="83" y="62" width="14" height="40" rx="3"/>
+        <text x="104" y="80" font-size="12" font-weight="700">R1</text>
+        <text x="104" y="95" font-size="11" class="m">10 kΩ</text>
+        <path class="w cc" d="M90 102 V190"/>
+        <!-- R2 -->
+        <path class="w c12" d="M170 36 V62"/>
+        <rect class="res" x="163" y="62" width="14" height="40" rx="3"/>
+        <text x="184" y="80" font-size="12" font-weight="700">R2</text>
+        <text x="184" y="95" font-size="11" class="m">1 kΩ</text>
+        <path class="w c12" d="M170 102 V150 H200"/>
+        <!-- coin node to pin 2 -->
+        <path class="w cc" d="M90 190 H200"/>
+        <!-- white wire -->
+        <path class="w cc" d="M90 240 V190"/>
+        <text x="98" y="226" font-size="11" class="m">WHITE wire</text>
+        <!-- opto right side -->
+        <path class="w c33" d="M262 150 H296"/>
+        <path class="w c33" d="M296 150 V132"/>
+        <rect class="res" x="289" y="92" width="14" height="40" rx="3"/>
+        <text x="282" y="108" font-size="12" font-weight="700" text-anchor="end">R3</text>
+        <text x="282" y="123" font-size="11" class="m" text-anchor="end">5.1 kΩ</text>
+        <path class="w c33" d="M296 92 V70 H360"/>
+        <path class="w cc" d="M296 150 V170 H310"/>
+        <rect class="res" x="310" y="163" width="36" height="14" rx="3"/>
+        <path class="w cc" d="M346 170 H360"/>
+        <text x="328" y="196" font-size="12" font-weight="700" text-anchor="middle">R4</text>
+        <text x="328" y="210" font-size="11" class="m" text-anchor="middle">10 kΩ</text>
+        <path class="w cg" d="M262 190 H276 V326"/>
+        <path class="w cg" d="M360 280 H344 V326"/>
+        <g class="d12"><circle cx="90" cy="36" r="5"/><circle cx="170" cy="36" r="5"/></g>
+        <g class="dc"><circle cx="90" cy="190" r="6"/></g>
+        <g class="d33"><circle cx="296" cy="150" r="5"/></g>
+        <g class="dg"><circle cx="276" cy="326" r="5"/><circle cx="344" cy="326" r="5"/></g>
+        <text x="70" y="186" font-size="11" text-anchor="end" font-weight="700" fill="var(--wcoin)">COIN</text>
+
+        <!-- EL817 -->
+        <rect class="part" x="200" y="128" width="62" height="84" rx="6"/>
+        <circle cx="211" cy="139" r="3.5" fill="var(--part-line)"/>
+        <text x="231" y="175" font-size="12" font-weight="700" text-anchor="middle">EL817</text>
+        <text x="207" y="154" font-size="10" class="m">1</text>
+        <text x="207" y="194" font-size="10" class="m">2</text>
+        <text x="255" y="194" font-size="10" class="m" text-anchor="end">3</text>
+        <text x="255" y="154" font-size="10" class="m" text-anchor="end">4</text>
+
+        <!-- acceptor -->
+        <rect class="part" x="20" y="240" width="140" height="56" rx="10"/>
+        <text x="90" y="274" font-size="13" font-weight="700" text-anchor="middle">Coin acceptor</text>
+
+        <!-- ESP32 -->
+        <rect class="part" x="360" y="54" width="68" height="246" rx="10"/>
+        <text x="394" y="238" font-size="13" font-weight="700" text-anchor="middle">ESP32</text>
+        <text x="368" y="74" font-size="11" class="m">3V3</text>
+        <text x="368" y="174" font-size="11" class="m">D18</text>
+        <text x="368" y="284" font-size="11" class="m">GND</text>
+
+        <g><circle class="pin" cx="90" cy="240" r="4"/><circle class="pin" cx="200" cy="150" r="4"/><circle class="pin" cx="200" cy="190" r="4"/><circle class="pin" cx="262" cy="150" r="4"/><circle class="pin" cx="262" cy="190" r="4"/><circle class="pin" cx="360" cy="70" r="4"/><circle class="pin" cx="360" cy="170" r="4"/><circle class="pin" cx="360" cy="280" r="4"/></g>
+      </svg>
+    </div>
+    <ol class="do">
+      <li><b>R1 (10 kΩ):</b> one leg to +12 V, the other leg is the <b>COIN point</b>.</li>
+      <li>Coin acceptor <b>WHITE</b> wire → COIN point.</li>
+      <li>COIN point → EL817 <b>pin 2</b>.</li>
+      <li><b>R2 (1 kΩ):</b> +12 V → EL817 <b>pin 1</b>.</li>
+      <li>EL817 <b>pin 3</b> → GND.</li>
+      <li><b>R3 (5.1 kΩ):</b> EL817 <b>pin 4</b> → ESP32 <b>3V3</b>.</li>
+      <li><b>R4 (10 kΩ):</b> EL817 <b>pin 4</b> → ESP32 <b>D18</b>.</li>
+    </ol>
+    <p class="tip"><b>Finding pin 1:</b> the EL817 has a small dot or notch. The pin next to the dot is pin 1; counting goes down that side (2), then up the other side (3, 4).</p>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step" id="step3">
+    <div class="step-head"><div class="num">3</div><div><h2>Coin lock (SET pin)</h2><p>Keeps the slot rejecting coins until someone taps Insert Coin.</p></div></div>
+    <div class="fig">
+      <svg viewBox="0 0 440 230" role="img" aria-label="SET wiring: ESP32 D23 connects to the upper SET pin on the back of the coin acceptor; R8 10k connects that same wire to GND. The lower SET pin is already ground and needs no wire.">
+        <path class="rail cg" d="M16 200 H424"/>
+        <text x="16" y="222" font-size="13" font-weight="700">GND</text>
+        <path class="w cs" d="M176 70 H340"/>
+        <path class="w cs" d="M260 70 V100"/>
+        <rect class="res" x="253" y="100" width="14" height="40" rx="3"/>
+        <text x="274" y="118" font-size="12" font-weight="700">R8</text>
+        <text x="274" y="133" font-size="11" class="m">10 kΩ</text>
+        <path class="w cg" d="M260 140 V200"/>
+        <g class="ds"><circle cx="260" cy="70" r="6"/></g>
+        <g class="dg"><circle cx="260" cy="200" r="5"/></g>
+
+        <rect class="part" x="16" y="40" width="160" height="110" rx="10"/>
+        <text x="70" y="88" font-size="13" font-weight="700" text-anchor="middle">Coin acceptor</text>
+        <text x="70" y="105" font-size="11" class="m" text-anchor="middle">(back panel)</text>
+        <text x="166" y="74" font-size="11" text-anchor="end" font-weight="700" fill="var(--wset)">SET</text>
+        <text x="166" y="124" font-size="11" text-anchor="end" class="m">GND</text>
+        <circle class="pin" cx="176" cy="70" r="4"/>
+        <circle class="pin" cx="176" cy="120" r="4"/>
+        <text x="16" y="172" font-size="11" class="m">Lower SET pin is already ground. No wire.</text>
+
+        <rect class="part" x="340" y="40" width="88" height="110" rx="10"/>
+        <text x="384" y="112" font-size="13" font-weight="700" text-anchor="middle">ESP32</text>
+        <text x="348" y="74" font-size="11" class="m">D23</text>
+        <circle class="pin" cx="340" cy="70" r="4"/>
+      </svg>
+    </div>
+    <ol class="do">
+      <li>Find the 2-pin <b>SET</b> header on the back of the Allan, below the speed switch.</li>
+      <li>ESP32 <b>D23</b> → <b>upper</b> SET pin (one Dupont female-female jumper works).</li>
+      <li><b>R8 (10 kΩ):</b> from that same upper SET pin → GND.</li>
+    </ol>
+    <p class="tip"><b>Why R8 matters:</b> if the ESP32 restarts or loses power, R8 keeps the slot locked so it rejects coins instead of swallowing them with no credit.</p>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="step" id="step4">
+    <div class="step-head"><div class="num">4</div><div><h2>Slot light (optional)</h2><p>The LED frame lights up while the slot is open.</p></div></div>
+    <div class="fig">
+      <svg viewBox="0 0 440 300" role="img" aria-label="Slot light wiring: LED frame red wire to +12 V, black wire to the 2N2222A collector; emitter to GND; ESP32 D19 through R6 1k to the base; R7 10k from base to GND.">
+        <text x="16" y="24" font-size="13" font-weight="700">+12 V</text>
+        <path class="rail c12" d="M16 36 H424"/>
+        <path class="rail cg" d="M16 276 H424"/>
+        <text x="16" y="296" font-size="13" font-weight="700">GND</text>
+
+        <path class="w c12" d="M56 36 V80"/>
+        <path class="w cl" d="M136 120 H206 V134"/>
+        <path class="w cg" d="M206 188 V276"/>
+        <path class="w cl" d="M238 160 H276"/>
+        <rect class="res" x="276" y="153" width="40" height="14" rx="3"/>
+        <text x="296" y="145" font-size="12" font-weight="700" text-anchor="middle">R6 · 1 kΩ</text>
+        <path class="w cl" d="M316 160 H356"/>
+        <path class="w cl" d="M258 160 V196"/>
+        <rect class="res" x="251" y="196" width="14" height="40" rx="3"/>
+        <text x="272" y="214" font-size="12" font-weight="700">R7</text>
+        <text x="272" y="229" font-size="11" class="m">10 kΩ</text>
+        <path class="w cg" d="M258 236 V276"/>
+        <g class="d12"><circle cx="56" cy="36" r="5"/></g>
+        <g class="dl"><circle cx="258" cy="160" r="5"/></g>
+        <g class="dg"><circle cx="206" cy="276" r="5"/><circle cx="258" cy="276" r="5"/></g>
+
+        <rect class="part" x="16" y="80" width="120" height="90" rx="10"/>
+        <text x="76" y="124" font-size="13" font-weight="700" text-anchor="middle">LED frame</text>
+        <text x="76" y="141" font-size="11" class="m" text-anchor="middle">(slot light)</text>
+        <text x="56" y="98" font-size="11" class="m" text-anchor="middle">RED</text>
+        <text x="128" y="114" font-size="11" class="m" text-anchor="end">BLACK</text>
+
+        <!-- transistor -->
+        <circle class="part" cx="212" cy="161" r="28"/>
+        <path d="M238 160 H220 M220 146 V174 M220 152 L206 136 M220 168 L206 186" fill="none" stroke="var(--part-line)" stroke-width="2"/>
+        <path d="M210 181 L206 186 L213 185" fill="none" stroke="var(--part-line)" stroke-width="2"/>
+        <text x="190" y="132" font-size="11" font-weight="700" text-anchor="end">C</text>
+        <text x="190" y="196" font-size="11" font-weight="700" text-anchor="end">E</text>
+        <text x="246" y="152" font-size="11" font-weight="700">B</text>
+        <text x="160" y="226" font-size="11" class="m" text-anchor="middle">2N2222A</text>
+
+        <rect class="part" x="356" y="80" width="72" height="160" rx="10"/>
+        <text x="392" y="214" font-size="13" font-weight="700" text-anchor="middle">ESP32</text>
+        <text x="364" y="164" font-size="11" class="m">D19</text>
+
+        <g><circle class="pin" cx="56" cy="80" r="4"/><circle class="pin" cx="136" cy="120" r="4"/><circle class="pin" cx="206" cy="134" r="4"/><circle class="pin" cx="206" cy="188" r="4"/><circle class="pin" cx="238" cy="160" r="4"/><circle class="pin" cx="356" cy="160" r="4"/></g>
+      </svg>
+    </div>
+    <ol class="do">
+      <li>LED frame <b>RED</b> → +12 V. LED frame <b>BLACK</b> → 2N2222A <b>C</b> (collector).</li>
+      <li>2N2222A <b>E</b> (emitter) → GND.</li>
+      <li><b>R6 (1 kΩ):</b> ESP32 <b>D19</b> → 2N2222A <b>B</b> (base).</li>
+      <li><b>R7 (10 kΩ):</b> 2N2222A <b>B</b> → GND.</li>
+    </ol>
+    <p class="tip"><b>Transistor legs:</b> hold it with the flat side facing you, legs down. Most 2N2222A are <b>E · B · C</b> from left to right, but some brands differ, so check the seller's datasheet.</p>
+    <p class="tip"><b>Don't swap the frame wires:</b> the frame is polarity-sensitive.</p>
+  </section>
+
+  <!-- CHECKLIST -->
+  <section class="step" id="checklist">
+    <div class="step-head"><div class="num">✓</div><div><h2>Connection checklist</h2><p>Tick each wire as you make it. Every row is one connection.</p></div></div>
+    <div class="tablewrap">
+      <table class="check">
+        <thead><tr><th></th><th>From</th><th>To</th></tr></thead>
+        <tbody>
+          <tr class="grp"><td colspan="3">1 · Power</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w12)"></span>Supply +V</td><td>+12 V rail</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>Supply −V</td><td>GND rail</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w12)"></span>Acceptor RED</td><td>+12 V</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>Acceptor BLACK</td><td>GND</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w12)"></span>LM2596 IN+ (set to 5.0 V first)</td><td>+12 V</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>LM2596 IN− and OUT−</td><td>GND</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w5)"></span>LM2596 OUT+</td><td>ESP32 VIN</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>ESP32 GND</td><td>GND</td></tr>
+          <tr class="grp"><td colspan="3">2 · Coin signal</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w12)"></span>R1 10 kΩ</td><td>+12 V ↔ COIN point</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wcoin)"></span>Acceptor WHITE</td><td>COIN point</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wcoin)"></span>COIN point</td><td>EL817 pin 2</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w12)"></span>R2 1 kΩ</td><td>+12 V ↔ EL817 pin 1</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>EL817 pin 3</td><td>GND</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w33)"></span>R3 5.1 kΩ</td><td>EL817 pin 4 ↔ ESP32 3V3</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wcoin)"></span>R4 10 kΩ</td><td>EL817 pin 4 ↔ ESP32 D18</td></tr>
+          <tr class="grp"><td colspan="3">3 · Coin lock</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wset)"></span>ESP32 D23</td><td>Acceptor SET (upper pin)</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wset)"></span>R8 10 kΩ</td><td>SET (upper pin) ↔ GND</td></tr>
+          <tr class="grp"><td colspan="3">4 · Slot light (optional)</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w12)"></span>LED frame RED</td><td>+12 V</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wled)"></span>LED frame BLACK</td><td>2N2222A C</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>2N2222A E</td><td>GND</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wled)"></span>R6 1 kΩ</td><td>ESP32 D19 ↔ 2N2222A B</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>R7 10 kΩ</td><td>2N2222A B ↔ GND</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="step" style="border-bottom:0">
+    <div class="step-head"><div class="num">⚡</div><div><h2>Before you plug in 12 V</h2></div></div>
+    <ul class="pre">
+      <li><b>LM2596 reads 5.0 V</b> on its own, before it's connected to the ESP32.</li>
+      <li><b>No +12 V wire touches an ESP32 pin.</b> Only VIN (5 V), 3V3, D18, D19, D23 and GND are used.</li>
+      <li><b>Every GND is joined:</b> supply −V, acceptor BLACK, LM2596, EL817 pin 3, ESP32 GND, R7, R8, transistor E.</li>
+      <li><b>EL817 is the right way round</b> (dot = pin 1).</li>
+      <li><b>Acceptor switches:</b> output <b>NO</b>, speed <b>SLOW</b>, coins programmed so pulses = pesos.</li>
+    </ul>
+    <p style="margin-top:18px">Then flash the ESP32 and run the tests in the <a href="https://github.com/rjcantare/Slotify/blob/main/docs/OWNER-GUIDE.md#27-test-before-closing-the-box">owner guide</a>.</p>
+    <p class="muted" style="font-size:.9rem">Pin labels vary by board: D18 may be printed as G18 or IO18. D18, D19 and D23 sit on the same side of most 38-pin ESP32 boards.</p>
+  </section>
+</main>
+
+<footer><div class="wrap">Slotify · free and open source under GPL-3.0 · <a href="./">Home</a> · <a href="https://github.com/rjcantare/Slotify">Source</a></div></footer>
+</body>
+</html>

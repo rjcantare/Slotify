@@ -50,6 +50,8 @@ soldering), 15 min for the server, 5 min per PC, 15 min per tablet.
 
 ## 2. Coin box wiring
 
+> **Easier version:** the [step-by-step wiring page](https://rjcantare.github.io/Slotify/wiring.html) splits this into 4 small colour-coded diagrams with a tick-box checklist.
+
 ![Coin box breadboard prototype](images/S9-esp32-breadboard.png)
 
 More detail: [hardware/production-wiring.md](hardware/production-wiring.md).
