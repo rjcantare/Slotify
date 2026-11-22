@@ -88,7 +88,9 @@ cd firmware && cp include/config.example.h include/config.h && pio run -e esp32d
 Slotify is free and will stay free: no license, no monthly fee, no activation.
 If it helps your shop and you want to support development (test hardware,
 coin slots and tablets), you can send any amount by GCash or InstaPay.
-It's optional, with nothing in return.
+It also helps me upgrade my Claude Code plan (the AI coding tool I build
+Slotify with), so I can keep making more free, open-source tools.
+It's optional, with nothing in return. Salamat po! 😄
 
 <img src="docs/images/gcash-qr.png" alt="GCash QR code for Slotify" width="220">
 
