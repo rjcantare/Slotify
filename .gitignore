@@ -13,3 +13,6 @@ firmware/include/config.h
 diagnostics/
 release/
 *.release-backup
+
+# graphify knowledge graph (local only)
+graphify-out/
