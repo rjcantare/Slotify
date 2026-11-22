@@ -166,6 +166,7 @@
                            Foreground="#FF9E9E9E"
                            HorizontalAlignment="Center"
                            Margin="0,12,0,0"
+                           MaxWidth="900"
                            TextWrapping="Wrap"
                            TextAlignment="Center" />
                 <TextBlock x:Name="AutoShutdownText"

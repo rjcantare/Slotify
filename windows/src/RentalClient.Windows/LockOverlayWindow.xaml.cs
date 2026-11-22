@@ -272,7 +272,7 @@ public partial class LockOverlayWindow : Window, IDisposable
                 InsertCoinButton.Content = _connectionState.CanRequestCoinSlot ? "INSERT COIN" : "OFFLINE";
                 ClaimStatusText.Text = _connectionState.CanRequestCoinSlot
                     ? string.Empty
-                    : "Please wait for connection.";
+                    : OfflineStatusText();
                 break;
 
             case ClaimStatus.Pending:
@@ -310,7 +310,7 @@ public partial class LockOverlayWindow : Window, IDisposable
                 InsertCoinButton.IsEnabled = _connectionState.CanRequestCoinSlot;
                 InsertCoinButton.Content = _connectionState.CanRequestCoinSlot ? "INSERT COIN" : "OFFLINE";
                 ClaimStatusText.Text = !_connectionState.CanRequestCoinSlot
-                    ? "Please wait for connection."
+                    ? OfflineStatusText()
                     : state.RunningTotalPesos > 0 && _lockedMinimumPesos > 0 &&
                       state.RunningTotalPesos < _lockedMinimumPesos
                     ? "Call staff — you entered less than the minimum amount."
@@ -320,6 +320,11 @@ public partial class LockOverlayWindow : Window, IDisposable
                 break;
         }
     }
+
+    private string OfflineStatusText() =>
+        string.IsNullOrWhiteSpace(_connectionState.OwnerHint)
+            ? "Please wait for connection."
+            : $"Please wait for connection.\n{_connectionState.OwnerHint}";
 
     public void UpdateConnectionState(ClientConnectionState state)
     {

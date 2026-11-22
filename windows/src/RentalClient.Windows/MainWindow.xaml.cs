@@ -584,7 +584,29 @@ public partial class MainWindow : Window
             ClientConnectionMode.OfflineUntrusted,
             "UNTRUSTED",
             $"Server unreachable for {(int)offlineFor.TotalSeconds}s. Waiting for server sync.",
-            false);
+            false,
+            offlineFor >= OwnerHintAfter ? BuildOwnerHint() : null);
+    }
+
+    // A first-time owner otherwise sees only "Please wait for connection."
+    // with no clue what is wrong, so after a while say what the PC is trying.
+    private static readonly TimeSpan OwnerHintAfter = TimeSpan.FromSeconds(30);
+
+    private string BuildOwnerHint()
+    {
+        if (_mqtt is null)
+        {
+            return "Owner: Slotify could not start. Check appsettings.json.";
+        }
+
+        if (_mqtt.DiscoveryFailed)
+        {
+            return "Owner: server not found on the network. Open Slotify Server on the server PC " +
+                   "(same router, AP isolation off). Still stuck? Reinstall the client and type the server IP instead of \"auto\".";
+        }
+
+        return $"Owner: can't reach the server at {_mqtt.BrokerEndpoint}. Is Slotify Server open and the " +
+               "Mosquitto service running? Firewall must allow TCP 1883 on the server PC.";
     }
 
     private void ApplySessionState(SessionTrackerState state)

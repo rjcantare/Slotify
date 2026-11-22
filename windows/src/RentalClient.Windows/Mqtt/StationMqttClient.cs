@@ -86,6 +86,12 @@ public sealed class StationMqttClient : IAsyncDisposable
 
     public string BrokerEndpoint => $"{_brokerHost}:{_brokerPort}";
 
+    // True when broker.host is "auto" and the last attempt found no server
+    // (and none was found earlier in this run). Drives the lock-screen hint.
+    public bool DiscoveryFailed { get; private set; }
+
+    private DiscoveryResult? _lastDiscovered;
+
     public async Task ConnectAsync(CancellationToken cancellationToken = default)
     {
         if (_client.IsConnected)
@@ -108,12 +114,29 @@ public sealed class StationMqttClient : IAsyncDisposable
             {
                 _brokerHost = discovered.BrokerHost;
                 _brokerPort = discovered.BrokerPort;
+                _lastDiscovered = discovered;
+                DiscoveryFailed = false;
                 EmitStatus(false, $"Discovered broker at {_brokerHost}:{_brokerPort}.");
+            }
+            else if (_lastDiscovered is not null)
+            {
+                // A missed broadcast after a server restart shouldn't strand the
+                // PC: retry the server we found earlier in this run.
+                _brokerHost = _lastDiscovered.BrokerHost;
+                _brokerPort = _lastDiscovered.BrokerPort;
+                EmitStatus(false, $"LAN discovery found no server. Retrying last known server {BrokerEndpoint}.");
             }
             else
             {
-                EmitStatus(false, "LAN discovery found no server. Will retry with configured host.");
+                // Nothing to connect to: the literal "auto" is not a host name.
+                DiscoveryFailed = true;
+                throw new InvalidOperationException(
+                    "Server not found on the network (auto-detect). Is Slotify Server open on the server PC?");
             }
+        }
+        else
+        {
+            DiscoveryFailed = false;
         }
 
         _bootTimestamp = Stopwatch.GetTimestamp();
