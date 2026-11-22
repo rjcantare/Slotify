@@ -81,6 +81,19 @@ cd firmware && cp include/config.example.h include/config.h && pio run -e esp32d
 - Release installers are not code-signed. Verify them with the SHA-256
   hashes on the Releases page.
 
+## Support Slotify
+
+Slotify is free and will stay free: no license, no monthly fee, no activation.
+If it helps your shop and you want to support development (test hardware,
+coin slots and tablets), you can send any amount by GCash or InstaPay.
+It's optional, with nothing in return.
+
+<img src="docs/images/gcash-qr.png" alt="GCash QR code for Slotify" width="220">
+
+Other ways to help: star this repo, report bugs in
+[Issues](https://github.com/rjcantare/Slotify/issues), or join as a tester
+(traditional HDD/SSD setups and CCBoot are wanted most).
+
 ## License
 
 [GPL-3.0](LICENSE). You may use, modify, share, and sell Slotify, but if you
