@@ -30,6 +30,8 @@ If you run it on one of the untested setups, please send a
 - **Shop owners:** download the files from **[Releases](../../releases)**, then
   follow **[docs/OWNER-GUIDE.md](docs/OWNER-GUIDE.md)**. It covers parts,
   coin-box wiring, flashing, installing, and testing.
+- **Coin box wiring:** [all-in-one diagram](docs/images/wiring-all-in-one.png)
+  or the [step-by-step wiring page](https://rjcantare.github.io/Slotify/wiring.html).
 - **Hardware details:** [docs/hardware/](docs/hardware/)
 
 ## What's in this repo

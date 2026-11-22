@@ -50,6 +50,8 @@ All parts are sold on Shopee, Lazada and in local electronics shops. Prices chan
 
 ## 2. Coin box wiring
 
+![Full coin box wiring on one diagram](images/wiring-all-in-one.png)
+
 > **Easier version:** the [step-by-step wiring page](https://rjcantare.github.io/Slotify/wiring.html) splits this into 4 small colour-coded diagrams with a tick-box checklist.
 > **Or skip the hand wiring:** the [custom coin box board](https://github.com/rjcantare/Slotify/tree/main/hardware/coin-box-board) has the same circuit with screw terminals. You can order it from a PCB maker or etch it yourself.
 
