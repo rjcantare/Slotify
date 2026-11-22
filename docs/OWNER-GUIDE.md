@@ -315,10 +315,19 @@ unless you factory reset the tablet.
 
 ## 8. Admin password, prices and final test
 
-0. **Change the admin password first.** On the server, open **Tablet Admin
-   Password** and set a new one. It applies to the PCs and tablets. The
-   default `admin@123!` is public, and anyone who knows it can open
-   maintenance mode on your units.
+0. **Change the admin password first.**
+   - **Default password: `admin@123!`.** There is one admin password for
+     every PC and tablet. The server window itself has no password.
+   - Use it with the **Admin** button (bottom-left of a locked PC, or on the
+     tablet, §7.3).
+   - **To change it:** on the server, click **Setup → Tablet Admin**, type
+     the new password twice (at least 6 characters), and save. Despite the
+     name, it applies to the PCs **and** tablets, and it reaches them right away.
+   - The default is public, so anyone who knows it can open maintenance
+     mode on your units. Change it before you open the shop.
+   - A brand-new PC or tablet that has **never** connected to the server
+     still accepts `admin@123!`. Once it has received your new password, only
+     the new one works, even when it's offline.
 1. Server → **Setup → Edit Rates** → set prices per device type → Save. The
    new prices reach every unit right away.
 2. On a locked PC: **Insert Coin** → drop a coin → time is added and the
@@ -332,6 +341,7 @@ unless you factory reset the tablet.
 
 | Problem | Check |
 |---------|-------|
+| PC stuck on the lock screen: **OFFLINE** / "Please wait for connection." | The PC can't reach the server. After 30 seconds the lock screen shows a hint with the reason. Check, in order: **(1)** Is the **Slotify Server** window open on the server PC? **(2)** On the server PC, run `Get-Service mosquitto` in PowerShell. It must say **Running**; if not, run `Start-Service mosquitto` as admin. **(3)** Same router/network, and AP isolation off (§4)? **(4)** From the PC, run `Test-NetConnection <server IP> -Port 1883`. If `TcpTestSucceeded : False`, an antivirus or firewall on the **server** is blocking TCP 1883, so allow it. **(5)** "Server not found on the network" means auto-detect failed: reinstall the client and type the server IP instead of `auto`. |
 | PC not on the server | Server window open? `ping <server IP>` from the PC. Reinstall the client and type the server IP instead of `auto`. Diskless: is the hostname unique? |
 | Tablet won't connect | AP isolation off? Was the server running **before** you opened the app? |
 | Coinslot rejects every coin | Normal when no one has tapped Insert Coin (the slot only opens during that window). If it still rejects during a claim: check the GPIO 23 ↔ SET wire and that `coin-01` is online. |

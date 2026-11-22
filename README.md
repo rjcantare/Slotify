@@ -66,8 +66,8 @@ cd firmware && cp include/config.example.h include/config.h && pio run -e esp32d
 
 ## Security notes (read before deploying)
 
-- **Change the default admin password.** It's `admin@123!` on the server,
-  PCs and tablets until you set your own on the server (**Tablet Admin Password**; it applies to PCs too).
+- **Change the default admin password.** It's `admin@123!` for the **Admin** button on
+  every PC and tablet until you set your own on the server (**Setup → Tablet Admin**; it applies to PCs too).
   This repo is public, so everyone knows the default.
 - **OTA updates of the coin box are disabled** in public builds
   (`OTA_PASSWORD ""`). If you enable it in your own build, use a unique
