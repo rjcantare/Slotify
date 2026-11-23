@@ -54,6 +54,7 @@ All parts are sold on Shopee, Lazada and in local electronics shops. Prices chan
 
 > **Easier version:** the [step-by-step wiring page](https://rjcantare.github.io/Slotify/wiring.html) splits this into 4 small colour-coded diagrams with a tick-box checklist.
 > **Or skip the hand wiring:** the [custom coin box board](https://github.com/rjcantare/Slotify/tree/main/hardware/coin-box-board) has the same circuit with screw terminals. You can order it from a PCB maker or etch it yourself.
+> **Or buy a ready-made board (UNTESTED):** Denz Customized's "Mini Wireless Sub Vendo Board" v2.0 with a 38-pin ESP32 is supported by a separate firmware file, `coin-box-denz-merged.bin`. It hasn't been tried on a real board yet. Read [hardware/denz-subvendo-board.md](hardware/denz-subvendo-board.md) for the jumpers and the bench test before using it. If you use it, skip the rest of section 2 except §2.5 (Allan settings).
 
 ![Coin box breadboard prototype](images/S9-esp32-breadboard.png)
 
@@ -177,7 +178,8 @@ The firmware timing is tuned for SLOW. FAST or MEDIUM will miscount coins.
 ## 3. Flash the coin box (one time, from Chrome)
 
 1. Download **`coin-box-merged.bin`** from the Releases page. It's the full
-   image (bootloader + partitions + app).
+   image (bootloader + partitions + app). On Denz's ready-made board, use
+   **`coin-box-denz-merged.bin`** instead (from v1.3.2 on, untested).
 2. Install the USB driver if Windows doesn't see the ESP32: **CH340**
    (`CH341SER.EXE`) or **CP210x**.
 3. Connect the ESP32 by USB (use a **data** cable, not charging-only). For

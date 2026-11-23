@@ -9,6 +9,7 @@ step-by-step build, start with [../OWNER-GUIDE.md](../OWNER-GUIDE.md), section 2
 | [esp32-wiring.md](esp32-wiring.md) | Original breadboard design, pin choices, why each part exists |
 | [coin-acceptor-spec.md](coin-acceptor-spec.md) | Allan 1239A settings, firmware timing constants, anti-phantom defense layers |
 | [perfboard-build-task.md](perfboard-build-task.md) | Row/column perfboard walkthrough |
+| [denz-subvendo-board.md](denz-subvendo-board.md) | **Untested:** using Denz Customized's ready-made sub vendo board instead of building one |
 
 Notes:
 - Where these files disagree, **`production-wiring.md` is the current design**.
