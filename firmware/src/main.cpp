@@ -52,10 +52,45 @@
 #define WIFI_PORTAL_PASSWORD "slotify-setup"
 #endif
 
-// --- GPIO pin map (matches ProjectContext/esp32-wiring.md) ---
-static const uint8_t LED_PIN          = 19;  // COIN_LED_OUT — drives bench LED + Q1 base
+// --- GPIO pin map ---
+// The coin box can be locked two ways:
+//   SET mode (default, Slotify board): the Allan SET wire. LOW rejects
+//     coins, HIGH accepts. A 10k SET-to-GND pulldown keeps reset/offline
+//     fail-safe.
+//   POWER-CUT mode (ready-made sub-vendo boards with no SET wire): a relay
+//     feeds the acceptor's 12V. The acceptor is powered only during a claim,
+//     so an unpowered acceptor simply returns every coin.
+#if defined(BOARD_DENZ_SUBVENDO)
+// Denz Customized "Mini Wireless Sub Vendo Board" v2.0 with a 38-pin ESP32
+// in the "38P ESP32" socket. UNTESTED on real hardware.
+//   SWITCH SETTINGS jumpers: COIN -> 27, RELAY -> 25.
+//   (Not 12: GPIO 12 is an ESP32 boot strapping pin, and a relay circuit
+//   holding it high at power-on can stop the ESP32 from booting.)
+// The LED "TRIG" output's GPIO is not printed on the board, so the LED is
+// not driven (LED_PIN = -1) until it is confirmed.
+static const int8_t  LED_PIN          = -1;
+static const uint8_t COIN_PULSE_PIN   = 27;
+static const uint8_t INHIBIT_PIN      = 25;  // RELAY: acceptor 12V
+#define ACCEPTOR_POWER_CUT 1
+#else
+// Slotify coin box board / perfboard (matches docs/hardware/esp32-wiring.md)
+static const int8_t  LED_PIN          = 19;  // COIN_LED_OUT — drives bench LED + Q1 base
 static const uint8_t COIN_PULSE_PIN   = 18;  // COIN_PULSE_IN — falling edge per acceptor pulse
 static const uint8_t INHIBIT_PIN      = 23;  // ACCEPTOR_INHIBIT: SET LOW rejects coins; SET HIGH accepts coins. A 10k SET-to-GND pulldown keeps reset/offline fail-safe.
+#endif
+
+#ifdef ACCEPTOR_POWER_CUT
+// Relay polarity. 1 = GPIO HIGH powers the acceptor (relay energized = on),
+// so a dead or rebooting ESP32 leaves the acceptor unpowered. Override with
+// -D ACCEPTOR_POWER_ON_LEVEL=0 if the board's relay is wired the other way.
+#ifndef ACCEPTOR_POWER_ON_LEVEL
+#define ACCEPTOR_POWER_ON_LEVEL 1
+#endif
+// An Allan acceptor can emit a stray edge while it powers up. Ignore any
+// burst that starts this soon after the relay turns the acceptor on.
+static const unsigned long ACCEPTOR_POWERUP_IGNORE_MS = 1500;
+static unsigned long       acceptorPoweredAtMs        = 0;
+#endif
 
 // --- Timing constants ---
 static const unsigned long SERIAL_BAUD                = 115200;
@@ -469,7 +504,9 @@ static void onMqttMessage(char* topic, byte* payload, unsigned int len) {
 
 static void setLed(bool on) {
     ledOn = on;
-    digitalWrite(LED_PIN, on ? HIGH : LOW);
+    if (LED_PIN >= 0) {
+        digitalWrite(LED_PIN, on ? HIGH : LOW);
+    }
 }
 
 // Drive the Allan SET pin via INHIBIT_PIN.
@@ -480,6 +517,18 @@ static void setAcceptorInhibit(bool inhibit) {
     if (acceptorInhibited == inhibit) {
         return;
     }
+
+#ifdef ACCEPTOR_POWER_CUT
+    // Power-cut boards: "inhibit" = relay off = acceptor unpowered.
+    const uint8_t level = inhibit ? !ACCEPTOR_POWER_ON_LEVEL : ACCEPTOR_POWER_ON_LEVEL;
+    digitalWrite(INHIBIT_PIN, level);
+    pinMode(INHIBIT_PIN, OUTPUT);
+    if (!inhibit) {
+        acceptorPoweredAtMs = millis();
+    }
+    acceptorInhibited = inhibit;
+    return;
+#endif
 
     if (inhibit) {
         digitalWrite(INHIBIT_PIN, LOW);
@@ -908,6 +957,16 @@ static void finalizeBurst() {
         goto reset;
     }
 
+#ifdef ACCEPTOR_POWER_CUT
+    // Power-cut boards: a burst that starts while the acceptor is still
+    // powering up is a start-up glitch, not a coin.
+    if ((long)(burstStartMs - acceptorPoweredAtMs) < (long)ACCEPTOR_POWERUP_IGNORE_MS) {
+        Serial.printf("[pulse] DROP acceptor power-up glitch count=%u (%ld ms after power on)\n",
+                      burstPulseCount, (long)(burstStartMs - acceptorPoweredAtMs));
+        goto reset;
+    }
+#endif
+
     Serial.printf("[pulse] burst complete count=%u duration=%lu ms denom=%d\n",
                   burstPulseCount, durationMs, denomination);
 
@@ -1057,9 +1116,17 @@ void setup() {
     Serial.printf ("  Build: %s %s\n", __DATE__, __TIME__);
     Serial.println("=================================================");
 
-    pinMode(LED_PIN, OUTPUT);
-    digitalWrite(LED_PIN, LOW);
+    if (LED_PIN >= 0) {
+        pinMode(LED_PIN, OUTPUT);
+        digitalWrite(LED_PIN, LOW);
+    }
+#ifdef ACCEPTOR_POWER_CUT
+    // Ready-made boards may wire the acceptor's open-collector COIN line
+    // straight to the GPIO; the internal pull-up keeps it from floating.
+    pinMode(COIN_PULSE_PIN, INPUT_PULLUP);
+#else
     pinMode(COIN_PULSE_PIN, INPUT);
+#endif
 
     // Inhibit the acceptor immediately. This runs before WiFi/MQTT come up
     // and before the pulse ISR attaches, so the acceptor is electrically

@@ -1,6 +1,6 @@
 # Builds every public release file for one Slotify version into release\v<Version>\:
 #   RentalSystem-Server-Setup.exe, RentalSystem-Client-Setup.exe,
-#   RentalSystem-Tablet.apk, coin-box-merged.bin, SHA256SUMS.txt
+#   RentalSystem-Tablet.apk, coin-box-merged.bin, coin-box-denz-merged.bin, SHA256SUMS.txt
 # plus the in-place update files the shop server's Update button uses:
 #   RentalServer.exe, RentalClient.Windows.exe (single-file), update.json
 #
@@ -81,13 +81,7 @@ if (-not $SkipFirmware) {
         $cfg = $cfg -replace '#define\s+FIRMWARE_VERSION\s+"[^"]*"', "#define FIRMWARE_VERSION `"$Version`""
         Set-Content -Path $configH -Value $cfg -Encoding ascii
 
-        Invoke-Checked $pio @("run", "-e", "esp32dev") $fw
-
-        $build = Join-Path $fw ".pio\build\esp32dev"
         $bootApp0 = Join-Path $pioHome "packages\framework-arduinoespressif32\tools\partitions\boot_app0.bin"
-        foreach ($f in @("$build\bootloader.bin", "$build\partitions.bin", "$build\firmware.bin", $bootApp0)) {
-            if (-not (Test-Path $f)) { throw "Missing $f after the PlatformIO build." }
-        }
         # esptool: a pip-installed one (CI: pip install "esptool<5") or PlatformIO's bundled copy
         # run with PlatformIO's own Python, which has esptool's dependencies.
         $python = Find-Tool "python" @()
@@ -100,20 +94,35 @@ if (-not $SkipFirmware) {
             $esptoolCmd = @("$pioHome\penv\Scripts\python.exe", "$pioHome\packages\tool-esptoolpy\esptool.py")
         }
         if (-not $esptoolCmd) { throw "esptool not found. Run: pip install `"esptool<5`"" }
-        $merged = Join-Path $out "coin-box-merged.bin"
-        # One image flashable at 0x0 from the browser flasher.
-        Invoke-Checked $esptoolCmd[0] (@($esptoolCmd | Select-Object -Skip 1) + @("--chip", "esp32", "merge_bin", "-o", $merged,
-            "--flash_mode", "dio", "--flash_size", "4MB",
-            "0x1000", "$build\bootloader.bin", "0x8000", "$build\partitions.bin",
-            "0xe000", $bootApp0, "0x10000", "$build\firmware.bin")) $fw
 
-        # Refuse to ship if a private password slipped into the image.
-        $bytes = [System.IO.File]::ReadAllBytes($merged)
-        $text = [System.Text.Encoding]::ASCII.GetString($bytes)
-        foreach ($secret in @($devOtaPassword, "change-me-per-shop") | Where-Object { $_ }) {
-            if ($text.Contains($secret)) { throw "coin-box-merged.bin contains an OTA password. Not shipping it." }
+        # One image per supported board, each flashable at 0x0 from the browser flasher.
+        #   esp32dev       -> Slotify coin box board / perfboard (SET wire)
+        #   esp32dev-denz  -> Denz "Mini Wireless Sub Vendo Board" (relay power cut, untested)
+        $images = @(
+            @{ Env = "esp32dev";      File = "coin-box-merged.bin" },
+            @{ Env = "esp32dev-denz"; File = "coin-box-denz-merged.bin" }
+        )
+        foreach ($img in $images) {
+            Invoke-Checked $pio @("run", "-e", $img.Env) $fw
+
+            $build = Join-Path $fw ".pio\build\$($img.Env)"
+            foreach ($f in @("$build\bootloader.bin", "$build\partitions.bin", "$build\firmware.bin", $bootApp0)) {
+                if (-not (Test-Path $f)) { throw "Missing $f after the PlatformIO build." }
+            }
+            $merged = Join-Path $out $img.File
+            Invoke-Checked $esptoolCmd[0] (@($esptoolCmd | Select-Object -Skip 1) + @("--chip", "esp32", "merge_bin", "-o", $merged,
+                "--flash_mode", "dio", "--flash_size", "4MB",
+                "0x1000", "$build\bootloader.bin", "0x8000", "$build\partitions.bin",
+                "0xe000", $bootApp0, "0x10000", "$build\firmware.bin")) $fw
+
+            # Refuse to ship if a private password slipped into the image.
+            $bytes = [System.IO.File]::ReadAllBytes($merged)
+            $text = [System.Text.Encoding]::ASCII.GetString($bytes)
+            foreach ($secret in @($devOtaPassword, "change-me-per-shop") | Where-Object { $_ }) {
+                if ($text.Contains($secret)) { throw "$($img.File) contains an OTA password. Not shipping it." }
+            }
+            Write-Host "Firmware OK: $merged"
         }
-        Write-Host "Firmware OK: $merged"
     } finally {
         if (Test-Path $backup) { Move-Item $backup $configH -Force } else { Remove-Item $configH -Force -ErrorAction SilentlyContinue }
     }
