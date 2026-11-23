@@ -1,5 +1,9 @@
 # Production wiring (coin-box install)
 
+![Full coin box wiring on one diagram](../images/wiring-all-in-one.png)
+
+> The all-in-one diagram above is the current hand-wired build (also on the [wiring page](https://rjcantare.github.io/Slotify/wiring.html)). Other builds: [Slotify PCB](../../hardware/coin-box-board/README.md) (prototype) and the [Denz ready-made board](denz-subvendo-board.md) (untested).
+
 Production-safe layout to take the S9 bench design from breadboard onto a
 perfboard mounted inside the actual coin box. It removes only bench-only or
 duplicate parts. The anti-pitik shunt cap C1 is left unpopulated — the board

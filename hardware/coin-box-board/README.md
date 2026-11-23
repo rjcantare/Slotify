@@ -22,6 +22,14 @@ A small 80 × 64 mm board that replaces the breadboard or perfboard in the coin 
 
 The **ESP32** and the **LM2596** module stay off the board and connect by wire. ESP32 boards come in different widths and pin orders, so wiring them keeps this board compatible with any of them.
 
+## Wiring
+
+The board carries the same circuit as the hand-wired build, so the [all-in-one wiring diagram](../../docs/images/wiring-all-in-one.png) shows where every wire goes, including the ESP32 and LM2596 wires that stay off the board:
+
+[<img src="../../docs/images/wiring/wiring-all-in-one-1200.jpg" width="480" alt="All-in-one coin box wiring diagram">](../../docs/images/wiring-all-in-one.png)
+
+Other builds: the [Denz ready-made board](../../docs/hardware/denz-subvendo-board.md) (untested) needs no PCB at all. All diagrams: [wiring page](https://rjcantare.github.io/Slotify/wiring.html).
+
 ## Connectors
 
 | | Pins (left → right) | Connect to |

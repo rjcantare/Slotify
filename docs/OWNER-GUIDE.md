@@ -50,11 +50,21 @@ All parts are sold on Shopee, Lazada and in local electronics shops. Prices chan
 
 ## 2. Coin box wiring
 
+There are three ways to build the coin box. Pick one:
+
+| Build | Status | Firmware | Wiring |
+|-------|--------|----------|--------|
+| **Hand-wired ESP32** (breadboard or perfboard) | Tested in our shop | `coin-box-merged.bin` | This section, §2.1 to §2.7 |
+| **Slotify PCB (V1)**, same circuit with screw terminals | Prototype, not yet manufactured | `coin-box-merged.bin` | [§2.8](#28-option-slotify-pcb-v1-prototype) |
+| **Denz ready-made board** (Mini Wireless Sub Vendo Board v2.0) | **⚠ UNTESTED, testers wanted** | `coin-box-denz-merged.bin` | [§2.9](#29-option-denz-ready-made-board-untested) |
+
+All three diagrams are also on the [wiring page](https://rjcantare.github.io/Slotify/wiring.html) of the website.
+
+**Hand-wired ESP32 build:**
+
 ![Full coin box wiring on one diagram](images/wiring-all-in-one.png)
 
-> **Easier version:** the [step-by-step wiring page](https://rjcantare.github.io/Slotify/wiring.html) splits this into 4 small colour-coded diagrams with a tick-box checklist.
-> **Or skip the hand wiring:** the [custom coin box board](https://github.com/rjcantare/Slotify/tree/main/hardware/coin-box-board) has the same circuit with screw terminals. You can order it from a PCB maker or etch it yourself.
-> **Or buy a ready-made board (UNTESTED):** Denz Customized's "Mini Wireless Sub Vendo Board" v2.0 with a 38-pin ESP32 is supported by a separate firmware file, `coin-box-denz-merged.bin`. It hasn't been tried on a real board yet. See its [wiring diagram](images/wiring-denz-board.png), then read [hardware/denz-subvendo-board.md](hardware/denz-subvendo-board.md) for the jumpers and the bench test before using it. If you use it, skip the rest of section 2 except §2.5 (Allan settings).
+> **Easier version:** the [step-by-step wiring page](https://rjcantare.github.io/Slotify/wiring.html#steps) splits this into 4 small colour-coded diagrams with a tick-box checklist.
 
 ![Coin box breadboard prototype](images/S9-esp32-breadboard.png)
 
@@ -172,6 +182,41 @@ The firmware timing is tuned for SLOW. FAST or MEDIUM will miscount coins.
    must credit exactly **₱36**.
 5. **24-hour test:** compare the server's coin total with the actual coins in
    the box.
+
+### 2.8 Option: Slotify PCB (V1, prototype)
+
+![Slotify coin box PCB, top view](pcb/preview.svg)
+
+The same circuit as the hand-wired build on an 80 × 64 mm board. Everything
+plugs into screw terminals and pin headers; the ESP32 and the LM2596 connect
+by wire, exactly as in the all-in-one diagram above. **Status: prototype, not
+yet manufactured.** Order a small batch and test one board fully first.
+
+- Order it: upload the [Gerber files](pcb/slotify-coin-board-gerbers.zip) to JLCPCB, PCBWay or a similar maker.
+- Or etch it: print the [PCB PDF](pcb/slotify-coin-board-print.pdf) at 100 %.
+- Connectors and parts: [hardware/coin-box-board/README.md](../hardware/coin-box-board/README.md).
+- Still do §2.4 (LM2596 to 5.0 V), §2.5 (Allan settings) and §2.7 (tests).
+
+### 2.9 Option: Denz ready-made board (UNTESTED)
+
+> **⚠ UNTESTED, testers wanted.** Nobody has run Slotify on a real Denz board
+> yet. Do the 6-step bench test in the board guide before using it with
+> customers, and please send your result (Slotify Facebook group or a
+> [GitHub issue](https://github.com/rjcantare/Slotify/issues)).
+
+![Slotify coin box wiring on the Denz Mini Wireless Sub Vendo Board v2.0](images/wiring-denz-board.png)
+
+Denz Customized's "Mini Wireless Sub Vendo Board" v2.0 with a **38-pin ESP32**
+in its **38P ESP32** socket (not the ESP8266 one). No soldering:
+
+1. Set the jumpers: **COIN → 27**, **RELAY → 25**.
+2. Program the Allan as in §2.5.
+3. Connect the Allan to the board's COINSLOT header: DC12V, COIN, GND.
+4. Flash **`coin-box-denz-merged.bin`** (§3), not `coin-box-merged.bin`.
+
+Full setup, how it locks the slot without a SET wire, and the bench test:
+[hardware/denz-subvendo-board.md](hardware/denz-subvendo-board.md). If you use
+this board, skip §2.1 to §2.4, §2.6 and §2.8.
 
 ---
 

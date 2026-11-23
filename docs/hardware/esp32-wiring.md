@@ -1,5 +1,9 @@
 # ESP32 wiring — coin acceptor + LED frame
 
+![Full coin box wiring on one diagram](../images/wiring-all-in-one.png)
+
+> The all-in-one diagram above shows the current hand-wired build; this file is the original breadboard design notes (also on the [wiring page](https://rjcantare.github.io/Slotify/wiring.html)). Other builds: [Slotify PCB](../../hardware/coin-box-board/README.md) (prototype) and the [Denz ready-made board](denz-subvendo-board.md) (untested).
+
 Final hardware design for the coin pulse input and LED indicator output. Locked at end of S9 after bench-verified breadboard build. This file is the authoritative reference for the ESP32-side hardware that S10 firmware will target.
 
 ## Bill of materials

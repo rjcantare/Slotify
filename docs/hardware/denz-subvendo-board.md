@@ -11,6 +11,8 @@ you plug in an ESP32, set two jumpers, and connect the coin acceptor.
 
 ![Slotify coin box wiring on the Denz Mini Wireless Sub Vendo Board v2.0](../images/wiring-denz-board.png)
 
+Also on the website: [wiring page, Denz board](https://rjcantare.github.io/Slotify/wiring.html#denz). Other builds: [hand-wired ESP32](../images/wiring-all-in-one.png) (tested) and the [Slotify PCB](../../hardware/coin-box-board/README.md) (prototype).
+
 ## What's on the board (from the silkscreen)
 
 | Part | Label on the board | Used by Slotify? |

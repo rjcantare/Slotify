@@ -1,5 +1,7 @@
 # Perfboard build task - coin acceptor board
 
+> Wiring at a glance: [all-in-one diagram](../images/wiring-all-in-one.png) (same circuit as the perfboard). Want to skip the perfboard? See the [Slotify PCB](../../hardware/coin-box-board/README.md) or the [Denz ready-made board](denz-subvendo-board.md) (untested).
+
 Use this task when moving the validated breadboard circuit onto perfboard.
 The goal is not to redesign the circuit. The goal is to copy the exact
 production-safe breadboard state that already passed bench tests.
