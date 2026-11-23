@@ -9,6 +9,8 @@ Use this if you'd rather buy a finished board than build the Slotify coin box
 board or perfboard. It's sold by Denz Customized on Facebook. No soldering:
 you plug in an ESP32, set two jumpers, and connect the coin acceptor.
 
+![Slotify coin box wiring on the Denz Mini Wireless Sub Vendo Board v2.0](../images/wiring-denz-board.png)
+
 ## What's on the board (from the silkscreen)
 
 | Part | Label on the board | Used by Slotify? |
