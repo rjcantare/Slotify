@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Coin Box Wiring</title>
-<meta name="description" content="Step-by-step wiring for the Slotify coin box: power, coin signal, coin lock (SET) and slot light, with a checklist of every connection.">
+<meta name="description" content="Every Slotify coin box wiring diagram: the hand-wired ESP32 build (with 4 small steps and a checklist), Denz's ready-made sub vendo board (untested), and the Slotify PCB.">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <style>
 :root{
@@ -89,6 +89,25 @@ table.check{width:100%;border-collapse:collapse;font-size:.95rem}
 ul.pre{list-style:none;padding:0;margin:0;display:grid;gap:10px}
 ul.pre li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
 footer{padding:36px 0;color:var(--muted);font-size:.9rem}
+
+.builds-intro{margin:28px 0 4px}
+.builds{display:grid;gap:18px;margin:14px 0 8px}
+.build{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.build > a.pic{display:block;background:#fff;border-bottom:1px solid var(--line)}
+.build > a.pic img{display:block;width:100%;height:auto}
+.build .body{padding:14px 16px 16px}
+.build h3{font-size:1.15rem;margin:6px 0 4px}
+.build p{margin:0 0 .6em;font-size:.95rem}
+.build .for{color:var(--muted);font-size:.9rem}
+.pill{display:inline-block;font-size:.74rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+.pill.ok{background:#E3F4E8;color:#14612F}
+.pill.warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pill.ok{background:#173523;color:#8FE3A8}}
+:root[data-theme="dark"] .pill.ok{background:#173523;color:#8FE3A8}
+.links{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:.92rem;font-weight:600}
+.links a{color:var(--text);text-decoration:underline;text-decoration-color:var(--gold-deep);text-underline-offset:3px}
+.tester{background:var(--warn-bg);border-radius:10px;padding:10px 12px;font-size:.92rem;margin:4px 0 10px}
+h2.part{font-size:1.5rem;margin:40px 0 0;padding-top:8px}
 </style>
 </head>
 <body>
@@ -100,8 +119,8 @@ footer{padding:36px 0;color:var(--muted);font-size:.9rem}
 
 <header class="top"><div class="wrap">
   <div class="eyebrow">Coin box wiring</div>
-  <h1>Wire it in 4 small steps</h1>
-  <p>Each step is one small circuit. Finish a step, tick its connections in the checklist at the bottom, then move on. Every diagram uses the same two rails: <b>+12&nbsp;V</b> on top and <b>GND</b> at the bottom.</p>
+  <h1>Every coin box wiring diagram</h1>
+  <p>Pick your build below: wire an ESP32 by hand, use Denz's ready-made board, or use the Slotify PCB. For the hand-wired build, the 4 small steps further down show one circuit at a time, with a checklist at the bottom.</p>
   <div class="legend" aria-label="Wire colours">
     <span><i style="background:var(--w12)"></i>+12 V</span>
     <span><i style="background:var(--wgnd);outline:1px solid #ffffff33"></i>GND</span>
@@ -115,12 +134,57 @@ footer{padding:36px 0;color:var(--muted);font-size:.9rem}
 
 <main class="wrap">
 
-  <figure id="all-in-one" style="margin:24px 0 0">
-    <p style="margin:0 0 10px"><b>Want to see everything at once?</b> Here's the whole coin box on one diagram. Tap it to open it full size. The 4 steps below show the same wires, one small circuit at a time.</p>
-    <a href="images/wiring-all-in-one.png" target="_blank" rel="noopener"><img src="images/wiring-all-in-one.png" alt="Full Slotify coin box wiring on one diagram: 12 V supply, Allan 1239A, LM2596, EL817, ESP32 38-pin, slot light" width="1920" height="1080" style="width:100%;height:auto;border-radius:10px;background:#fff"></a>
-  </figure>
+  <p class="builds-intro muted">Tap a diagram to open it full size.</p>
+  <div class="builds">
 
-  <p style="margin:24px 0 0">Rather not wire it by hand? There is a <a href="index.html#pcb"><b>ready-made board</b></a> you can order from a PCB maker or etch yourself. It has the same circuit, and everything plugs into screw terminals.</p>
+    <article class="build" id="all-in-one">
+      <a class="pic" href="images/wiring-all-in-one.png" target="_blank" rel="noopener"><img src="images/wiring/wiring-all-in-one-1200.jpg" alt="Full Slotify coin box wiring on one diagram: 12 V supply, Allan 1239A, LM2596, EL817, ESP32 38-pin, slot light" width="1200" height="675" loading="lazy"></a>
+      <div class="body">
+        <span class="pill ok">Tested in our shop</span>
+        <h3>Hand-wired ESP32 build (all-in-one)</h3>
+        <p class="for">For: 38-pin ESP32 DevKit, Allan 1239A, LM2596, EL817, 2N2222A on a breadboard or perfboard. Firmware: <code>coin-box-merged.bin</code>.</p>
+        <div class="links">
+          <a href="#step1">4 small steps ↓</a>
+          <a href="#checklist">Checklist ↓</a>
+          <a href="https://github.com/rjcantare/Slotify/blob/main/docs/OWNER-GUIDE.md#2-coin-box-wiring">Owner Guide §2</a>
+          <a href="images/S9-esp32-breadboard.png" target="_blank" rel="noopener">Breadboard photo</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="build" id="denz">
+      <a class="pic" href="images/wiring-denz-board.png" target="_blank" rel="noopener"><img src="images/wiring/wiring-denz-board-1200.jpg" alt="Slotify coin box on Denz Customized's Mini Wireless Sub Vendo Board v2.0: 38-pin ESP32 in the 38P ESP32 socket, jumpers COIN to 27 and RELAY to 25, Allan wired to DC12V, COIN and GND" width="1200" height="675" loading="lazy"></a>
+      <div class="body">
+        <span class="pill warn">Untested · testers wanted</span>
+        <h3>Denz Mini Wireless Sub Vendo Board v2.0</h3>
+        <p class="for">For: Denz Customized's ready-made board with a 38-pin ESP32 DevKit in the <b>38P ESP32</b> socket (not the ESP8266 one). No soldering. Jumpers: COIN → 27, RELAY → 25. Firmware: <code>coin-box-denz-merged.bin</code> (v1.3.2+).</p>
+        <p class="tester">Nobody has run Slotify on a real Denz board yet. Do the 6-step bench test before using it with customers, and please send us your result in the Slotify Facebook group or a <a href="https://github.com/rjcantare/Slotify/issues">GitHub issue</a>.</p>
+        <div class="links">
+          <a href="https://github.com/rjcantare/Slotify/blob/main/docs/hardware/denz-subvendo-board.md">Setup guide + bench test</a>
+          <a href="https://github.com/rjcantare/Slotify/releases/latest">Download firmware</a>
+        </div>
+      </div>
+    </article>
+
+    <article class="build" id="pcb">
+      <a class="pic" href="pcb/preview.svg" target="_blank" rel="noopener"><img src="pcb/preview.svg" alt="Top view of the Slotify coin box board: screw terminals for 12 V in, the LM2596, the coin acceptor and the LED frame, pin headers for the ESP32 and SET, the EL817 optocoupler, a 2N2222A and resistors" loading="lazy"></a>
+      <div class="body">
+        <span class="pill warn">Prototype · not yet manufactured</span>
+        <h3>Slotify coin box PCB (V1)</h3>
+        <p class="for">For: anyone who'd rather not hand-wire. The same circuit as the hand-wired build on an 80 × 64 mm board with screw terminals; the ESP32 and LM2596 connect by wire. Firmware: <code>coin-box-merged.bin</code>.</p>
+        <div class="links">
+          <a href="pcb/slotify-coin-board-print.pdf">Printable PCB (PDF)</a>
+          <a href="pcb/slotify-coin-board-gerbers.zip" download>Gerber files (.zip)</a>
+          <a href="https://github.com/rjcantare/Slotify/tree/main/hardware/coin-box-board">Board README + connectors</a>
+          <a href="index.html#pcb">More on the home page</a>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <h2 class="part" id="steps">Hand-wired build: 4 small steps</h2>
+  <p class="muted" style="margin:6px 0 0">Each step is one small circuit. Finish a step, tick its connections in the checklist at the bottom, then move on. Every diagram uses the same two rails: <b>+12&nbsp;V</b> on top and <b>GND</b> at the bottom.</p>
 
   <div class="warnbox"><p><b>Never let a +12&nbsp;V wire touch an ESP32 pin.</b> The ESP32 only takes 3.3&nbsp;V on its pins (5&nbsp;V on VIN). Keep the 12&nbsp;V supply unplugged while you wire.</p></div>
 
