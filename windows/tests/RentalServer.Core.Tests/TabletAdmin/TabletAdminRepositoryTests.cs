@@ -50,6 +50,27 @@ public sealed class TabletAdminRepositoryTests : IAsyncLifetime
         Assert.True(VerifyHash("changed-pass", config!.PasswordSalt, config.PasswordHash));
     }
 
+    [Fact]
+    public async Task IsDefaultPassword_is_null_before_seed_true_after_seed_false_after_change()
+    {
+        Assert.Null(await _repository.IsDefaultPasswordAsync());
+
+        await _repository.EnsureSeededAsync(FormatUtcNow());
+        Assert.True(await _repository.IsDefaultPasswordAsync());
+
+        await _repository.PublishNewPasswordAsync("changed-pass", FormatUtcNow());
+        Assert.False(await _repository.IsDefaultPasswordAsync());
+    }
+
+    [Fact]
+    public async Task IsDefaultPassword_is_true_when_default_is_set_again()
+    {
+        await _repository.EnsureSeededAsync(FormatUtcNow());
+        await _repository.PublishNewPasswordAsync(TabletAdminRepository.DefaultPassword, FormatUtcNow());
+
+        Assert.True(await _repository.IsDefaultPasswordAsync());
+    }
+
     private static bool VerifyHash(string password, string saltBase64, string hashBase64)
     {
         var salt = Convert.FromBase64String(saltBase64);

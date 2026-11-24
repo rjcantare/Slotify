@@ -110,6 +110,21 @@ public sealed class TabletAdminRepository
             PasswordHash: reader.GetString(2));
     }
 
+    /// <summary>
+    /// True when the current PC/tablet admin password is still <see cref="DefaultPassword"/>,
+    /// false when it was changed, null when no password is stored yet.
+    /// </summary>
+    public async Task<bool?> IsDefaultPasswordAsync(CancellationToken cancellationToken = default)
+    {
+        var config = await GetCurrentConfigAsync(cancellationToken);
+        if (config is null)
+        {
+            return null;
+        }
+
+        return TabletAdminPasswordCheck.Matches(DefaultPassword, config.PasswordSalt, config.PasswordHash);
+    }
+
     public async Task<int> PublishNewPasswordAsync(
         string password,
         string publishedAt,

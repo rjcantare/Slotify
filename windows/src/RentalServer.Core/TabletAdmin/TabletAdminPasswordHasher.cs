@@ -25,4 +25,23 @@ public static class TabletAdminPasswordHasher
     }
 }
 
+public static class TabletAdminPasswordCheck
+{
+    /// <summary>True when <paramref name="password"/> matches the stored salt + hash.</summary>
+    public static bool Matches(string password, string saltBase64, string hashBase64)
+    {
+        try
+        {
+            var salt = Convert.FromBase64String(saltBase64);
+            var expected = Convert.FromBase64String(hashBase64);
+            return CryptographicOperations.FixedTimeEquals(
+                TabletAdminPasswordHasher.HashPassword(password, salt), expected);
+        }
+        catch (FormatException)
+        {
+            return false;
+        }
+    }
+}
+
 public sealed record TabletAdminPasswordHash(string SaltBase64, string HashBase64);
