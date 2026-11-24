@@ -88,6 +88,11 @@ public partial class MainWindow : Window
     // a multi-homed server can see which NIC got picked without a Debug build.
     private string? _discoveryDiagnosticsText;
 
+    // "Check setup" reads these to report on discovery.
+    private string? _advertisedIp;
+    private bool _advertiseHostOverridden;
+    private bool _mdnsRunning;
+
     private HttpFileServer? _httpServer;
     private OnlineUpdatePoller? _onlineUpdatePoller;
 
@@ -493,6 +498,48 @@ public partial class MainWindow : Window
                 MessageBoxButton.OK,
                 MessageBoxImage.Error);
         }
+    }
+
+    private void OnCheckSetupClicked(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var window = new CheckSetupWindow(
+                gatherAsync: GatherSetupSnapshotAsync) { Owner = this };
+            window.Show();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(this, $"Failed to open Check setup: {ex.Message}",
+                "Check setup", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private async Task<RentalServer.Core.SetupCheck.SetupSnapshot> GatherSetupSnapshotAsync()
+    {
+        var stations = await _stationRepository.GetAllAsync(_shutdown.Token);
+        var acceptors = await _acceptorRepository.GetAllAsync(_shutdown.Token);
+        bool? defaultPassword;
+        try
+        {
+            defaultPassword = await _tabletAdminRepository.IsDefaultPasswordAsync(_shutdown.Token);
+        }
+        catch
+        {
+            defaultPassword = null;
+        }
+
+        return await Task.Run(() => SetupProbe.Gather(new SetupProbe.ServerState(
+            ServerVersion: GetRunningVersionDisplay(),
+            MqttPort: _mqttConfig.Port,
+            ServerConnectedToBroker: _mqtt.IsConnected,
+            AdvertisedIp: _advertisedIp,
+            AdvertiseHostOverridden: _advertiseHostOverridden,
+            UdpDiscoveryRunning: _udpBroadcaster is not null,
+            MdnsRunning: _mdnsRunning,
+            Stations: stations,
+            Acceptors: acceptors,
+            DefaultAdminPassword: defaultPassword)));
     }
 
     private void OnHealthClicked(object sender, RoutedEventArgs e)
@@ -3114,6 +3161,8 @@ public partial class MainWindow : Window
         var advertiseHostOverride = _mqttConfig.AdvertiseHost;
         var usingOverride = !string.IsNullOrWhiteSpace(advertiseHostOverride);
         var lanIp = usingOverride ? advertiseHostOverride! : GetLanIpAddress() ?? _mqttConfig.Host;
+        _advertisedIp = lanIp;
+        _advertiseHostOverridden = usingOverride;
 
         var chosenSource = usingOverride ? "advertiseHost config override" : "auto-detected/fallback";
         Debug.WriteLine($"[discovery] chosen advertise IP: {lanIp} (source: {chosenSource})");
@@ -3147,6 +3196,7 @@ public partial class MainWindow : Window
         {
             _mdnsAdvertiser = new MdnsDiscoveryAdvertiser(lanIp, _mqttConfig.Port, "1.1.0");
             _mdnsAdvertiser.Start();
+            _mdnsRunning = true;
         }
         catch (Exception ex)
         {
