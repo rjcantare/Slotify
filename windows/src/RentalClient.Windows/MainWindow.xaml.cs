@@ -602,11 +602,11 @@ public partial class MainWindow : Window
         if (_mqtt.DiscoveryFailed)
         {
             return "Owner: server not found on the network. Open Slotify Server on the server PC " +
-                   "(same router, AP isolation off). Still stuck? Reinstall the client and type the server IP instead of \"auto\".";
+                   "and click Setup → Check Setup to see what's wrong. Still stuck? Reinstall the client and type the server IP instead of \"auto\".";
         }
 
-        return $"Owner: can't reach the server at {_mqtt.BrokerEndpoint}. Is Slotify Server open and the " +
-               "Mosquitto service running? Firewall must allow TCP 1883 on the server PC.";
+        return $"Owner: can't reach the server at {_mqtt.BrokerEndpoint}. On the server PC, open Slotify Server " +
+               "and click Setup → Check Setup. It checks Mosquitto, the firewall (TCP 1883) and the network for you.";
     }
 
     private void ApplySessionState(SessionTrackerState state)

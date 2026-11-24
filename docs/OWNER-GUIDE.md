@@ -388,9 +388,16 @@ unless you factory reset the tablet.
 
 ## 9. Troubleshooting
 
+**Start here: run Check setup.** On the server, click **Setup → Check Setup**
+(v1.3.3+). It checks the Mosquitto broker, Windows Firewall, the network,
+auto-detect, every PC and tablet, the coin box and the admin password, and
+gives a one-line fix for each problem (red **FIX** first, then orange
+**CHECK**). Asking for help in the Slotify Facebook group? Click **Copy
+report** and paste it in your post. It has no passwords and no PC names.
+
 | Problem | Check |
 |---------|-------|
-| PC stuck on the lock screen: **OFFLINE** / "Please wait for connection." | The PC can't reach the server. After 30 seconds the lock screen shows a hint with the reason. Check, in order: **(1)** Is the **Slotify Server** window open on the server PC? **(2)** On the server PC, run `Get-Service mosquitto` in PowerShell. It must say **Running**; if not, run `Start-Service mosquitto` as admin. **(3)** Same router/network, and AP isolation off (§4)? **(4)** From the PC, run `Test-NetConnection <server IP> -Port 1883`. If `TcpTestSucceeded : False`, an antivirus or firewall on the **server** is blocking TCP 1883, so allow it. **(5)** "Server not found on the network" means auto-detect failed: reinstall the client and type the server IP instead of `auto`. |
+| PC stuck on the lock screen: **OFFLINE** / "Please wait for connection." | The PC can't reach the server. After 30 seconds the lock screen shows a hint with the reason. **First run Setup → Check Setup on the server.** If it's all OK, check in order: **(1)** Is the **Slotify Server** window open on the server PC? **(2)** On the server PC, run `Get-Service mosquitto` in PowerShell. It must say **Running**; if not, run `Start-Service mosquitto` as admin. **(3)** Same router/network, and AP isolation off (§4)? **(4)** From the PC, run `Test-NetConnection <server IP> -Port 1883`. If `TcpTestSucceeded : False`, an antivirus or firewall on the **server** is blocking TCP 1883, so allow it. **(5)** "Server not found on the network" means auto-detect failed: reinstall the client and type the server IP instead of `auto`. |
 | PC not on the server | Server window open? `ping <server IP>` from the PC. Reinstall the client and type the server IP instead of `auto`. Diskless: is the hostname unique? |
 | Tablet won't connect | AP isolation off? Was the server running **before** you opened the app? |
 | Coinslot rejects every coin | Normal when no one has tapped Insert Coin (the slot only opens during that window). If it still rejects during a claim: check the GPIO 23 ↔ SET wire and that `coin-01` is online. |
