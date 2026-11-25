@@ -81,6 +81,7 @@ table.check{width:100%;border-collapse:collapse;font-size:.95rem}
 .check th,.check td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
 .check th{font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .check td:first-child{width:34px}
+.check td.n{width:30px;font-weight:800;color:var(--gold-deep)}
 .check input{width:20px;height:20px;accent-color:var(--gold-deep)}
 .check tr.grp td{background:var(--surface-2);font-weight:700;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
 .tablewrap{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow-x:auto;box-shadow:var(--shadow)}
@@ -108,6 +109,34 @@ footer{padding:36px 0;color:var(--muted);font-size:.9rem}
 .links a{color:var(--text);text-decoration:underline;text-decoration-color:var(--gold-deep);text-underline-offset:3px}
 .tester{background:var(--warn-bg);border-radius:10px;padding:10px 12px;font-size:.92rem;margin:4px 0 10px}
 h2.part{font-size:1.5rem;margin:40px 0 0;padding-top:8px}
+
+/* shopping checklist */
+#shopping{border-bottom:none}
+.shop-h{font-size:1.1rem;margin:22px 0 8px}
+.shop-actions{margin:4px 0 0;display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:.92rem}
+.printbtn{font:inherit;font-weight:700;background:var(--gold);color:#0E1626;border:none;border-radius:10px;padding:9px 14px;cursor:pointer}
+table.shop td.q{white-space:nowrap;font-weight:700;width:56px}
+table.shop .spec{display:block;color:var(--muted);font-size:.88rem;margin-top:2px}
+table.shop td.kw{font-family:ui-monospace,Consolas,monospace;font-size:.82rem;color:var(--muted);width:32%}
+ul.tools-list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+ul.tools-list li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+ul.tools-list input{width:18px;height:18px;accent-color:var(--gold-deep);vertical-align:-3px;margin-right:6px}
+@media (max-width:600px){
+  table.shop thead{display:none}
+  table.shop tr:not(.grp){display:grid;grid-template-columns:30px 48px 1fr;gap:2px 6px;padding:8px 6px;border-bottom:1px solid var(--line)}
+  table.shop tr:not(.grp) td{border:none;padding:0}
+  table.shop td.kw{grid-column:3;width:auto}
+  table.shop td.kw::before{content:"Search: ";font-family:inherit}
+}
+@media print{
+  body{background:#fff;color:#000}
+  :root{--surface:#fff;--surface-2:#eee;--text:#000;--muted:#333;--line:#bbb;--shadow:none}
+  .nav,.printbtn,header.top,.builds,.builds-intro,.warnbox{display:none!important}
+  body.print-shop main > :not(#shopping){display:none!important}
+  .tablewrap{overflow:visible;box-shadow:none}
+  table.shop tr{break-inside:avoid}
+  a{text-decoration:none}
+}
 </style>
 </head>
 <body>
@@ -144,6 +173,7 @@ h2.part{font-size:1.5rem;margin:40px 0 0;padding-top:8px}
         <h3>Hand-wired ESP32 build (all-in-one)</h3>
         <p class="for">For: 38-pin ESP32 DevKit, Allan 1239A, LM2596, EL817, 2N2222A on a breadboard or perfboard. Firmware: <code>coin-box-merged.bin</code>.</p>
         <div class="links">
+          <a href="#shopping">What to buy ↓</a>
           <a href="#step1">4 small steps ↓</a>
           <a href="#checklist">Checklist ↓</a>
           <a href="https://github.com/rjcantare/Slotify/blob/main/docs/OWNER-GUIDE.md#2-coin-box-wiring">Owner Guide §2</a>
@@ -182,6 +212,84 @@ h2.part{font-size:1.5rem;margin:40px 0 0;padding-top:8px}
     </article>
 
   </div>
+
+  <section class="step" id="shopping">
+    <div class="step-head"><div class="num">₱</div><div><h2>Checklist ng bibilhin</h2><p>Everything to buy for each build, with the exact spec and a search keyword. Tick as you buy.</p></div></div>
+    <p class="shop-actions"><button type="button" class="printbtn" onclick="document.body.classList.add('print-shop');window.print();">Print this shopping list</button> <span class="muted">Prices change often, so check current listings. Sold on Shopee, Lazada and in local electronics shops.</span></p>
+
+    <h3 class="shop-h">Hand-wired ESP32 build</h3>
+    <div class="tablewrap">
+      <table class="check shop">
+        <thead><tr><th></th><th>Qty</th><th>Part · exact spec</th><th>Search this on Shopee / Lazada</th></tr></thead>
+        <tbody>
+          <tr class="grp"><td colspan="4">Main parts</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>Coin acceptor</b><span class="spec">Allan 1239A Pro Max (HX-616 class) with the 2-pin <b>SET</b> header on the back. Comes with its 4-wire harness.</span></td><td class="kw">Allan 1239A Pro Max coin acceptor</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>ESP32 board</b><span class="spec">ESP32-WROOM-32 DevKitC, <b>38-pin</b>, USB chip CH340 or CP2102</span></td><td class="kw">ESP32 38 pin DevKitC WROOM-32</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>12 V power supply</b><span class="spec">S-30-12 (12 V 2.5 A, 220 V AC in) or equivalent 12 V, at least 2 A</span></td><td class="kw">S-30-12 power supply 12V 2.5A</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>Buck converter</b><span class="spec">LM2596 module (HW-411), 12 V → 5 V. Set it to 5.0 V before connecting.</span></td><td class="kw">LM2596 buck converter HW-411</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>Optocoupler</b><span class="spec">EL817 or PC817, DIP-4 (through-hole)</span></td><td class="kw">PC817 optocoupler DIP-4</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>Transistor</b><span class="spec">2N2222A NPN, TO-92</span></td><td class="kw">2N2222A transistor TO-92</td></tr>
+          <tr class="grp"><td colspan="4">Resistors (¼ W, through-hole)</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">4</td><td><b>10 kΩ resistor</b><span class="spec">R1, R4, R7, R8</span></td><td class="kw">10k ohm resistor 1/4W</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">2</td><td><b>1 kΩ resistor</b><span class="spec">R2, R6</span></td><td class="kw">1k ohm resistor 1/4W</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>5.1 kΩ resistor</b><span class="spec">R3</span></td><td class="kw">5.1k ohm resistor 1/4W</td></tr>
+          <tr class="grp"><td colspan="4">Board, wires and connectors</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>Perfboard</b><span class="spec">About 30 × 70 mm (a 5 × 7 cm board is fine), through-hole</span></td><td class="kw">perfboard 5x7 cm</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>Screw terminal</b><span class="spec">2-pin, 5.08 mm pitch (12 V in from the supply)</span></td><td class="kw">screw terminal block 5.08mm 2 pin</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">2</td><td><b>Female header strip</b><span class="spec">1 × 19, 2.54 mm, to socket the ESP32 so you can swap it</span></td><td class="kw">female header 1x19 2.54mm</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1 pack</td><td><b>Dupont jumper wires</b><span class="spec">Female-to-female, 20 cm (for the SET wire)</span></td><td class="kw">dupont jumper wire female to female</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1 set</td><td><b>Hookup wire</b><span class="spec">22 AWG, red + black + one other colour</span></td><td class="kw">22 AWG hookup wire</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>USB data cable</b><span class="spec">Micro-USB or USB-C to match your ESP32. Must be a <b>data</b> cable, not charge-only (for flashing).</span></td><td class="kw">micro USB data cable</td></tr>
+          <tr class="grp"><td colspan="4">Power, light and mounting</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>AC power cord with plug</b><span class="spec">For the supply's L / N / earth terminals</span></td><td class="kw">3 core power cord with plug</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>Inline fuse holder + 1 A fuse</b><span class="spec">Recommended, on the AC live wire</span></td><td class="kw">inline fuse holder 5x20mm</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>LED frame (optional)</b><span class="spec">12 V LED frame for the coin slot. Lights while the slot is open.</span></td><td class="kw">Allan coin slot LED frame 12V</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>Coin box / enclosure</b><span class="spec">Box or cabinet that holds the acceptor and the board</span></td><td class="kw">coin box vendo cabinet</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1 set</td><td><b>Mounting</b><span class="spec">M3 screws and spacers, or hot glue / 3M VHB tape</span></td><td class="kw">M3 brass standoff spacer</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="shop-h">Slotify PCB build</h3>
+    <p class="muted">Same parts as the hand-wired build, <b>except</b> the perfboard, the 2-pin screw terminal and the female header strips. Add these instead:</p>
+    <div class="tablewrap">
+      <table class="check shop">
+        <thead><tr><th></th><th>Qty</th><th>Part · exact spec</th><th>Search this on Shopee / Lazada</th></tr></thead>
+        <tbody>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>Slotify coin box PCB (V1)</b><span class="spec">Order from a PCB maker with the Gerber files (2 layers, 1.6 mm, HASL), or etch it yourself from the PDF</span></td><td class="kw">PCB prototype service</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">2</td><td><b>Screw terminal, 2-pin</b><span class="spec">5.08 mm pitch (J1 12V IN, J4 LED)</span></td><td class="kw">screw terminal block 5.08mm 2 pin</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">2</td><td><b>Screw terminal, 4-pin</b><span class="spec">5.08 mm pitch (J2 ACCEPTOR, J6 LM2596)</span></td><td class="kw">screw terminal block 5.08mm 4 pin</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>Male pin header strip</b><span class="spec">2.54 mm; cut a 1 × 6 (J5 to ESP32) and a 1 × 2 (J3 SET)</span></td><td class="kw">male pin header 2.54mm</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1 pack</td><td><b>Dupont jumper wires</b><span class="spec">Female-to-female (7 wires: 6 to the ESP32, 1 to SET)</span></td><td class="kw">dupont jumper wire female to female</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="shop-h">Denz board build <span class="pill warn" style="vertical-align:middle">Untested</span></h3>
+    <p class="muted">No soldering and no small parts. The board has its own 5 V converter, relay and connectors.</p>
+    <div class="tablewrap">
+      <table class="check shop">
+        <thead><tr><th></th><th>Qty</th><th>Part · exact spec</th><th>Search this on Shopee / Lazada</th></tr></thead>
+        <tbody>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>Denz Mini Wireless Sub Vendo Board v2.0</b><span class="spec">From Denz Customized (Facebook)</span></td><td class="kw">Denz mini wireless sub vendo board</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>ESP32 board</b><span class="spec">ESP32-WROOM-32 DevKit, <b>38-pin</b> (for the 38P ESP32 socket, not the ESP8266 one)</span></td><td class="kw">ESP32 38 pin DevKitC WROOM-32</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>Coin acceptor</b><span class="spec">Allan 1239A Pro Max (pulses = pesos, NO, SLOW)</span></td><td class="kw">Allan 1239A Pro Max coin acceptor</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>12 V DC adapter</b><span class="spec">12 V, at least 2 A, barrel plug for the board's DC jack</span></td><td class="kw">12V 2A DC adapter</td></tr>
+          <tr><td><input type="checkbox" aria-label="bought"></td><td class="q">1</td><td><b>USB data cable</b><span class="spec">Micro-USB or USB-C to match your ESP32 (for flashing)</span></td><td class="kw">micro USB data cable</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="shop-h">Tools</h3>
+      <ul class="tools-list">
+        <li><input type="checkbox" aria-label="have it"> <b>Multimeter</b> <span class="muted">(required: set the LM2596 to 5.0 V and check every wire)</span></li>
+        <li><input type="checkbox" aria-label="have it"> <b>Soldering iron + solder</b> <span class="muted">(hand-wired and PCB builds)</span></li>
+        <li><input type="checkbox" aria-label="have it"> <b>Small screwdrivers</b> <span class="muted">(flat for the LM2596 trim pot and screw terminals, Phillips for mounting)</span></li>
+        <li><input type="checkbox" aria-label="have it"> <b>Wire stripper / cutter</b></li>
+        <li><input type="checkbox" aria-label="have it"> <b>Heat-shrink tubing or electrical tape</b> <span class="muted">(cover every 220 V and 12 V joint)</span></li>
+        <li><input type="checkbox" aria-label="have it"> Hot glue gun <span class="muted">(optional, for mounting)</span></li>
+      </ul>
+  </section>
 
   <h2 class="part" id="steps">Hand-wired build: 4 small steps</h2>
   <p class="muted" style="margin:6px 0 0">Each step is one small circuit. Finish a step, tick its connections in the checklist at the bottom, then move on. Every diagram uses the same two rails: <b>+12&nbsp;V</b> on top and <b>GND</b> at the bottom.</p>
@@ -432,37 +540,37 @@ h2.part{font-size:1.5rem;margin:40px 0 0;padding-top:8px}
 
   <!-- CHECKLIST -->
   <section class="step" id="checklist">
-    <div class="step-head"><div class="num">✓</div><div><h2>Connection checklist</h2><p>Tick each wire as you make it. Every row is one connection.</p></div></div>
+    <div class="step-head"><div class="num">✓</div><div><h2>Connection checklist</h2><p>Tick each wire as you make it. Every row is one connection, numbered in the order to connect them. The numbers match the all-in-one diagram.</p></div></div>
     <div class="tablewrap">
       <table class="check">
-        <thead><tr><th></th><th>From</th><th>To</th></tr></thead>
+        <thead><tr><th></th><th>#</th><th>From</th><th>To</th></tr></thead>
         <tbody>
-          <tr class="grp"><td colspan="3">1 · Power</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w12)"></span>Supply +V</td><td>+12 V rail</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>Supply −V</td><td>GND rail</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w12)"></span>Acceptor RED</td><td>+12 V</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>Acceptor BLACK</td><td>GND</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w12)"></span>LM2596 IN+ (set to 5.0 V first)</td><td>+12 V</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>LM2596 IN− and OUT−</td><td>GND</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w5)"></span>LM2596 OUT+</td><td>ESP32 VIN</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>ESP32 GND</td><td>GND</td></tr>
-          <tr class="grp"><td colspan="3">2 · Coin signal</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w12)"></span>R1 10 kΩ</td><td>+12 V ↔ COIN point</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wcoin)"></span>Acceptor WHITE</td><td>COIN point</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wcoin)"></span>COIN point</td><td>EL817 pin 2</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w12)"></span>R2 1 kΩ</td><td>+12 V ↔ EL817 pin 1</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>EL817 pin 3</td><td>GND</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w33)"></span>R3 5.1 kΩ</td><td>EL817 pin 4 ↔ ESP32 3V3</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wcoin)"></span>R4 10 kΩ</td><td>EL817 pin 4 ↔ ESP32 D18</td></tr>
-          <tr class="grp"><td colspan="3">3 · Coin lock</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wset)"></span>ESP32 D23</td><td>Acceptor SET (upper pin)</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wset)"></span>R8 10 kΩ</td><td>SET (upper pin) ↔ GND</td></tr>
-          <tr class="grp"><td colspan="3">4 · Slot light (optional)</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--w12)"></span>LED frame RED</td><td>+12 V</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wled)"></span>LED frame BLACK</td><td>2N2222A C</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>2N2222A E</td><td>GND</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wled)"></span>R6 1 kΩ</td><td>ESP32 D19 ↔ 2N2222A B</td></tr>
-          <tr><td><input type="checkbox" aria-label="done"></td><td><span class="sw" style="background:var(--wgnd)"></span>R7 10 kΩ</td><td>2N2222A B ↔ GND</td></tr>
+          <tr class="grp"><td colspan="4">1 · Power</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">1</td><td><span class="sw" style="background:var(--w12)"></span>Supply +V</td><td>+12 V rail</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">2</td><td><span class="sw" style="background:var(--wgnd)"></span>Supply −V</td><td>GND rail</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">3</td><td><span class="sw" style="background:var(--w12)"></span>Acceptor RED</td><td>+12 V</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">4</td><td><span class="sw" style="background:var(--wgnd)"></span>Acceptor BLACK</td><td>GND</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">5</td><td><span class="sw" style="background:var(--w12)"></span>LM2596 IN+ (set to 5.0 V first)</td><td>+12 V</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">6</td><td><span class="sw" style="background:var(--wgnd)"></span>LM2596 IN− and OUT−</td><td>GND</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">7</td><td><span class="sw" style="background:var(--w5)"></span>LM2596 OUT+</td><td>ESP32 VIN</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">8</td><td><span class="sw" style="background:var(--wgnd)"></span>ESP32 GND</td><td>GND</td></tr>
+          <tr class="grp"><td colspan="4">2 · Coin signal</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">9</td><td><span class="sw" style="background:var(--w12)"></span>R1 10 kΩ</td><td>+12 V ↔ COIN point</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">10</td><td><span class="sw" style="background:var(--wcoin)"></span>Acceptor WHITE</td><td>COIN point</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">11</td><td><span class="sw" style="background:var(--wcoin)"></span>COIN point</td><td>EL817 pin 2</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">12</td><td><span class="sw" style="background:var(--w12)"></span>R2 1 kΩ</td><td>+12 V ↔ EL817 pin 1</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">13</td><td><span class="sw" style="background:var(--wgnd)"></span>EL817 pin 3</td><td>GND</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">14</td><td><span class="sw" style="background:var(--w33)"></span>R3 5.1 kΩ</td><td>EL817 pin 4 ↔ ESP32 3V3</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">15</td><td><span class="sw" style="background:var(--wcoin)"></span>R4 10 kΩ</td><td>EL817 pin 4 ↔ ESP32 D18</td></tr>
+          <tr class="grp"><td colspan="4">3 · Coin lock</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">16</td><td><span class="sw" style="background:var(--wset)"></span>ESP32 D23</td><td>Acceptor SET (upper pin)</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">17</td><td><span class="sw" style="background:var(--wset)"></span>R8 10 kΩ</td><td>SET (upper pin) ↔ GND</td></tr>
+          <tr class="grp"><td colspan="4">4 · Slot light (optional)</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">18</td><td><span class="sw" style="background:var(--w12)"></span>LED frame RED</td><td>+12 V</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">19</td><td><span class="sw" style="background:var(--wled)"></span>LED frame BLACK</td><td>2N2222A C</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">20</td><td><span class="sw" style="background:var(--wgnd)"></span>2N2222A E</td><td>GND</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">21</td><td><span class="sw" style="background:var(--wled)"></span>R6 1 kΩ</td><td>ESP32 D19 ↔ 2N2222A B</td></tr>
+          <tr><td><input type="checkbox" aria-label="done"></td><td class="n">22</td><td><span class="sw" style="background:var(--wgnd)"></span>R7 10 kΩ</td><td>2N2222A B ↔ GND</td></tr>
         </tbody>
       </table>
     </div>
@@ -483,5 +591,6 @@ h2.part{font-size:1.5rem;margin:40px 0 0;padding-top:8px}
 </main>
 
 <footer><div class="wrap">Slotify · free and open source under GPL-3.0 · <a href="./">Home</a> · <a href="https://github.com/rjcantare/Slotify">Source</a></div></footer>
+<script>window.addEventListener('afterprint',function(){document.body.classList.remove('print-shop');});</script>
 </body>
 </html>

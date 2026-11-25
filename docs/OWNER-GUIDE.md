@@ -20,20 +20,38 @@ soldering), 15 min for the server, 5 min per PC, 15 min per tablet.
 
 ### Coin box
 
-| Qty | Part | Notes |
-|---:|------|-------|
-| 1 | **Allan 1239A Pro Max** coin acceptor (HX-616 class) | Must have the **SET** header on the back (the inhibit input). Other models are untested. |
-| 1 | **S-30-12** power supply (12V, 2.5A) | 220V AC in, 12V DC out. Powers everything. |
-| 1 | **LM2596 (HW-411)** buck converter | 12V → 5V for the ESP32. **Adjust it before connecting it** (§2.4). |
-| 1 | **ESP32-WROOM-32** dev board (38-pin) | USB chip is CH340 or CP2102 |
-| 1 | **EL817 / PC817** optocoupler (DIP-4) | Protects the ESP32 from 12V. **Required.** |
-| 1 | **2N2222A** NPN transistor (TO-92) | Switches the coinslot LED frame |
-| 4 | 10 kΩ ¼W resistor | R1, R4, R7, R8 |
-| 2 | 1 kΩ ¼W resistor | R2, R6 |
-| 1 | 5.1 kΩ ¼W resistor | R3 |
-| 1 | Perfboard about 30×70 mm, 2-pin screw terminal, headers, Dupont F/F jumper | Or use the [custom coin box board](../hardware/coin-box-board/) instead |
-| 1 | 12V LED frame for the coinslot (optional) | Lights up when the slot is open. See the noise note in §2.6. |
-| — | Multimeter | Required, for the checks in §2.4 and §2.5 |
+> **Printable checklist with search keywords:** [wiring page → Checklist ng bibilhin](https://rjcantare.github.io/Slotify/wiring.html#shopping).
+> It also has the short lists for the [Slotify PCB](#28-option-slotify-pcb-v1-prototype) and the [Denz board](#29-option-denz-ready-made-board-untested) builds.
+
+Hand-wired ESP32 build (tick as you buy):
+
+| ✓ | Qty | Part | Exact spec / notes | Search keyword |
+|---|---:|------|-------|----------------|
+| ☐ | 1 | **Coin acceptor** | **Allan 1239A Pro Max** (HX-616 class). Must have the **SET** header on the back (the inhibit input). Comes with its 4-wire harness. Other models are untested. | `Allan 1239A Pro Max coin acceptor` |
+| ☐ | 1 | **ESP32 board** | **ESP32-WROOM-32 DevKitC, 38-pin**, USB chip CH340 or CP2102 | `ESP32 38 pin DevKitC WROOM-32` |
+| ☐ | 1 | **12 V power supply** | **S-30-12** (12 V 2.5 A, 220 V AC in) or equivalent. Powers everything. | `S-30-12 power supply 12V 2.5A` |
+| ☐ | 1 | **Buck converter** | **LM2596 (HW-411)**, 12 V → 5 V for the ESP32. **Adjust it before connecting it** (§2.4). | `LM2596 buck converter HW-411` |
+| ☐ | 1 | **Optocoupler** | **EL817 / PC817**, DIP-4. Protects the ESP32 from 12 V. **Required.** | `PC817 optocoupler DIP-4` |
+| ☐ | 1 | **Transistor** | **2N2222A** NPN, TO-92. Switches the LED frame. | `2N2222A transistor TO-92` |
+| ☐ | 4 | **10 kΩ resistor** | ¼ W: R1, R4, R7, R8 | `10k ohm resistor 1/4W` |
+| ☐ | 2 | **1 kΩ resistor** | ¼ W: R2, R6 | `1k ohm resistor 1/4W` |
+| ☐ | 1 | **5.1 kΩ resistor** | ¼ W: R3 | `5.1k ohm resistor 1/4W` |
+| ☐ | 1 | Perfboard | About 30 × 70 mm, through-hole. Or use the [Slotify PCB](../hardware/coin-box-board/) instead. | `perfboard 5x7 cm` |
+| ☐ | 1 | Screw terminal | 2-pin, 5.08 mm (12 V in) | `screw terminal block 5.08mm 2 pin` |
+| ☐ | 2 | Female header strip | 1 × 19, 2.54 mm, to socket the ESP32 | `female header 1x19 2.54mm` |
+| ☐ | 1 pack | Dupont jumper wires | Female-to-female (the SET wire) | `dupont jumper wire female to female` |
+| ☐ | 1 set | Hookup wire | 22 AWG, red + black + one other colour | `22 AWG hookup wire` |
+| ☐ | 1 | USB **data** cable | Micro-USB or USB-C to match your ESP32 (not charge-only), for flashing | `micro USB data cable` |
+| ☐ | 1 | AC power cord with plug | For the supply's L / N / earth terminals | `3 core power cord with plug` |
+| ☐ | 1 | Inline fuse holder + 1 A fuse | Recommended, on the AC live wire | `inline fuse holder 5x20mm` |
+| ☐ | 1 | LED frame (optional) | 12 V frame for the coin slot. Lights while the slot is open. See the noise note in §2.6. | `Allan coin slot LED frame 12V` |
+| ☐ | 1 | Coin box / enclosure | Holds the acceptor and the board | `coin box vendo cabinet` |
+| ☐ | 1 set | Mounting | M3 screws and spacers, or hot glue / 3M VHB tape | `M3 brass standoff spacer` |
+
+**Tools:** multimeter (**required**, for §2.4 and §2.5), soldering iron and
+solder, small flat and Phillips screwdrivers, wire stripper/cutter,
+heat-shrink or electrical tape for every 220 V and 12 V joint, and
+optionally a hot glue gun.
 
 All parts are sold on Shopee, Lazada and in local electronics shops. Prices change often, so check current listings.
 
@@ -90,7 +108,45 @@ More detail: [hardware/production-wiring.md](hardware/production-wiring.md).
 | **SET** (2-pin header on the back) | upper pin = signal | ESP32 **GPIO 23** (+ R8 to GND) |
 | | lower pin = GND | Already common with the harness GND |
 
-### 2.2 Diagram
+### 2.2 Connections, in order
+
+Connect the wires in this order and tick each one. The numbers match the
+[connection checklist](https://rjcantare.github.io/Slotify/wiring.html#checklist)
+on the website.
+
+| ✓ | # | From | To |
+|---|---:|------|----|
+| | | **① Power** | |
+| ☐ | 1 | 12 V supply +V | +12 V rail (**red**) |
+| ☐ | 2 | 12 V supply −V | GND rail (**black**) |
+| ☐ | 3 | Acceptor RED | +12 V |
+| ☐ | 4 | Acceptor BLACK | GND |
+| ☐ | 5 | LM2596 IN+ (**set to 5.0 V first**, §2.4) | +12 V |
+| ☐ | 6 | LM2596 IN− and OUT− | GND |
+| ☐ | 7 | LM2596 OUT+ | ESP32 VIN (5 V) |
+| ☐ | 8 | ESP32 GND | GND |
+| | | **② Coin signal** | |
+| ☐ | 9 | R1 10 kΩ | +12 V ↔ COIN point |
+| ☐ | 10 | Acceptor WHITE | COIN point |
+| ☐ | 11 | COIN point | EL817 pin 2 |
+| ☐ | 12 | R2 1 kΩ | +12 V ↔ EL817 pin 1 |
+| ☐ | 13 | EL817 pin 3 | GND |
+| ☐ | 14 | R3 5.1 kΩ | EL817 pin 4 ↔ ESP32 3V3 |
+| ☐ | 15 | R4 10 kΩ | EL817 pin 4 ↔ ESP32 D18 |
+| | | **③ Coin lock (SET)** | |
+| ☐ | 16 | ESP32 D23 | Acceptor SET, upper pin |
+| ☐ | 17 | R8 10 kΩ | SET upper pin ↔ GND |
+| | | **④ Slot light (optional)** | |
+| ☐ | 18 | LED frame RED | +12 V |
+| ☐ | 19 | LED frame BLACK | 2N2222A C (collector) |
+| ☐ | 20 | 2N2222A E (emitter) | GND |
+| ☐ | 21 | R6 1 kΩ | ESP32 D19 ↔ 2N2222A B (base) |
+| ☐ | 22 | R7 10 kΩ | 2N2222A B ↔ GND |
+
+EL817: the dot marks pin 1. Pins 1 and 2 are the 12 V side, pins 3 and 4 the ESP32 side.
+
+<details>
+<summary>Text version of the diagram</summary>
 
 ```
  S-30-12 PSU
@@ -117,6 +173,8 @@ More detail: [hardware/production-wiring.md](hardware/production-wiring.md).
  PSU −V (GND) ── Allan BLACK, EL817 pin 3, LM2596 IN−/OUT−, ESP32 GND,
                  2N2222A emitter, R7, R8    ← ONE common ground
 ```
+
+</details>
 
 How it works: when a coin is accepted, the Allan pulls the WHITE wire to
 ground once per peso. That lights the LED inside the EL817, and the EL817
