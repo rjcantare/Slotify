@@ -86,6 +86,12 @@ Every wire is numbered **1–22** in the order you connect it. The numbers match
 [§2.2](#22-connections-in-order). Want every resistor and pin on the drawing? See the
 [detailed diagram](images/wiring-all-in-one.png).
 
+**Ganito ang itsura kapag tapos na** (finished perfboard sa shop namin):
+
+<img src="images/finished-perfboard.jpg" width="360" alt="Finished hand-wired coin box board on perfboard: ESP32 at the top, LM2596 below, small parts in the middle, screw terminals at the bottom">
+
+*ESP32 on header sockets (top), LM2596 below it, the small parts in the middle, screw terminals for 12 V, the coin slot and the LED frame. Photo: frame from our coin-box video, straightened and sharpened; nothing added or moved.*
+
 > **Easier version:** the [step-by-step wiring page](https://rjcantare.github.io/Slotify/wiring.html#steps) splits this into 4 small colour-coded diagrams with a tick-box checklist.
 
 ![Coin box breadboard prototype](images/S9-esp32-breadboard.png)

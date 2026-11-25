@@ -108,6 +108,12 @@ footer{padding:36px 0;color:var(--muted);font-size:.9rem}
 .links{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:.92rem;font-weight:600}
 .links a{color:var(--text);text-decoration:underline;text-decoration-color:var(--gold-deep);text-underline-offset:3px}
 .tester{background:var(--warn-bg);border-radius:10px;padding:10px 12px;font-size:.92rem;margin:4px 0 10px}
+figure.done{margin:16px 0 0;padding-top:14px;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 260px;gap:16px;align-items:start}
+figure.done figcaption{font-size:.95rem;grid-column:1;grid-row:1}
+figure.done a{grid-column:2;grid-row:1 / span 2;display:block}
+figure.done img{width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+figure.done .photo-note{grid-column:1;grid-row:2;margin:0;font-size:.82rem;color:var(--muted)}
+@media (max-width:600px){figure.done{grid-template-columns:1fr}figure.done figcaption,figure.done a,figure.done .photo-note{grid-column:1;grid-row:auto}figure.done a{max-width:300px}}
 h2.part{font-size:1.5rem;margin:40px 0 0;padding-top:8px}
 
 /* shopping checklist */
@@ -180,6 +186,11 @@ ul.tools-list input{width:18px;height:18px;accent-color:var(--gold-deep);vertica
           <a href="https://github.com/rjcantare/Slotify/blob/main/docs/OWNER-GUIDE.md#2-coin-box-wiring">Owner Guide §2</a>
           <a href="images/S9-esp32-breadboard.png" target="_blank" rel="noopener">Breadboard photo</a>
         </div>
+        <figure class="done" id="finished">
+          <figcaption><b>Ganito ang itsura kapag tapos na.</b> Finished perfboard sa shop namin: ESP32 on header sockets (top), LM2596 below it, the small parts in the middle, and screw terminals for 12 V, the coin slot and the LED frame.</figcaption>
+          <a href="images/finished-perfboard.jpg" target="_blank" rel="noopener"><img src="images/finished-perfboard.jpg" alt="Finished hand-wired coin box board on green perfboard: ESP32 on header sockets at the top, LM2596 buck converter below, resistors, EL817 and 2N2222A in the middle, blue screw terminals for 12 V, the coin slot and the LED frame at the bottom" width="720" height="1100" loading="lazy"></a>
+          <p class="photo-note">Photo: frame from our coin-box video, straightened and sharpened; nothing added or moved.</p>
+        </figure>
       </div>
     </article>
 

@@ -40,6 +40,7 @@ If you run it on one of the untested setups, please send a
 ## Coin box wiring
 
 Pick one way to build the coin box. Click a picture to open it full size.
+**What the finished hand-wired board looks like:** [photo of our perfboard](docs/images/finished-perfboard.jpg).
 **What to buy:** a printable checklist with the exact spec and a Shopee/Lazada search keyword for every part is on the [wiring page](https://rjcantare.github.io/Slotify/wiring.html#shopping) (also in [Owner Guide §1](docs/OWNER-GUIDE.md#1-parts-list)).
 
 | Hand-wired ESP32 build | Denz ready-made board | Slotify PCB (V1) |

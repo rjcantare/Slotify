@@ -1,5 +1,9 @@
 # Perfboard build task - coin acceptor board
 
+<img src="../images/finished-perfboard.jpg" width="320" alt="Finished hand-wired coin box board on perfboard">
+
+*The finished perfboard in our shop: ESP32 on header sockets, LM2596, the small parts, and screw terminals. Photo: frame from our coin-box video, straightened and sharpened; nothing added or moved.*
+
 > Wiring at a glance: [all-in-one diagram](../images/wiring-all-in-one.png) (same circuit as the perfboard). Want to skip the perfboard? See the [Slotify PCB](../../hardware/coin-box-board/README.md) or the [Denz ready-made board](denz-subvendo-board.md) (untested).
 
 Use this task when moving the validated breadboard circuit onto perfboard.
