@@ -9,6 +9,9 @@ to their unit. One server screen shows every station, its time and the
 prices.
 
 - No license fee, no monthly fee, no activation
+- **No extra server hardware.** The server runs on the Windows PC your shop
+  already keeps on (the iCafe8/CCBoot diskless server or any counter PC,
+  Windows 10/11 64-bit). No Orange Pi or Raspberry Pi, no extra SD card or adapter.
 - One ESP32-based coinslot for every unit, built from parts you can buy locally
 - The coinslot is **physically locked** until someone taps Insert Coin, and it rejects coins if the box loses power or restarts
 - Coins are saved in the box and credited after Wi-Fi or server outages
