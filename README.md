@@ -44,7 +44,7 @@ Pick one way to build the coin box. Click a picture to open it full size.
 
 | Hand-wired ESP32 build | Denz ready-made board | Slotify PCB (V1) |
 |:---:|:---:|:---:|
-| [<img src="docs/images/wiring/wiring-all-in-one-1200.jpg" width="280" alt="All-in-one coin box wiring diagram">](docs/images/wiring-all-in-one.png) | [<img src="docs/images/wiring/wiring-denz-board-1200.jpg" width="280" alt="Coin box wiring on the Denz Mini Wireless Sub Vendo Board v2.0">](docs/images/wiring-denz-board.png) | [<img src="docs/pcb/preview.svg" width="200" alt="Slotify coin box PCB top view">](hardware/coin-box-board/) |
+| [<img src="docs/images/wiring/wiring-all-in-one-simple-1200.jpg" width="280" alt="Simple coin box wiring diagram, every wire numbered">](docs/images/wiring-all-in-one-simple.png) | [<img src="docs/images/wiring/wiring-denz-board-1200.jpg" width="280" alt="Coin box wiring on the Denz Mini Wireless Sub Vendo Board v2.0">](docs/images/wiring-denz-board.png) | [<img src="docs/pcb/preview.svg" width="200" alt="Slotify coin box PCB top view">](hardware/coin-box-board/) |
 | **Tested in our shop** | **⚠ UNTESTED, testers wanted** | **Prototype, not yet manufactured** |
 | 38-pin ESP32, Allan 1239A, LM2596, EL817, 2N2222A on a breadboard or perfboard | Denz Customized's "Mini Wireless Sub Vendo Board" v2.0 + a 38-pin ESP32. No soldering. | Same circuit as the hand-wired build, on an 80 × 64 mm board with screw terminals |
 | Firmware: `coin-box-merged.bin` | Firmware: `coin-box-denz-merged.bin` (v1.3.2+) | Firmware: `coin-box-merged.bin` |

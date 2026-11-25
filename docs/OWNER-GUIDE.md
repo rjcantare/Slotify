@@ -80,7 +80,11 @@ All three diagrams are also on the [wiring page](https://rjcantare.github.io/Slo
 
 **Hand-wired ESP32 build:**
 
-![Full coin box wiring on one diagram](images/wiring-all-in-one.png)
+![Simple coin box wiring: 4 zones, every wire numbered 1 to 22](images/wiring-all-in-one-simple.png)
+
+Every wire is numbered **1–22** in the order you connect it. The numbers match the table in
+[§2.2](#22-connections-in-order). Want every resistor and pin on the drawing? See the
+[detailed diagram](images/wiring-all-in-one.png).
 
 > **Easier version:** the [step-by-step wiring page](https://rjcantare.github.io/Slotify/wiring.html#steps) splits this into 4 small colour-coded diagrams with a tick-box checklist.
 

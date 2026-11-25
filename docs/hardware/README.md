@@ -7,7 +7,7 @@ step-by-step build, start with [../OWNER-GUIDE.md](../OWNER-GUIDE.md), section 2
 
 | Build | Diagram | Status |
 |-------|---------|--------|
-| Hand-wired ESP32 (breadboard / perfboard) | [all-in-one](../images/wiring-all-in-one.png) | Tested in our shop |
+| Hand-wired ESP32 (breadboard / perfboard) | [simple, numbered](../images/wiring-all-in-one-simple.png) · [detailed](../images/wiring-all-in-one.png) | Tested in our shop |
 | Slotify PCB (V1) | [board preview](../pcb/preview.svg) · [board README](../../hardware/coin-box-board/README.md) | Prototype |
 | Denz Mini Wireless Sub Vendo Board v2.0 | [Denz diagram](../images/wiring-denz-board.png) · [guide](denz-subvendo-board.md) | **Untested, testers wanted** |
 
